@@ -1,9 +1,29 @@
 \documentclass{fithesis3}
+\usepackage{amsmath}
 \begin{document}
 	\chapter{Introduction}
 	\chapter{Preliminaries}
-		\section{Büchi Automaton}
-		A nondeterministic Büchi automaton
+		\subsection{Büchi Automaton}
+		A nondeterministic Büchi automaton is a tuple 
+		$A=(\Sigma, Q, q_0, \Delta, \Gamma)$,
+		where
+		\begin{itemize}
+			\item $\Sigma$ is a finite alphabet
+			\item $Q$ is finite set of states
+			\item $q_0 \in Q$ is the initial state
+			\item $\Delta \subseteq Q \times \Sigma \times Q$
+			are transitions
+			\item $\Gamma \subseteq \Delta$
+			is the transition-based acceptance condition
+		\end{itemize} 
+		\subsection{Run}
+		A run $r$ of $A$ on $w \in \Sigma^\omega$
+		is an $\omega$-word $r_0, w_0, r_1, w_1,...$ in $(Q\times\Sigma)^\omega$
+		such that $r_0 = q_0 \land\forall i>0, (r_{i-1}, w_{i-1}, r_i) \in \Delta$\newline
+		
+		,
+		,
+		 
 		
 		GF MDP, model checking
 		\section{Algorithms}
