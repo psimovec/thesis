@@ -1,2 +1,2 @@
 # thesis
-Repo as versioning + backup of my thesis
+Repo for versioning + backup of my thesis
