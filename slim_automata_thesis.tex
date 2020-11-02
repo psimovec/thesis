@@ -19,7 +19,7 @@
 		\paragraph{run}
 		A run $r$ of $A$ on $w \in \Sigma^\omega$
 		is an $\omega$-word $r_0, w_0, r_1, w_1,...$ in $(Q\times\Sigma)^\omega$
-		such that $r_0 = q_0 \land\forall i>0, (r_{i-1}, w_{i-1}, r_i) \in \Delta$
+		such that $r_0 = q_0 \land\forall i>0, (r_{i-1}, w_{i-1}, r_i) \in \Delta$ $o\omega o$
 		\paragraph{inf(r)}
 		We write $inf(r) \subseteq \Delta$ for the set of transitions that appear infinitely often in the run $r$.
 		\paragraph{accepting run} A run $r$ is accepting if $inf(r) \cap \Gamma \neq \emptyset$
@@ -34,6 +34,24 @@
 		$A$ is complete if, $\forall w \in \Sigma, \forall q \in Q, \exists (q, w, q^`)\in\Delta$. A word in $\Sigma^\omega$ has exactly one run in a deterministic, complete automaton.
 		
 		\section{Markov Decision Processes}
+		A Markov decision process (MDP) $M$
+		is a tuple $(S, A, T, \Sigma, L)$, where
+		\begin{itemize}
+			\item $S$ is a finite set of states
+			\item $A$ is a finite set of actions
+			\item $T:S\times A \rightarrow D(S)$, where $D(S)$ is set of probability distributions over S, is  the probabilistic transition (partial) function
+			\item $\Sigma$ is an alphabet
+			\item $L:S\times A \times S \rightarrow \Sigma$ is the labeling function of the set of transitions.
+			For a state $s \in S, A(s)$ denotes the set of actions available in s.
+		\end{itemize}
+		\paragraph{run} A run of $M$ is an $\omega$-word 
+		$s_0,a_1,...\in A=S \times (A \times S)^\omega$
+		such that $Pr(s_{i+1}|s_i, a_{i+1})>0$ for all $i >= 0$. A finite run is a finite such sequence.
+		\paragraph{labeled run} We define labeled run as
+		$L(r)=L(s_0,a_1,s_1), L(s_1, a_2, s_2),... \in \Sigma^\omega$.
+		\paragraph{paths}
+		\section{to be defined}
+		$\omega$-word?, 
 		\subsection{xd}
 		
 		,
