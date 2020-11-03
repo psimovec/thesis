@@ -97,8 +97,18 @@
 		A \times Q,
 		T^\times,
 		\Gamma^\times
-		)$ is an MDP augmented with 
-		
+		)$ is an MDP augmented with an inital state $s_0 \in S$ 
+		and accepting transitions $\Gamma^\times$.
+		The (partial) function
+		$T^\times:
+		(S \times Q) \times (A \times Q) \rightarrow D(S \times Q)$
+		is defined by
+		$T^\times((s,q), (a,q^`))((s^`, q^`))=
+		\begin{cases}
+			T(s,a)(s^`) &if (q,L(s,a,s^`),q^1) \in \Delta\\
+			undefined &otherwise
+		\end{cases}
+		$	
 		\section{to be defined}
 		$\omega$-word?, point distribution?, what is $F_s^\mu$ in 'pure strategy' paragraph?, TGBA, describe Semi-determistic as I am going to compare them with SBA 
 		\subsection{xd}
