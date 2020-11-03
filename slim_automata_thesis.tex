@@ -74,7 +74,30 @@
 		on a probability space $(\Omega_s^\mu, F_s^\mu, Pr_s^\mu)$
 		over the set of infinite runs of $\mu$ from $s$.
 		
-		\section{Good-for-MDP (GFM) Automata}
+		\section{[WIP]Good-for-MDP (GFM) Automata}
+		Given an MDP $M$ and an
+		automaton $A=(\Sigma, Q, q_0, \Delta, \Gamma)$, we want to compute an optimal strategy satisfying the objective that the run of $M$
+		is in the language of A.
+		\paragraph{semantic satisfaction probability for given automaton and strategy}
+		We define the semantic satisfaction probability for $A$
+		and strategy $\mu$ from state $s$ as:\newline
+		$PSem_A^M(s,\mu)=Pr_s^\mu\{r \in\Omega_s^\mu:L(r)\in L_A  \}$
+		\paragraph{semantic satisfaction probability for given automaton}
+		.\newline
+		$PSem_A^M(s)=\underset{\mu \in \Pi_M}{\sup} PSem_A^M(s, \mu)$
+		\paragraph{syntactic variant of the acceptance condition}
+		When using automata for given analysis of MDPs, we need
+		a syntactic variant of the acceptance condition.
+		\subparagraph{product of MDP and automaton}
+		Given an MDP $M=(S,A,T,\Sigma,L)$ with initial state $s_0 \in S$
+		and automaton $A = (\Sigma, Q, q_0, \Delta, \Gamma)$,
+		the product $M \times A = (
+		S \times Q,
+		(s_0, q_0),
+		A \times Q,
+		T^\times,
+		\Gamma^\times
+		)$ is an MDP augmented with 
 		
 		\section{to be defined}
 		$\omega$-word?, point distribution?, what is $F_s^\mu$ in 'pure strategy' paragraph?, TGBA, describe Semi-determistic as I am going to compare them with SBA 
