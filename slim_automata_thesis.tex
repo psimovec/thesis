@@ -4,9 +4,15 @@
 	\chapter{Introduction}
 	\chapter{Preliminaries}
 		\section{Büchi Automaton}
-			Büchi automaton is a theoretical finite state machine, that decides which infinitely long words are recognized by (given?) language. Let us define transition-based Buchi Automaton (TBA).
-			\paragraph{definition 1}
-			TBA is a quintuple $A=(\Sigma, Q, q_0, \Delta, \Gamma)$. An alphabet is a set of letters. $\Sigma$ is a finite alphabet recognized by A. $Q$ is a finite set of states of $A$, $q_0 \in Q$ is called the initial state of $A$. Transitions of $A$ directionally connect 2 states inside $Q$ with a letter from alphabet $\Sigma$. We write the set of transitions as $\Delta \subseteq Q \times \Sigma \times Q$. Subset of the transitions $\Gamma \subseteq \Delta$ are accepting transitions. Now our goal is to define TBA acceptance condition
+			Büchi automaton is a theoretical finite state machine, that decides which infinitely long words ($\omega$-words) are recognized by its language. Let us define transition-based Buchi Automaton (TBA).
+			\paragraph{}
+			TBA is a quintuple $A=(\Sigma, Q, q_0, \Delta, \Gamma)$. An alphabet is a set of letters. $\Sigma$ is a finite alphabet recognized by A. $Q$ is a finite set of states of $A$, $q_0 \in Q$ is called the initial state of $A$. Transitions of $A$ directionally connect 2 states inside $Q$ with a letter from alphabet $\Sigma$. We write the set of transitions as $\Delta \subseteq Q \times \Sigma \times Q$. Subset of the transitions $\Gamma \subseteq \Delta$ are accepting transitions.\newline Now our goal is to define language $L_A$. It allows us to specify which $\omega$-words are accepted or rejected by the automaton. To achieve our goal we will need to define run on automaton $A$.
+			\paragraph{}
+			Run $r \in \Delta^\omega$ on A is an infinite sequence of transitions such that for the first transition $r_0=(q'_0, a, q''_0) \in r$ holds that $q'_0$ is the initial state of A and for each subsequent state $r_i=(q'_i, a, q''_i)$ holds that $q'_i=q''_{i-1}$
+			A run of TBA is accepting, iff it contains infinitely many accepting transitions.
+			\paragraph{}
+			Finally we can define the language recognized by an automaton $L_A \in \Sigma^\omega$. An $\omega$-word $x \in \Sigma^\omega$ belongs to $L_A$ if there exists an accepting run r in the automaton $A$ for the word $x$. 
+			
 		\section{TGBA}
 	\chapter{To Delete Chapter}
 		\section{Büchi Automaton}
@@ -37,7 +43,7 @@
 		\paragraph{deterministic automaton}
 		$A=(\Sigma, Q, q_0, \Delta, \Gamma)$ is deterministic if \newline$(q, \rho, q^`), (q, \rho, q^{``})\in\Delta\implies q^`=q^{``}$
 		\paragraph{complete automaton}
-		$A$ is complete if, $\forall w \in \Sigma, \forall q \in Q, \exists (q, w, q^`)\in\Delta$. A word in $\Sigma^\omega$ has exactly one run in a deterministic, complete automaton.
+		$A$ is complete if, $\forall w \in \Sigma, \forall q \in Q, \exists (q, w, q^`)\in\Delta$. A word in $\Sigma^\omega$ has exactly one run in a deterministic, complete automaton. 
 		
 		nepouzivat $\rho$ , kombinace $\rho$ a q je spatna
 		
