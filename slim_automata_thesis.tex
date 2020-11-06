@@ -4,6 +4,12 @@
 	\chapter{Introduction}
 	\chapter{Preliminaries}
 		\section{Büchi Automaton}
+			Büchi automaton is a theoretical finite state machine, that decides which infinitely long words are recognized by (given?) language. Let us define transition-based Buchi Automaton (TBA).
+			\paragraph{definition 1}
+			TBA is a quintuple $A=(\Sigma, Q, q_0, \Delta, \Gamma)$. An alphabet is a set of letters. $\Sigma$ is a finite alphabet recognized by A. $Q$ is a finite set of states of $A$, $q_0 \in Q$ is called the initial state of $A$.
+		\section{TGBA}
+	\chapter{To Delete Chapter}
+		\section{Büchi Automaton}
 		A nondeterministic Büchi automaton (BA) is a tuple 
 		$A=(\Sigma, Q, q_0, \Delta, \Gamma)$,
 		where
@@ -14,12 +20,12 @@
 			\item $\Delta \subseteq Q \times \Sigma \times Q$
 			are transitions
 			\item $\Gamma \subseteq \Delta$
-			is the transition-based acceptance condition
+			are accepting transitions
 		\end{itemize} 
 		\paragraph{run}
 		A run $r$ of $A$ on $w \in \Sigma^\omega$
 		is an $\omega$-word $r_0, w_0, r_1, w_1,...$ in $(Q\times\Sigma)^\omega$
-		such that $r_0 = q_0 \land\forall i>0, (r_{i-1}, w_{i-1}, r_i) \in \Delta$ $o\omega o$
+		such that $r_0 = q_0 \land\forall i>0, (r_{i-1}, w_{i-1}, r_i) \in \Delta$ 
 		\paragraph{inf(r)}
 		We write $inf(r) \subseteq \Delta$ for the set of transitions that appear infinitely often in the run $r$.
 		\paragraph{accepting run} A run $r$ is accepting if $inf(r) \cap \Gamma \neq \emptyset$
@@ -33,6 +39,9 @@
 		\paragraph{complete automaton}
 		$A$ is complete if, $\forall w \in \Sigma, \forall q \in Q, \exists (q, w, q^`)\in\Delta$. A word in $\Sigma^\omega$ has exactly one run in a deterministic, complete automaton.
 		
+		nepouzivat $\rho$ , kombinace $\rho$ a q je spatna
+		
+		zminit v intro
 		\section{Markov Decision Processes}
 		A Markov decision process (MDP) $M$
 		is a tuple $(S, A, T, \Sigma, L)$, where
