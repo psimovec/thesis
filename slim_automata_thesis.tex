@@ -38,7 +38,8 @@ nolof, nolot
 			\paragraph{}
 			A transition-based Büchi Automaton (TBA) is a quintuple $A=(\Sigma, Q, q_i, \Delta, \Gamma)$. An \emph{$\omega$-word} is an infinite sequence of letters. An alphabet is a set of letters. A \emph{language} is a set of $\omega$-words. $\Sigma$ is a finite \emph{alphabet}. $Q$ is a finite set of \emph{states} of $A$, $q_0 \in Q$ is the initial state of $A$. Intuitivelly, a transition $(s, a, t)$  directionally connects two states inside $Q$ with a letter from alphabet $\Sigma$. We write the set of \emph{transitions} as $\Delta \subseteq Q \times \Sigma \times Q$ and $\Gamma \subseteq \Delta$ is a set of \emph{accepting transitions}.
 			\paragraph{}
-			A \emph{Run} $r \in \Delta^\omega$ on A is an infinite sequence of transitions such that for the first transition $r_0=(q'_0, a, q''_0) \in r$ holds that $q'_0$ is the initial state of A and for each subsequent state $r_i=(q'_i, a, q''_i)$ holds that $q'_i=q''_{i-1}$
+			A \emph{Run} $r$ of A is an infinite sequence of transitions
+			$r=(q_0, a_0, q_1)(q_1, a_1, q_2)(q_2, a_2, q_3)\ldots\in\Delta^\omega$ such that $q_0=q_i$.
 			A run of TBA is \emph{accepting} iff it contains infinitely many accepting transitions.
 			\paragraph{}
 			Finally, we define the \emph{language} $L_A \in \Sigma^\omega$ recognized by the automaton A. An $\omega$-word $w \in \Sigma^\omega$ belongs to $L_A$ iff there exists an accepting run of $A$ over the word $w$. 
