@@ -156,13 +156,25 @@ nolof, nolot
 			
 			$3^Q_i :=\{(S,S',i)|S'\subset S \subseteq Q, i \in N, i<|G|\}$ and
 			
-			%$3^Q_{i+}:=\{(S,S',i)|S'\subseteq S \subseteq Q, i \in N, i<|G|\}$.
+			$3^Q_{i+}:=\{(S,S',i)|S'\subseteq S \subseteq Q, i \in N, i<|G|\}$.
 			
 			$\delta_S: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in \Delta\}$ and
 			
 			$\gamma_{iS}: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in G_i\}$
 			
+			up($x$)=$(x+1)\%|G|$
+			
+			We define the raw generalized breakpoint transitions 
+			
+			$\delta_R:3^Q_i \times \Sigma \rightarrow 3^Q_{i+}$ as
+			$((S, S', i), a) \rightarrow(\delta_S(S, a), \delta(S',a)\cup \gamma_S(S, a), j)$
+			
 			The generalized breakpoint automaton $D_g=(\Sigma, 3^Q_i, ({q_i},\emptyset, 0))$ is defined such that, when $\delta_R:((S, S', i), a) \rightarrow (R, R', j)$, then there are three cases:
+			\begin{enumerate}
+				\item if $R=\emptyset$, then $\delta_B((S,S',i))$ is undefined,
+				\item else, if $R \neq R'$, then $\delta_B:((S,S',i),a) \rightarrow (R,R',i)$ is a non-accepting transition,
+				\item otherwise $\delta_B, \gamma_B: \delta_B((S,S',i),a)\rightarrow(R, \emptyset, \text{up}(i))$ is an accepting transition. 
+			\end{enumerate}
 			
 		
 	\chapter{To Delete Chapter}
