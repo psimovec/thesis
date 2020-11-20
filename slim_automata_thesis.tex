@@ -128,7 +128,7 @@ nolof, nolot
 				\item otherwise $\delta_B, \gamma_B: \delta_B((S,S'),a)\rightarrow(R, \emptyset)$ is an accepting transition.
 			\end{enumerate}
 		
-			Finally, we define transitions $\Delta_{SB}\subseteq 2^Q \times \Sigma \times 3^Q$ that lead from a subset to a breakpoint construction, and $\gamma_{2,1}:3^Q \times \Sigma \rightarrow 3^Q$ that promote the second set of a breakpoint construction to the first set as follows. (?? probably a different text will be necessary here, following enumerate is WIP)
+			Finally, we define transitions $\Delta_{SB}\subseteq 2^Q \times \Sigma \times 3^Q$ that lead from a subset to a breakpoint construction, and $\gamma_w, \gamma_p:3^Q \times \Sigma \rightarrow 3^Q$ that promote the second set of a breakpoint construction to the first set as follows. (?? probably a different text will be necessary here, following enumerate is WIP)
 			
 			\begin{enumerate}
 				\item $\Delta_{SB}=\{(S, a, (S', \emptyset)) | \emptyset \neq S' \subseteq \delta_S(S, a)\}$ are non-accepting transitions,
@@ -143,9 +143,9 @@ nolof, nolot
 			
 			$S=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\delta_{p}),ndet(\delta_B)\cup ndet(\gamma_{p}))$ is slim. (proof in text with original definition)
 			
-			$W=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\delta_{w}),ndet(\delta_B)\cup ndet(\gamma_{w}))$ is weak slim. 
+			$W=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\delta_{w}),ndet(\delta_B)\cup ndet(\gamma_{w}))$ is (weak) slim. (no proof yet)
 			
-			(Jen takova poznamka... Dava vlastne \emph{weak slim} smysl? Pokud to chapu, tak tady v puvodnim clanku definuji \emph{slim} spis jako vlastnost, nez jako nazev.. Takze \emph{weak slim} co davam do seminatoru by stale mel byt \emph{slim}...)
+			(Jen takova poznamka... Dava vlastne nazev \emph{weak slim} smysl? Pokud to chapu, tak tady v puvodnim clanku definuji \emph{slim} spis jako vlastnost, nez jako nazev.. Takze \emph{weak slim} co davam do seminatoru by stale mel byt \emph{slim}...)
 			
 			\section{Slim Automaton Construction Generalized to TGBA}
 			We want to construct a slim automaton from TGBA $T=(\Sigma, Q, q_i, \Delta, G)$. One possibility is to \emph{degeneralize} $T$ and to use previously mentioned algorithm in section 2.3. Another way is to extend slim automaton construction to TGBA.
@@ -167,13 +167,21 @@ nolof, nolot
 			We define the raw generalized breakpoint transitions 
 			
 			$\delta_R:3^Q_i \times \Sigma \rightarrow 3^Q_{i+}$ as
-			$((S, S', i), a) \rightarrow(\delta_S(S, a), \delta(S',a)\cup \gamma_S(S, a), j)$
+			$((S, S', i), a) \rightarrow(\delta_S(S, a), \delta(S',a)\cup \gamma_{iS}(S, a), j)$
 			
 			The generalized breakpoint automaton $D_g=(\Sigma, 3^Q_i, ({q_i},\emptyset, 0))$ is defined such that, when $\delta_R:((S, S', i), a) \rightarrow (R, R', j)$, then there are three cases:
 			\begin{enumerate}
-				\item if $R=\emptyset$, then $\delta_B((S,S',i))$ is undefined,
+				\item if $R=\emptyset$ , then $\delta_B((S,S',i))$ is undefined,
 				\item else, if $R \neq R'$, then $\delta_B:((S,S',i),a) \rightarrow (R,R',i)$ is a non-accepting transition,
 				\item otherwise $\delta_B, \gamma_B: \delta_B((S,S',i),a)\rightarrow(R, \emptyset, \text{up}(i))$ is an accepting transition. 
+			\end{enumerate}
+				$\Delta_{SB} \subseteq 2^Q \times \Sigma \times 3^Q$
+		
+				$\gamma_{w}: 3^Q_i \times \Sigma \rightarrow 3^Q_i$
+			\begin{enumerate}
+				\item $\Delta_{SB}=\{(S, a, (S', \emptyset,0))|\emptyset \neq S' \subseteq \delta_S(S, a)\}$ are non-accepting transitions,
+				\item if $\delta_S(S',a)=\gamma_{iS}(S, a)=\emptyset, then \gamma_{w}((S,S',i),a)$ is undefined, and
+				\item otherwise $\gamma_w : ((S,S',i),a)\rightarrow (\delta_S(S',a)\cup \gamma_{iS}(S, a), \emptyset, \text{up}(i))$ is an accepting transition.
 			\end{enumerate}
 			
 		
