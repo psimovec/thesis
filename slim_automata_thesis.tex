@@ -120,8 +120,34 @@ nolof, nolot
 			We define the raw breakpoint transition
 			$\delta_R:3^Q \times \Sigma \rightarrow 3^Q_+$ as
 			$((S, S'), a) \rightarrow(\delta_S(S, a), \delta(S',a)\cup \gamma_S(S, a))$.
-			In this construction, we follow the set of reachable states (first set) and the states that are reachable while passing at least one of the accepting transitions (second set). To turn this into a breakpoint automaton, we reset the second set to the empty set when it equals the first; the transitions where we reset the second set are exactly the accepting ones. The breakpoint automaton $D = (\Sigma, 3^Q, (q_i, \emptyset), \delta_B, \gamma_B)$ is defined such that, when $\delta_R: ((S, S'), a) \rightarrow (R, R'), then there are three cases:\$
+			In this construction, we follow the set of reachable states (first set) and the states that are reachable while passing at least one of the accepting transitions (second set). To turn this into a breakpoint automaton, we reset the second set to the empty set when it equals the first; the transitions where we reset the second set are exactly the accepting ones. The breakpoint automaton $D = (\Sigma, 3^Q, (q_i, \emptyset), \delta_B, \gamma_B)$ is defined such that, when $\delta_R: ((S, S'), a) \rightarrow (R, R')$, then there are three cases:
+			
+			\begin{enumerate}
+				\item if $R=\emptyset$, then $\delta_B((S,S'))$ is undefined (or, if a complete automation is preferred, maps to a rejecting sink),
+				\item else, if $R \neq R'$, then $\delta_B((S,S'),a)\rightarrow(R, R')$ is a non-accepting transition,
+				\item otherwise $\delta_B, \gamma_B: \delta_B((S,S'),a)\rightarrow(R, \emptyset)$ is an accepting transition.
+			\end{enumerate}
 		
+			Finally, we define transitions $\Delta_{SB}\subseteq 2^Q \times \Sigma \times 3^Q$ that lead from a subset to a breakpoint construction, and $\gamma_{2,1}:3^Q \times \Sigma \rightarrow 3^Q$ that promote the second set of a breakpoint construction to the first set as follows. (?? probably a different text will be necessary here, following enumerate is WIP)
+			
+			\begin{enumerate}
+				\item $\Delta_{SB}=\{(S, a, (S', \emptyset)) | \emptyset \neq S' \subseteq \delta_S(S, a)\}$ are non-accepting transitions,
+				\item if $\delta_S(S',a) = \gamma_S(S, a) = \emptyset$, then $\gamma_{p}((S,S'), a)$ and $\gamma_{w}((S,S'), a)$ are undefined, and
+				\item otherwise
+				 $\gamma_{p}:((S,S'),a)\rightarrow(\delta_S(S',a)\cup\gamma_S(S, a),\emptyset)$ and $\gamma_{w}:((S,S'),a)\rightarrow(\delta_S(S',a),\emptyset)$ are accepting transitions.
+			\end{enumerate}
+		
+			...? (I guess I could define semi-deterministic automaton, as it will be used in evaluation for comparison)
+			\section{Slim automaton}
+			We present 2 of possible variants of slim automata:
+			
+			$S=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\delta_{p}),ndet(\delta_B)\cup ndet(\gamma_{p}))$ is slim.
+			
+			$W=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\delta_{w}),ndet(\delta_B)\cup ndet(\gamma_{w}))$ is weak slim. 
+			
+			(Jen takova poznamka... Dava vlastne \emph{weak slim} smysl? Pokud to chapu, tak tady v puvodnim clanku definuji \emph{slim} spis jako vlastnost, nez jako nazev.. Takze \emph{weak slim} co davam do seminatoru by stale mel byt \emph{slim}...)
+			
+			
 		
 	\chapter{To Delete Chapter}
 		\section{Büchi Automaton}
