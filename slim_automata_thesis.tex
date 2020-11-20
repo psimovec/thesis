@@ -87,12 +87,8 @@ nolof, nolot
 
 			Finally, we define the \emph{language} $L_A \in \Sigma^\omega$ recognized by the automaton A. An $\omega$-word $w \in \Sigma^\omega$ belongs to $L_A$ iff there exists an accepting run of $A$ over the word $w$. 
 			
-		\section{TGBA}
-		xdd
-		
-		xdd
-		
-		xdd
+		\section{Generalized Büchi Automaton}
+		A \emph{transition-based Generalized Büchi automaton} (TGBA) $A=(\Sigma, Q, q_i, \Delta, G)$ is a modified TBA, where $G \in 2^\Delta$ is set containing sets of accepting conditions. A run of TGBA is \emph{accepting} iff it contains infinitely many accepting transitions \emph{for each} subset of $G$. 
 		
 		\section{Slim GFM Büchi Automaton WIP}
 			We define \emph{slim GFM\footnote{Good for Markov decision processes [+zdroj]} Büchi automaton} (slim automaton) through its construction which is based on breakpoint construction. 
@@ -121,7 +117,9 @@ nolof, nolot
 			
 			$\gamma_S: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in \Gamma\}$
 			
-			
+			We define the raw breakpoint transition
+			$\delta_R:3^Q \times \Sigma \rightarrow 3^Q_+$ as
+			$((S, S'), a) \rightarrow(\delta_S(S, a), \delta(S',a)\cup \gamma_S(S, a))$
 		
 		
 	\chapter{To Delete Chapter}
