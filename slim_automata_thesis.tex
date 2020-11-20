@@ -113,7 +113,15 @@ nolof, nolot
 			This is just an easy means to move back and forth between functions and relations,
 			and helps one to visualize the maximal number of successors. We next define the variations of subset and breakpoint constructions that are used to define \cancel{limit deterministic??} \emph{semi-deterministic} GFM automata(semi-deterministic automata) - which we use in our evaluation for comparison - and the slim automata we construct.
 			
-			Let $3^Q :=\{(S,S')|S'\subset S \subseteq Q\}$ and $3^Q_+$ 
+			Let $3^Q :=\{(S,S')|S'\subset S \subseteq Q\}$ and
+			$3^Q_+:=\{(S,S')|S'\subseteq S \subseteq Q\}$.
+			We define the subset notation for the transitions and accepting transitions as $\delta_S,\gamma_S:2^Q \times \Sigma \rightarrow 2^Q$ with
+			
+			$\delta_S: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in \Delta\}$ and
+			
+			$\gamma_S: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in \Gamma\}$
+			
+			
 		
 		
 	\chapter{To Delete Chapter}
