@@ -119,7 +119,8 @@ nolof, nolot
 			
 			We define the raw breakpoint transition
 			$\delta_R:3^Q \times \Sigma \rightarrow 3^Q_+$ as
-			$((S, S'), a) \rightarrow(\delta_S(S, a), \delta(S',a)\cup \gamma_S(S, a))$
+			$((S, S'), a) \rightarrow(\delta_S(S, a), \delta(S',a)\cup \gamma_S(S, a))$.
+			In this construction, we follow the set of reachable states (first set) and the states that are reachable while passing at least one of the accepting transitions (second set). To turn this into a breakpoint automaton, we reset the second set to the empty set when it equals the first; the transitions where we reset the second set are exactly the accepting ones. The breakpoint automaton $D = (\Sigma, 3^Q, (q_i, \emptyset), \delta_B, \gamma_B)$ is defined such that, when $\delta_R: ((S, S'), a) \rightarrow (R, R'), then there are three cases:\$
 		
 		
 	\chapter{To Delete Chapter}
