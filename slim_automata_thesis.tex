@@ -141,9 +141,9 @@ nolof, nolot
 			\section{Slim Automaton}
 			We present 2 of possible variants of slim automata:
 			
-			$S=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\delta_{p}),ndet(\delta_B)\cup ndet(\gamma_{p}))$ is slim. (proof in text with original definition)
+			$S=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\gamma_{p}),ndet(\gamma_B)\cup ndet(\gamma_{p}))$ is slim. (proof in text with original definition)
 			
-			$W=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\delta_{w}),ndet(\delta_B)\cup ndet(\gamma_{w}))$ is (weak) slim. (no proof yet)
+			$W=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\gamma_{w}),ndet(\gamma_B)\cup ndet(\gamma_{w}))$ is (weak) slim. (no proof yet)
 			
 			(Jen takova poznamka... Dava vlastne nazev \emph{weak slim} smysl? Pokud to chapu, tak tady v puvodnim clanku definuji \emph{slim} spis jako vlastnost, nez jako nazev.. Takze \emph{weak slim} co davam do seminatoru by stale mel byt \emph{slim}...)
 			
@@ -175,14 +175,17 @@ nolof, nolot
 				\item else, if $R \neq R'$, then $\delta_B:((S,S',i),a) \rightarrow (R,R',i)$ is a non-accepting transition,
 				\item otherwise $\delta_B, \gamma_B: \delta_B((S,S',i),a)\rightarrow(R, \emptyset, \text{up}(i))$ is an accepting transition. 
 			\end{enumerate}
-				$\Delta_{SB} \subseteq 2^Q \times \Sigma \times 3^Q$
 		
-				$\gamma_{w}: 3^Q_i \times \Sigma \rightarrow 3^Q_i$
+				$\Delta_{SB} \subseteq 2^Q \times \Sigma \times 3^Q_i$
+		
+				$\gamma_{p}: 3^Q_i \times \Sigma \rightarrow 3^Q_i$
 			\begin{enumerate}
 				\item $\Delta_{SB}=\{(S, a, (S', \emptyset,0))|\emptyset \neq S' \subseteq \delta_S(S, a)\}$ are non-accepting transitions,
-				\item if $\delta_S(S',a)=\gamma_{iS}(S, a)=\emptyset, then \gamma_{w}((S,S',i),a)$ is undefined, and
-				\item otherwise $\gamma_w : ((S,S',i),a)\rightarrow (\delta_S(S',a)\cup \gamma_{iS}(S, a), \emptyset, \text{up}(i))$ is an accepting transition.
+				\item if $\delta_S(S',a)=\gamma_{iS}(S, a)=\emptyset, then \gamma_{p}((S,S',i),a)$ is undefined, and
+				\item otherwise $\gamma_p : ((S,S',i),a)\rightarrow (\delta_S(S',a)\cup \gamma_{iS}(S, a), \emptyset, \text{up}(i))$ is an accepting transition.
 			\end{enumerate}
+		
+			$S=(\Sigma, 3^Q_i, (q_i,\emptyset,0), ndet(\delta_B)\cup ndet(\gamma_{p}),ndet(\gamma_B)\cup ndet(\gamma_{p}))$ is slim.
 			
 		
 	\chapter{To Delete Chapter}
