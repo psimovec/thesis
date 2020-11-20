@@ -3,6 +3,9 @@
 nolof, nolot
 ]{fithesis3}
 
+\usepackage{paratype}
+\def\textrussian#1{{\usefont{T2A}{PTSerif-TLF}{m}{rm}#1}}
+
 \thesissetup{
 	date        = \the\year/\the\month/\the\day,
 	university  = mu,
@@ -28,7 +31,38 @@ nolof, nolot
 	%%    assignment         = assignment.pdf,
 }
 
-\usepackage{amsmath}
+%%\usepackage{amsmath}
+
+
+\usepackage{makeidx}      %% The `makeidx` package contains
+\makeindex                %% helper commands for index typesetting.
+%% These additional packages are used within the document:
+\usepackage{paralist} %% Compact list environments
+\usepackage{amsmath}  %% Mathematics
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{url}      %% Hyperlinks
+\usepackage{markdown} %% Lightweight markup
+\usepackage{tabularx} %% Tables
+\usepackage{tabu}
+\usepackage{booktabs}
+\usepackage{listings} %% Source code highlighting
+
+\usepackage{cancel}
+
+\lstset{
+	basicstyle      = \ttfamily,
+	identifierstyle = \color{black},
+	keywordstyle    = \color{blue},
+	keywordstyle    = {[2]\color{cyan}},
+	keywordstyle    = {[3]\color{olive}},
+	stringstyle     = \color{teal},
+	commentstyle    = \itshape\color{magenta},
+	breaklines      = true,
+}
+\usepackage{floatrow} %% Putting captions above tables
+\floatsetup[table]{capposition=top}
+
 \begin{document}
 	\chapter{Introduction}
 	\chapter{Preliminaries}
@@ -54,6 +88,34 @@ nolof, nolot
 			Finally, we define the \emph{language} $L_A \in \Sigma^\omega$ recognized by the automaton A. An $\omega$-word $w \in \Sigma^\omega$ belongs to $L_A$ iff there exists an accepting run of $A$ over the word $w$. 
 			
 		\section{TGBA}
+		xdd
+		
+		xdd
+		
+		xdd
+		
+		\section{Slim GFM Büchi Automaton WIP}
+			We define \emph{slim GFM\footnote{Good for Markov decision processes [+zdroj]} Büchi automaton} (slim automaton) through its construction which is based on breakpoint construction. 
+			\paragraph{Construction}
+			Let us fix Büchi Automaton $A=(\Sigma, Q, q_i, \Delta, \Gamma)$. We can write $\Delta$ as a function $\hat{\delta}: Q \times \Sigma \rightarrow 2^Q$ with
+			$\hat{\delta}: (q, a) \rightarrow \{q' \in Q | (q, a, q') \in \Delta\}$,
+			which can be lifted to sets, using the deterministic transition function $\delta: 2^Q \times \Sigma \rightarrow 2^Q$ with
+			$\delta: (S, a) \rightarrow
+			\bigcup_{q\in S} \hat{\delta}(q,a)$.
+			
+			We also define an operator, ndet, that translates deterministic transition functions
+			$\delta: R \times \Sigma \rightarrow R$ to relations using
+			
+			ndet: $(R \times \Sigma \rightarrow R) \rightarrow 2^{(R \times \Sigma \rightarrow R)}$
+			with
+			$\delta \rightarrow \{(q,a,q')|q' \in \delta(\{q\},a)\}$.
+			
+			This is just an easy means to move back and forth between functions and relations,
+			and helps one to visualize the maximal number of successors. We next define the variations of subset and breakpoint constructions that are used to define \cancel{limit deterministic??} \emph{semi-deterministic} GFM automata(semi-deterministic automata) - which we use in our evaluation for comparison - and the slim automata we construct.
+			
+			Let $3^Q :=\{(S,S')|S'\subset S \subseteq Q\}$ and $3^Q_+$ 
+		
+		
 	\chapter{To Delete Chapter}
 		\section{Büchi Automaton}
 		A nondeterministic Büchi automaton (BA) is a tuple 
