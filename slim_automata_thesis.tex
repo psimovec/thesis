@@ -150,12 +150,19 @@ nolof, nolot
 			\section{Slim Automaton Construction Generalized to TGBA}
 			We want to construct a slim automaton from TGBA $T=(\Sigma, Q, q_i, \Delta, G)$. One possibility is to \emph{degeneralize} $T$ and to use previously mentioned algorithm in section 2.3. Another way is to extend slim automaton construction to TGBA.
 			\paragraph{extended slim construction}
-			We need to make sure we go infinitely many times trough each accepting subset $g \in G$. To achieve this, we will go through each subset one by one, using original algorithm. We will keep track of levels in the names of states. Let $|G|$ be number of levels and $i \in N, i<|G|$ the current level. At each level, we look at $i$th subset of $G$. We use same steps as in classic bp construction, but on each accepting transition the new state will be leveled up to $(i+1)\%|G|$, otherwise the target state has the same level. Our new automaton simulates $T$, as it accepts a word iff it cycles through all levels.
+			We need to make sure we go infinitely many times trough each accepting subset $g \in G$. To achieve this, we will go through each subset one by one, using original algorithm. We will keep track of levels in the names of states. Let $|G|$ be number of levels and $i \in N, i<|G|$ the current level. At each level, we look at $i$th subset of $G$. We use same steps as in classic bp construction, but on each accepting transition the new state will be leveled up to $(i+1)\%|G|$, otherwise the target state has the same level. Our new automaton simulates $T$, as it accepts a word iff it cycles through all levels. If $|G|=0$, we return a trivially accepting automaton
 			
-			We can keep the core of previous construction and just to extend it.  Names of states will   for  If $zs$
-			Let $3^Q_i :=\{(S,S',i)|S'\subset S \subseteq Q, i \in N, i<|G|\}$ and
-			$3^Q_{i+}:=\{(S,S',i)|S'\subseteq S \subseteq Q, i \in N, i<|G|\}$.
+			We can use the core of previous construction and just to extend it with levels. Let
 			
+			$3^Q_i :=\{(S,S',i)|S'\subset S \subseteq Q, i \in N, i<|G|\}$ and
+			
+			%$3^Q_{i+}:=\{(S,S',i)|S'\subseteq S \subseteq Q, i \in N, i<|G|\}$.
+			
+			$\delta_S: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in \Delta\}$ and
+			
+			$\gamma_{iS}: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in G_i\}$
+			
+			The generalized breakpoint automaton $D_g=(\Sigma, 3^Q_i, ({q_i},\emptyset, 0))$ is defined such that, when $\delta_R:((S, S', i), a) \rightarrow (R, R', j)$, then there are three cases:
 			
 		
 	\chapter{To Delete Chapter}
