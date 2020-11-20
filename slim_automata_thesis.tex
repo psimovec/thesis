@@ -90,7 +90,7 @@ nolof, nolot
 		\section{Generalized Büchi Automaton}
 		A \emph{transition-based Generalized Büchi automaton} (TGBA) $A=(\Sigma, Q, q_i, \Delta, G)$ is a modified TBA, where $G \in 2^\Delta$ is set containing sets of accepting conditions. A run of TGBA is \emph{accepting} iff it contains infinitely many accepting transitions \emph{for each} subset of $G$. 
 		
-		\section{Slim GFM Büchi Automaton WIP}
+		\section{Slim GFM Büchi Automaton Construction}
 			We define \emph{slim GFM\footnote{Good for Markov decision processes [+zdroj]} Büchi automaton} (slim automaton) through its construction which is based on breakpoint construction. 
 			\paragraph{Construction}
 			Let us fix Büchi Automaton $A=(\Sigma, Q, q_i, \Delta, \Gamma)$. We can write $\Delta$ as a function $\hat{\delta}: Q \times \Sigma \rightarrow 2^Q$ with
@@ -138,14 +138,23 @@ nolof, nolot
 			\end{enumerate}
 		
 			...? (I guess I could define semi-deterministic automaton, as it will be used in evaluation for comparison)
-			\section{Slim automaton}
+			\section{Slim Automaton}
 			We present 2 of possible variants of slim automata:
 			
-			$S=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\delta_{p}),ndet(\delta_B)\cup ndet(\gamma_{p}))$ is slim.
+			$S=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\delta_{p}),ndet(\delta_B)\cup ndet(\gamma_{p}))$ is slim. (proof in text with original definition)
 			
 			$W=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\delta_{w}),ndet(\delta_B)\cup ndet(\gamma_{w}))$ is weak slim. 
 			
 			(Jen takova poznamka... Dava vlastne \emph{weak slim} smysl? Pokud to chapu, tak tady v puvodnim clanku definuji \emph{slim} spis jako vlastnost, nez jako nazev.. Takze \emph{weak slim} co davam do seminatoru by stale mel byt \emph{slim}...)
+			
+			\section{Slim Automaton Construction Generalized to TGBA}
+			We want to construct a slim automaton from TGBA $T=(\Sigma, Q, q_i, \Delta, G)$. One possibility is to \emph{degeneralize} $T$ and to use previously mentioned algorithm in section 2.3. Another way is to extend slim automaton construction to TGBA.
+			\paragraph{extended slim construction}
+			We need to make sure we go infinitely many times trough each accepting subset $g \in G$. To achieve this, we will go through each subset one by one, using original algorithm. We will keep track of levels in the names of states. Let $|G|$ be number of levels and $i \in N, i<|G|$ the current level. At each level, we look at $i$th subset of $G$. We use same steps as in classic bp construction, but on each accepting transition the new state will be leveled up to $(i+1)\%|G|$, otherwise the target state has the same level. Our new automaton simulates $T$, as it accepts a word iff it cycles through all levels.
+			
+			We can keep the core of previous construction and just to extend it.  Names of states will   for  If $zs$
+			Let $3^Q_i :=\{(S,S',i)|S'\subset S \subseteq Q, i \in N, i<|G|\}$ and
+			$3^Q_{i+}:=\{(S,S',i)|S'\subseteq S \subseteq Q, i \in N, i<|G|\}$.
 			
 			
 		
