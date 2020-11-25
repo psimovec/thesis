@@ -63,129 +63,122 @@ nolof, nolot
 \usepackage{floatrow} %% Putting captions above tables
 \floatsetup[table]{capposition=top}
 
+%% Calligraphy
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+
+
 \begin{document}
 	\chapter{Introduction}
+	... slim automata are specially constructed Büchi automata...
 	\chapter{Preliminaries}
-		In this section we define a Büchi automaton, as slim automata are specially constructed Büchi automata.
+		In this section we define a Büchi automaton. We will need to know that on \emph{alphabet} is a set of letters, an \emph{$\omega$-word} $w \in \Sigma^\omega$ is an infinite sequence of letters, and A \emph{language} is a set of $\omega$-words.
 		\section{Büchi Automaton}
 			A Büchi automaton is a theoretical finite-state machine used to define $\omega$-languages. It decides which infinitely long words ($\omega$-words) belong to its language.
 			
-			A \emph{transition-based Büchi automaton (TBA)} is a quintuple $A=(\Sigma, Q, q_i, \Delta, \Gamma)$, where 
+			A \emph{transition-based Büchi automaton (TBA)} is a tuple $\cA=(\Sigma, Q, q_i, \Delta, \Gamma)$, where 
 			\begin{itemize}
 				\item $\Sigma$ is a finite \emph{alphabet},
 				\item $Q$ is a finite set of \emph{states},
-				\item $q_0 \in Q$ is the initial state of $A$.
+				\item $q_i \in Q$ is the initial state of $\cA$.
 				\item We write the set of \emph{transitions} as $\Delta \subseteq Q \times \Sigma \times Q$. Intuitivelly, a transition $(s, a, t)$  directionally connects two states inside $Q$ with a letter from alphabet $\Sigma$. 
 				\item $\Gamma \subseteq \Delta$ is a set of \emph{accepting transitions}.
 			\end{itemize}
-
-			 An \emph{alphabet} is a set of letters. An \emph{$\omega$-word} $w \in \Sigma^\omega$ is an infinite sequence of letters. A \emph{language} is a set of $\omega$-words.
 			
-			A \emph{run} $r$ of $A$ is an infinite sequence of transitions
+			A \emph{run} $r$ of $\cA$ is an infinite sequence of transitions
 			$r=(q_0, a_0, q_1)(q_1, a_1, q_2)(q_2, a_2, q_3)\ldots\in\Delta^\omega$ such that $q_0=q_i$.
 			A run of TBA is \emph{accepting} iff it contains infinitely many accepting transitions.
 
-			Finally, we define the \emph{language} $L_A \in \Sigma^\omega$ recognized by the automaton A. An $\omega$-word $w \in \Sigma^\omega$ belongs to $L_A$ iff there exists an accepting run of $A$ over the word $w$. 
+			Finally, we define the \emph{language} $L_A \in \Sigma^\omega$ recognized by the automaton $\cA$. An $\omega$-word $w \in \Sigma^\omega$ belongs to $L_A$ iff there exists an accepting run of $\cA$ over the word $w$. 
 			
 		\section{Generalized Büchi Automaton}
-		A \emph{transition-based Generalized Büchi automaton} (TGBA) $A=(\Sigma, Q, q_i, \Delta, G)$ is a modified TBA, where $G \in 2^\Delta$ is set containing sets of accepting conditions. A run of TGBA is \emph{accepting} iff it contains infinitely many accepting transitions \emph{for each} subset of $G$. 
+		A \emph{transition-based Generalized Büchi automaton} (TGBA) is a tuple $\cA=(\Sigma, Q, q_i, \Delta, G)$ is a modified TBA, where $G=\{\Gamma_0, \Gamma_1, \ldots, \Gamma_{|G|-1}\} \subseteq 2^\Delta$ contains sets of accepting conditions and the rest is defined as for TBA. A run of $\cA$ is \emph{accepting} iff it contains infinitely many accepting transitions \emph{for each} subset of $G$. Büchi Automata can be seen as a special case with $|G|=1$
 		
-		\section{Slim GFM Büchi Automaton Construction}
-			We define \emph{slim GFM\footnote{Good for Markov decision processes [+zdroj]} Büchi automaton} (slim automaton) through its construction which is based on breakpoint construction. 
+		\section{Breakpoint Automaton}
+			We want to define \emph{slim GFM\footnote{Good for Markov decision processes [+zdroj]} Büchi automaton} (slim automaton) through its construction which is based on breakpoint construction. 
 			\paragraph{Construction}
-			Let us fix Büchi Automaton $A=(\Sigma, Q, q_i, \Delta, \Gamma)$. We can write $\Delta$ as a function $\hat{\delta}: Q \times \Sigma \rightarrow 2^Q$ with
-			$\hat{\delta}: (q, a) \rightarrow \{q' \in Q | (q, a, q') \in \Delta\}$,
-			which can be lifted to sets, using the deterministic transition function $\delta: 2^Q \times \Sigma \rightarrow 2^Q$ with
-			$\delta: (S, a) \rightarrow
-			\bigcup_{q\in S} \hat{\delta}(q,a)$.
+			Let us fix Büchi Automaton $\cA=(\Sigma, Q, q_i, \Delta, \Gamma)$. We define the variations of subset and breakpoint constructions that are used to define semi-deterministic GFM automata (semi-deterministic automata) - which we use in our evaluation for comparison - and the slim automata we construct.
 			
-			We also define an operator, ndet, that translates deterministic transition functions
-			$\delta: R \times \Sigma \rightarrow R$ to relations using
-			
-			ndet: $(R \times \Sigma \rightarrow R) \rightarrow 2^{(R \times \Sigma \rightarrow R)}$
-			with
-			$\delta \rightarrow \{(q,a,q')|q' \in \delta(\{q\},a)\}$.
-			
-			This is just an easy means to move back and forth between functions and relations,
-			and helps one to visualize the maximal number of successors. We next define the variations of subset and breakpoint constructions that are used to define \cancel{limit deterministic??} \emph{semi-deterministic} GFM automata(semi-deterministic automata) - which we use in our evaluation for comparison - and the slim automata we construct.
-			
-			Let $3^Q :=\{(S,S')|S'\subset S \subseteq Q\}$ and
-			$3^Q_+:=\{(S,S')|S'\subseteq S \subseteq Q\}$.
+			Let $3^Q :=\{(S,S') \mid S'\subset S \subseteq Q\}$ and
+			$3^Q_+:=\{(S,S') \mid S'\subseteq S \subseteq Q\}$.
 			We define the subset notation for the transitions and accepting transitions as $\delta_S,\gamma_S:2^Q \times \Sigma \rightarrow 2^Q$ with
 			
-			$\delta_S: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in \Delta\}$ and
+			$\delta: (S,a)\rightarrow\{q'\in Q \mid \exists q \in S.(q,a,q') \in \Delta\}$ and
 			
-			$\gamma_S: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in \Gamma\}$
+			$\gamma: (S,a)\rightarrow\{q'\in Q \mid \exists q \in S.(q,a,q') \in \Gamma\}$
 			
 			We define the raw breakpoint transition
-			$\delta_R:3^Q \times \Sigma \rightarrow 3^Q_+$ as
-			$((S, S'), a) \rightarrow(\delta_S(S, a), \delta(S',a)\cup \gamma_S(S, a))$.
-			In this construction, we follow the set of reachable states (first set) and the states that are reachable while passing at least one of the accepting transitions (second set). To turn this into a breakpoint automaton, we reset the second set to the empty set when it equals the first; the transitions where we reset the second set are exactly the accepting ones. The breakpoint automaton $D = (\Sigma, 3^Q, (q_i, \emptyset), \delta_B, \gamma_B)$ is defined such that, when $\delta_R: ((S, S'), a) \rightarrow (R, R')$, then there are three cases:
+			$\rho \colon 3^Q \times \Sigma \rightarrow 3^Q_+$ as
+			$((S, S'), a) \rightarrow(\delta(S, a), \delta(S',a)\cup \gamma(S, a))$.
+			In this construction, we follow the set of reachable states (first set) and the states that are reachable while passing at least one of the accepting transitions (second set). To turn this into a breakpoint automaton, we reset the second set to the empty set when it equals the first; the transitions where we reset the second set are exactly the accepting ones. The breakpoint automaton $\cD = (\Sigma, 3^Q, (q_i, \emptyset), \delta_B, \gamma_B)$ is defined such that, when $\rho\colon ((S, S'), a) \rightarrow (R, R')$, then there are three cases:
 			
 			\begin{enumerate}
 				\item if $R=\emptyset$, then $\delta_B((S,S'))$ is undefined (or, if a complete automation is preferred, maps to a rejecting sink),
 				\item else, if $R \neq R'$, then $\delta_B((S,S'),a)\rightarrow(R, R')$ is a non-accepting transition,
 				\item otherwise $\delta_B, \gamma_B: \delta_B((S,S'),a)\rightarrow(R, \emptyset)$ is an accepting transition.
 			\end{enumerate}
-		
-			Finally, we define transitions $\Delta_{SB}\subseteq 2^Q \times \Sigma \times 3^Q$ that lead from a subset to a breakpoint construction, and $\gamma_w, \gamma_p:3^Q \times \Sigma \rightarrow 3^Q$ that promote the second set of a breakpoint construction to the first set as follows. (?? probably a different text will be necessary here, following enumerate is WIP)
+			
+			Breakpoint automata are insufficient to decide all GFM languages. On the other hand, semi-deterministic automata decide superset of such language. We are going to define a few more transitions on top of breakpoint construction which allow us to construct slim automata that decide exactly the class of GFM languages.
+			
+			\section{Slim Automata Construction}
+			Let us we define transitions  $\gamma_w, \gamma_p:3^Q \times \Sigma \rightarrow 3^Q$ that promote the second set of a breakpoint construction to the first set as follows. 
 			
 			\begin{enumerate}
-				\item $\Delta_{SB}=\{(S, a, (S', \emptyset)) | \emptyset \neq S' \subseteq \delta_S(S, a)\}$ are non-accepting transitions,
 				\item if $\delta_S(S',a) = \gamma_S(S, a) = \emptyset$, then $\gamma_{p}((S,S'), a)$ and $\gamma_{w}((S,S'), a)$ are undefined, and
 				\item otherwise
-				 $\gamma_{p}:((S,S'),a)\rightarrow(\delta_S(S',a)\cup\gamma_S(S, a),\emptyset)$ and $\gamma_{w}:((S,S'),a)\rightarrow(\delta_S(S',a),\emptyset)$ are accepting transitions.
+				$\gamma_{p}:((S,S'),a)\rightarrow(\delta(S',a)\cup\gamma(S, a),\emptyset)$ and $\gamma_{w}:((S,S'),a)\rightarrow(\delta(S',a),\emptyset)$
 			\end{enumerate}
-		
-			...? (I guess I could define semi-deterministic automaton, as it will be used in evaluation for comparison)
-			\section{Slim Automaton}
-			We present 2 of possible variants of slim automata:
 			
-			$S=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\gamma_{p}),ndet(\gamma_B)\cup ndet(\gamma_{p}))$ is slim. (proof in text with original definition)
 			
-			$W=(\Sigma, 3^Q, (q_i,\emptyset), ndet(\delta_B)\cup ndet(\gamma_{w}),ndet(\gamma_B)\cup ndet(\gamma_{w}))$ is (weak) slim. (no proof yet)
+			$\cS=(\Sigma, 3^Q, (q_i,\emptyset), \Delta_p ,\Gamma_p)$ is slim, when
+			$\Delta_p$ is set of transitions generated by $\delta_b$ and $\gamma_p$, and $\Gamma_p$ is set of accepting transitions, that is generated by $\gamma_b$ and $\gamma_p$. (proof in text with original definition)
 			
-			(Jen takova poznamka... Dava vlastne nazev \emph{weak slim} smysl? Pokud to chapu, tak tady v puvodnim clanku definuji \emph{slim} spis jako vlastnost, nez jako nazev.. Takze \emph{weak slim} co davam do seminatoru by stale mel byt \emph{slim}...)
+			Alternatively, similarly defined using $\gamma_w$ instead of $\gamma_{p}$, automaton $\mathcal{W}=(\Sigma, 3^Q, (q_i,\emptyset), \Delta_w, \Gamma_w)$ is slim. (no proof yet)
+
 			
 			\section{Slim Automaton Construction Generalized to TGBA}
-			We want to construct a slim automaton from TGBA $T=(\Sigma, Q, q_i, \Delta, G)$. One possibility is to \emph{degeneralize} $T$ and to use previously mentioned algorithm in section 2.3. Another way is to extend slim automaton construction to TGBA.
+			We want to construct a slim automaton from TGBA $\cT=(\Sigma, Q, q_i, \Delta, G)$. One possibility is to \emph{degeneralize} $\cT$ and to use previously mentioned algorithm in section 2.3. Another way is to extend slim automaton construction to TGBA.
 			\paragraph{extended slim construction}
-			We need to make sure we go infinitely many times trough each accepting subset $g \in G$. To achieve this, we will go through each subset one by one, using original algorithm. We will keep track of levels in the names of states. Let $|G|$ be number of levels and $i \in N, i<|G|$ the current level. At each level, we look at $i$th subset of $G$. We use same steps as in classic bp construction, but on each accepting transition the new state will be leveled up to $(i+1)\%|G|$, otherwise the target state has the same level. Our new automaton simulates $T$, as it accepts a word iff it cycles through all levels. If $|G|=0$, we return a trivially accepting automaton
+			We need to make sure we go infinitely many times trough each accepting subset $g \in G$. To achieve this, we will go through each subset one by one, using original algorithm. We will keep track of levels($:=\{0,1,\ldots,|G|-1\}$) in the names of states. Let $|G|$ be number of levels and $i \in N, i<|G|$ the current level. At each level, we look at $i$th subset of $G$. We use same steps as in classic breakpoint construction, but on each accepting transition the new state will be leveled up to $(i+1)\%|G|$, otherwise the target state has the same level. Our new automaton simulates $\cT$, as it accepts a word iff it cycles through all levels. If $|G|=0$, we return a trivially accepting automaton
 			
 			We can use the core of previous construction and just to extend it with levels. Let
 			
-			$3^Q_i :=\{(S,S',i)|S'\subset S \subseteq Q, i \in N, i<|G|\}$ and
+			%$3^Q_i :=\{(S,S',i)|S'\subset S \subseteq Q, i \in N, i<|G|\}$ and
 			
-			$3^Q_{i+}:=\{(S,S',i)|S'\subseteq S \subseteq Q, i \in N, i<|G|\}$.
+			%$3^Q_{i+}:=\{(S,S',i)|S'\subseteq S \subseteq Q, i \in N, i<|G|\}$.
 			
-			$\delta_S: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in \Delta\}$ and
+			$P := 3^Q \times $levels and $P_+ := 3^Q_+ \times $levels
 			
-			$\gamma_{iS}: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in G_i\}$
+			%$\delta: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in \Delta\}$ and
 			
-			up($x$)=$(x+1)\%|G|$
+			%%$\gamma_{iS}: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in G_i\}$
+			We define $\gamma_i$ similarly like $\gamma$, we just use $\Gamma_i$ instead of $\Gamma$
+			
+			up($x$)=$(x+1)\mod|G|$
 			
 			We define the raw generalized breakpoint transitions 
 			
-			$\delta_R:3^Q_i \times \Sigma \rightarrow 3^Q_{i+}$ as
-			$((S, S', i), a) \rightarrow(\delta_S(S, a), \delta(S',a)\cup \gamma_{iS}(S, a), j)$
+			$\delta_R:P \times \Sigma \rightarrow P+$ as
+			$((S, S', i), a) \rightarrow(\delta(S, a), \delta(S',a)\cup \gamma_{i}(S, a), j)$
 			
-			The generalized breakpoint automaton $D_g=(\Sigma, 3^Q_i, ({q_i},\emptyset, 0))$ is defined such that, when $\delta_R:((S, S', i), a) \rightarrow (R, R', j)$, then there are three cases:
+			The generalized breakpoint automaton $\cD=(\Sigma, 3^Q\times\cN, ({q_i},\emptyset, 0))$ is defined such that, when $\delta_R:((S, S', i), a) \rightarrow (R, R', j)$, then there are three cases:
 			\begin{enumerate}
 				\item if $R=\emptyset$ , then $\delta_B((S,S',i))$ is undefined,
 				\item else, if $R \neq R'$, then $\delta_B:((S,S',i),a) \rightarrow (R,R',i)$ is a non-accepting transition,
-				\item otherwise $\delta_B, \gamma_B: \delta_B((S,S',i),a)\rightarrow(R, \emptyset, \text{up}(i))$ is an accepting transition. 
+				\item otherwise $\delta_B, \gamma_B: \delta_B((S,S',i),a)\rightarrow(R, \emptyset, \text{up}(i))$.
 			\end{enumerate}
 		
-				$\Delta_{SB} \subseteq 2^Q \times \Sigma \times 3^Q_i$
 		
-				$\gamma_{p}: 3^Q_i \times \Sigma \rightarrow 3^Q_i$
+				$\gamma_{p}: P \times \Sigma \rightarrow P$
 			\begin{enumerate}
-				\item $\Delta_{SB}=\{(S, a, (S', \emptyset,0))|\emptyset \neq S' \subseteq \delta_S(S, a)\}$ are non-accepting transitions,
-				\item if $\delta_S(S',a)=\gamma_{iS}(S, a)=\emptyset, then \gamma_{p}((S,S',i),a)$ is undefined, and
-				\item otherwise $\gamma_p : ((S,S',i),a)\rightarrow (\delta_S(S',a)\cup \gamma_{iS}(S, a), \emptyset, \text{up}(i))$ is an accepting transition.
+				\item if $\delta(S',a)=\gamma_{i}(S, a)=\emptyset, then \gamma_{p}((S,S',i),a)$ is undefined, and
+				\item otherwise $\gamma_p : ((S,S',i),a)\rightarrow (\delta(S',a)\cup \gamma_{i}(S, a), \emptyset, \text{up}(i))$ is an accepting transition.
 			\end{enumerate}
 		
-			$S=(\Sigma, 3^Q_i, (q_i,\emptyset,0), ndet(\delta_B)\cup ndet(\gamma_{p}),ndet(\gamma_B)\cup ndet(\gamma_{p}))$ is slim.
+			$\mathcal{S}=(\Sigma, P, (q_i,\emptyset,0), ndet(\delta_B)\cup ndet(\gamma_{p}),ndet(\gamma_B)\cup ndet(\gamma_{p}))$ is slim.
 			
 		
 	\chapter{To Delete Chapter}
