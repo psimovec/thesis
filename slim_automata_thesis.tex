@@ -76,27 +76,31 @@ nolof, nolot
 	\chapter{Introduction}
 	... slim automata are specially constructed Büchi automata...
 	\chapter{Preliminaries}
-		In this section we define a Büchi automaton. We will need to know that on \emph{alphabet} is a set of letters, an \emph{$\omega$-word} $w \in \Sigma^\omega$ is an infinite sequence of letters, and a \emph{language} is a set of $\omega$-words.
+		In this chapter we define a Büchi automaton and its generalized version.
+		Then we continue with breakpoint algorithm. It allows us to introduce slim automata by its construction, which builds on the breakpoint one. Finally we generalize slim automation construction to work with generalized Büchi automata.
+		
+		We will need to know that on \emph{alphabet} is a set of letters, an \emph{$\omega$-word} $w \in \Sigma^\omega$ is an infinite sequence of letters, and a \emph{language} $L \subseteq \Sigma^\omega$ is a set of $\omega$-words.
 		\section{Büchi Automaton}
 			A Büchi automaton is a theoretical finite-state machine used to define $\omega$-languages. It decides which infinitely long words ($\omega$-words) belong to its language.
 			
 			A \emph{transition-based Büchi automaton (TBA)} is a tuple $\cA=(\Sigma, Q, q_i, \Delta, \Gamma)$, where 
 			\begin{itemize}
-				\item $\Sigma$ is a finite \emph{alphabet},
-				\item $Q$ is a finite set of \emph{states},
+				\item $\Sigma$ is a non-empty finite \emph{alphabet},
+				\item $Q$ is a non-empty finite set of \emph{states},
 				\item $q_i \in Q$ is the initial state of $\cA$.
-				\item We write the set of \emph{transitions} as $\Delta \subseteq Q \times \Sigma \times Q$. Intuitivelly, a transition $(s, a, t)$  directionally connects two states inside $Q$ with a letter from alphabet $\Sigma$. 
+				\item We write the set of \emph{transitions} as $\Delta \subseteq Q \times \Sigma \times Q$. Intuitivelly, a transition $(s, a, t)$  directionally connects the states $s$ and $t$ with the letter $a$.
 				\item $\Gamma \subseteq \Delta$ is a set of \emph{accepting transitions}.
 			\end{itemize}
 			
 			A \emph{run} $r$ of $\cA$ is an infinite sequence of transitions
-			$r=(q_0, a_0, q_1)(q_1, a_1, q_2)(q_2, a_2, q_3)\ldots\in\Delta^\omega$ such that $q_0=q_i$.
-			A run of TBA is \emph{accepting} iff it contains infinitely many accepting transitions.
+			$r=t_0t_1\ldots\in\Delta^\omega$, where $t_i=(s_i, a_i,s_{i+1})$,
+			 such that $q_0=q_i$.
+			A run of $\cA$ is \emph{accepting} iff it contains infinitely many accepting transitions.
 
-			Finally, we define the \emph{language} $L_A \in \Sigma^\omega$ recognized by the automaton $\cA$. An $\omega$-word $w \in \Sigma^\omega$ belongs to $L_A$ iff there exists an accepting run of $\cA$ over the word $w$. 
+			Finally, we define the \emph{language} $L_A \subseteq \Sigma^\omega$ recognized by the automaton $\cA$. An $\omega$-word $w \in \Sigma^\omega$ belongs to $L_A$ iff there exists an accepting run of $\cA$ over the word $w$. 
 			
 		\section{Generalized Büchi Automaton}
-		A \emph{transition-based Generalized Büchi automaton} (TGBA) is a tuple $\cA=(\Sigma, Q, q_i, \Delta, G)$ is a modified TBA, where $G=\{\Gamma_0, \Gamma_1, \ldots, \Gamma_{|G|-1}\} \subseteq 2^\Delta$ contains sets of accepting conditions and the rest is defined as for TBA. A run of $\cA$ is \emph{accepting} iff it contains infinitely many accepting transitions \emph{for each} ((element)) of $G$. Büchi Automata can be seen as a special case with $|G|=1$
+		A \emph{transition-based Generalized Büchi automaton} (TGBA) is a tuple $\cA=(\Sigma, Q, q_i, \Delta, G)$, where $G \subseteq 2^\Delta$ contains sets of accepting conditions and the rest is defined as for TBA. A run of $\cA$ is \emph{accepting} iff it contains infinitely many accepting transitions \emph{for each} $\Gamma \in G$. TBA can be seen as a special case of TGBA with $|G|=1$
 		
 		\section{Breakpoint Automaton}
 			We want to define \emph{slim GFM\footnote{Good for Markov decision processes [+zdroj]} Büchi automaton} (slim automaton) through its construction which is based on breakpoint construction. 
@@ -185,6 +189,7 @@ nolof, nolot
 		\section{Implementation inside Seminator}
 	\chapter{Evaluation}
 		\section{Alternative Algorithm}
+			hokus pokus
 		\section{Different Implementation - ePMC}
 		\section{Semi-deterministic Automata}
 	\chapter{Conclusion}
