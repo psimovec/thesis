@@ -1,6 +1,7 @@
 *
 !.gitignore
 !*.tex
+!*.pdf
 !dif/
 dif/*
 !dif/pdf-diff.sh
@@ -8,4 +9,3 @@ dif/*
 !dif/old/
 dif/old.*
 !dif/old/*.tex
-!*.pdf
