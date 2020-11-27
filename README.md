@@ -3,6 +3,7 @@ Repo for versioning + backup of my thesis
 
 latest pdf:
 https://github.com/psimovec/thesis/blob/master/slim_automata_thesis.pdf
+
 latexdiff output since last check
 https://github.com/psimovec/thesis/blob/master/dif/diff.pdf
 
