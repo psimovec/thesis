@@ -71,6 +71,8 @@ nolof, nolot
 \newcommand{\cS}{\mathcal{S}}
 \newcommand{\cT}{\mathcal{T}}
 
+\newcommand{\lA}{L(\cA)}
+\newcommand{\lD}{L(\cD)}
 
 \begin{document}
 	\chapter{Introduction}
@@ -97,7 +99,7 @@ nolof, nolot
 			 such that $q_0=q_i$.
 			A run of $\cA$ is \emph{accepting} iff it contains infinitely many accepting transitions.
 
-			Finally, we define the \emph{language} $L_A \subseteq \Sigma^\omega$ recognized by the automaton $\cA$. An $\omega$-word $w \in \Sigma^\omega$ belongs to $L_A$ iff there exists an accepting run of $\cA$ over the word $w$. 
+			Finally, we define the \emph{language} $\lA \subseteq \Sigma^\omega$ recognized by the automaton $\cA$. An $\omega$-word $w \in \Sigma^\omega$ belongs to $\lA$ iff there exists an accepting run of $\cA$ over the word $w$. 
 			
 		\section{Generalized Büchi Automaton}
 		A \emph{transition-based Generalized Büchi automaton} (TGBA) is a tuple $\cA=(\Sigma, Q, q_i, \Delta, G)$, where $G \subseteq 2^\Delta$ contains sets of accepting conditions and the rest is defined as for TBA. A run of $\cA$ is \emph{accepting} iff it contains infinitely many accepting transitions \emph{for each} $\Gamma \in G$. TBA can be seen as a special case of TGBA with $|G|=1$
@@ -105,20 +107,24 @@ nolof, nolot
 		\section{Breakpoint Automaton}
 			We want to define \emph{slim GFM\footnote{Good for Markov decision processes [+zdroj]} Büchi automaton} (slim automaton) through its construction which is based on breakpoint construction. 
 			\paragraph{Construction}
-			Let us fix Büchi Automaton $\cA=(\Sigma, Q, q_i, \Delta, \Gamma)$. We define the variations of subset and breakpoint constructions that are used to define semi-deterministic GFM automata (semi-deterministic automata) - which we use in our evaluation for comparison - and the slim automata we construct.
-			
-			Let $3^Q :=\{(S,S') \mid S'\subsetneq S \subseteq Q\}$ and
-			$3^Q_+:=\{(S,S') \mid S'\subseteq S \subseteq Q\}$.
-			We define the subset notation for the transitions and accepting transitions as $\delta_S,\gamma_S:2^Q \times \Sigma \rightarrow 2^Q$ with
+			Let us fix a Büchi Automaton $\cA=(\Sigma, Q, q_i, \Delta, \Gamma)$. 
+			We want to construct a deterministic automaton $\cD$ such that $\lD\subseteq \lA$ 
+			We denote $3^Q$ by the set $\{(S,S') \mid S'\subsetneq S \subseteq Q\}$ and
+			$3^Q_+$ by $\{(S,S') \mid S'\subseteq S \subseteq Q\}$.
+			We define the notation for the transitions and accepting transitions as $\delta,\gamma:2^Q \times \Sigma \rightarrow 2^Q$ with
 			
 			$\delta: (S,a)\rightarrow\{q'\in Q \mid \exists q \in S.(q,a,q') \in \Delta\}$ and
 			
 			$\gamma: (S,a)\rightarrow\{q'\in Q \mid \exists q \in S.(q,a,q') \in \Gamma\}$
 			
+			(? Let us note that $\delta$ and $\gamma$ are deterministic transitions.)
+			
 			We define the raw breakpoint transition
-			$\rho \colon 3^Q \times \Sigma \rightarrow 3^Q_+$ as
-			$((S, S'), a) \rightarrow(\delta(S, a), \delta(S',a)\cup \gamma(S, a))$.
-			In this construction, we follow the set of reachable states (first set) and the states that are reachable while passing at least one of the accepting transitions (second set). To turn this into a breakpoint automaton, we reset the second set to the empty set when it equals the first; the transitions where we reset the second set are exactly the accepting ones. The breakpoint automaton $\cD = (\Sigma, 3^Q, (q_i, \emptyset), \delta_B, \gamma_B)$ is defined such that, when $\rho\colon ((S, S'), a) \rightarrow (R, R')$, then there are three cases:
+			$\rho_\Gamma \colon 3^Q \times \Sigma \rightarrow 3^Q_+$ as
+			\[\rho_\Gamma((S, S'), a) \rightarrow(\delta(S, a), \delta(S',a)\cup \gamma(S, a))\]
+			In this construction, we follow the set of reachable states (first set) and the states that are reachable while passing at least one of the accepting transitions (second set).
+			To turn this into a breakpoint automaton, we reset the second set to the empty set when it equals the first; the transitions where we reset the second set are exactly the accepting ones.
+			The breakpoint automaton $\cD = (\Sigma, 3^Q, (q_i, \emptyset), \delta_B, \gamma_B)$ is defined such that, when $\rho\colon ((S, S'), a) \rightarrow (R, R')$, then there are three cases:
 			
 			\begin{enumerate}
 				\item if $R=\emptyset$, then $\delta_B((S,S'))$ is undefined (or, if a complete automation is preferred, maps to a rejecting sink),
