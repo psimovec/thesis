@@ -1,4 +1,11 @@
 *
 !.gitignore
 !*.tex
+!dif/
+dif/*
+!dif/pdf-diff.sh
+!dif/diff.pdf
+!dif/old/
+dif/old.*
+!dif/old/*.tex
 !*.pdf
