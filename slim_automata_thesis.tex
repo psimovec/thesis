@@ -24,7 +24,7 @@ nolof, nolot
 	thanks      = {%
 		RNDr. František Blahoudek, Ph.D.
 	},
-	bib         = example.bib,
+	bib         = {exampl.bib},
 	%% Uncomment the following line (by removing the %% at the
 	%% beginning) and replace `assignment.pdf` with the filename
 	%% of your scanned thesis assignment.
@@ -50,6 +50,7 @@ nolof, nolot
 \usepackage{listings} %% Source code highlighting
 \usepackage{emoji}
 \usepackage{cancel}
+\usepackage{hhline}
 
 \usepackage{listings}
 
@@ -92,9 +93,9 @@ nolof, nolot
 
 \begin{document}
 	\chapter{Introduction}
-	Büchi automaton is a finite machine over infinite words. It has been a topic of research for almost 60 years.
+	Büchi automaton\cite{textbook}\} is a finite machine over infinite words. It has been a topic of research for almost 60 years.
 	There were discovered various kinds of similar machines with different properties and use cases.
-	Non-deterministic Büchi in general are not well suitable for model checking or reinforcement, but we can construct non-deterministic Büchi automata with a special property - GFM, that makes the automata suitable. We will focus on slim automata.
+	Non-deterministic Büchi in general are not well suitable for model checking or reinforcement, but we can construct non-deterministic Büchi automata with a special property - GFM, that makes the automata suitable. We will focus on slim automata~\cite{hlavni}.
 	Slim automata are specially constructed from Büchi automata. This kind of automaton was defined by it's construction in [source] and is good for MDP [main source]. We implement the proposed algorithm and it's second variant that we call weak [source private conversation]. We extend the algorithm for generalised Büchi automata. Then we evaluate resulting size of automata and we compare it with different tool to create slim automata and with other kinds of automata.
 	
 	
@@ -128,38 +129,42 @@ nolof, nolot
 		A \emph{transition-based Generalized Büchi automaton} (TGBA) is a tuple $\cA\eqdef(\Sigma, Q, q_i, \Delta, G)$, where $\emptyset \subseteq G \subseteq 2^\Delta$ contains sets of accepting conditions and the rest is defined as for TBA. A run of $\cA$ is \emph{accepting} iff it contains infinitely many accepting transitions \emph{for each} $\Gamma \in G$. TBA can be seen as a special case of TGBA with $|G|=1$
 		
 		\section{Breakpoint Automaton}
-			We want to define \emph{slim GFM\footnote{Good for Markov decision processes [+zdroj]} Büchi automaton} (slim automaton) through its construction which is based on breakpoint construction. 
-			\paragraph{Construction}
-			Let us fix a Büchi Automaton $\cA\eqdef(\Sigma, Q, q_i, \Delta, \Gamma)$. 
-			We want to construct a deterministic automaton $\cD$ such that $\lD\subseteq \lA$ 
-			We denote $3^Q$ by the set $\{(S,S') \mid S'\subsetneq S \subseteq Q\}$ and
-			$3^Q_+$ by $\{(S,S') \mid S'\subseteq S \subseteq Q\}$.
-			We define the notation for the transitions and accepting transitions as $\delta,\gamma:2^Q \times \Sigma \rightarrow 2^Q$ with
+		We want to define \emph{slim Büchi automaton} (slim automaton) through its construction which is based on breakpoint construction.
+		Breakpoint automata (BPA) are a building block for slim automata. BPA are constructed from BA and are deterministic, but their language is only a subset of the language from original BA. 
+		
+		\paragraph{Construction}
+		Let us fix a Büchi Automaton $\cA\eqdef(\Sigma, Q, q_i, \Delta, \Gamma)$. 
+		
+		%%We want to construct a deterministic automaton $\cD$ such that $\lD\subseteq \lA$ 
+		By $3^Q$ we denote the set $\{(S,S') \mid S'\subsetneq S \subseteq Q\}$ and
+		by $3^Q_+$ we denote $\{(S,S') \mid S'\subseteq S \subseteq Q\}$.
+		
+		%%We define the notation for the transitions and accepting transitions as $\delta,\gamma:2^Q \times \Sigma \rightarrow 2^Q$ with
+		
+		Given the set of transitions, we define the function $\delta \colon 2^Q \times \Sigma \rightarrow 2^Q$ as 	
+			$\delta\colon (S,a)\eqdef\{q'\in Q \mid \exists q \in S.(q,a,q') \in \Delta\}$ and we define $\gamma$ from $\Gamma$ analogously.
 			
-			$\delta: (S,a)\eqdef\{q'\in Q \mid \exists q \in S.(q,a,q') \in \Delta\}$ and
+			%%$\gamma: (S,a)\eqdef\{q'\in Q \mid \exists q \in S.(q,a,q') \in \Gamma\}$
+			By definitions, $\delta$ and $\gamma$ are deterministic transition functions.
 			
-			$\gamma: (S,a)\eqdef\{q'\in Q \mid \exists q \in S.(q,a,q') \in \Gamma\}$
-			
-			(? Let us note that $\delta$ and $\gamma$ are deterministic transitions.)
-			
-			We define the raw breakpoint transition
+			Using $\Delta$, we define the raw breakpoint transition
 			$\rho_\Gamma \colon 3^Q \times \Sigma \rightarrow 3^Q_+$ as
 			\[\rho_\Gamma((S, S'), a) \eqdef(\delta(S, a), \delta(S',a)\cup \gamma(S, a))\]
-			We follow the set of reachable states (first set) and the states that are reachable while passing at least one of the accepting transitions (second set).
+			We follow the set of reachable states in the first set and the states that are reachable while passing at least one of the accepting transitions in the second set.
 			The transitions of the breakpoint automaton $\cD$ follow $\rho$ with an exception: they reset the second set to the empty set when it equals the first; the resetting transitions are accepting.
-			The breakpoint automaton $\cD \eqdef (\Sigma, 3^Q, (q_i, \emptyset), \delta_D, \gamma_D)$ is defined such that, when $\rho\colon ((S, S'), a) = (R, R')$, then there are three cases:
+			Formally, the breakpoint automaton $\cD$ is $ \eqdef (\Sigma, 3^Q, (q_i, \emptyset), \delta_D, \gamma_D)$  $\rho\colon ((S, S'), a) = (R, R')$, then there are three cases:
 			
 			\begin{enumerate}
-				\item if $R=\emptyset$, then $\delta_B((S,S'))$ is undefined (or, if a complete automation is preferred, maps to a rejecting sink),
-				\item else, if $R \neq R'$, then $\delta_B((S,S'),a)=(R, R')$ is a non-accepting transition,
-				and $\gamma_d((S,S'),a)$ is undefined.
+				\item if $R=\emptyset$, then $\delta_D((S,S'))$ is undefined (or, if a complete automation is preferred, maps to a rejecting sink),
+				\item else, if $R \neq R'$, then $\delta_D((S,S'),a)=(R, R')$ is a non-accepting transition,
+				and $\gamma_D((S,S'),a)$ is undefined.
 				\item otherwise $\delta_D((S,S')=\gamma_D((S,S'),a)=(R, \emptyset)$ is an accepting transition.
 			\end{enumerate}
 			
-			Breakpoint automata recognize/describe/represent subset of original language (example in Figure \ref{fig:bp:non-equivalent}). On the other hand, semi-deterministic automata decide !!!superset - spatne!!! asi dat pryc ale nejsou good for mvp of such language. 
+			%%Breakpoint automata recognize/describe/represent subset of original language 
+			Figure \ref{fig:bp:non-equivalent}) shows application of this construction. 
 			
-			todle mozna trochu jinak v dalsi sekci
-			We are going to define a few more transitions on top of breakpoint construction which allow us to construct slim automata that decide exactly the class of <GFM languages> spatny pojem. jsou to omega regularni
+			
 		
 			\begin{figure}[ht]
 				\begin{center}
@@ -185,14 +190,18 @@ nolof, nolot
 						;
 					\end{tikzpicture}
 				\end{center}
-				\caption{Example of breakpoint automaton (right) non-equivalent with the original Buchi Automaton (left)}
+				\caption{Example of breakpoint automaton $\cD$ (right) non-equivalent with the original Buchi Automaton $\cA$ (left). The example demonstrates that $\lD \subseteq \lA$ as the construction did not generate any accepting transition. Therefore original $\lA=\{a^\omega\}$, but $\lD$ is empty.}
 				\label{fig:bp:non-equivalent}
 			\end{figure}
 			
 			
 			
 			\section{Slim Automata Construction}\label{section:slim}
-			Breakpoint automata constructed as presented in the previous section are not always equivalent to the input automaton.
+			
+			todle mozna trochu jinak v (ne dalsi ale) teto sekci
+			We are going to define a few more transitions on top of breakpoint construction which allow us to construct slim automata that decide exactly the class of <GFM languages> spatny pojem. jsou to omega regularni
+			
+			Breakpoint automata constructed as presented in the previous section are not always equivalent to the input automaton, but are deterministic. Slim automata are equivalent to do not hold the deterministic property, however they are GFM\footnote{Good for Markov decision processes [+zdroj]}
 			
 			In this section we define transitions  $\gamma_w, \gamma_p:3^Q \times \Sigma \rightarrow 3^Q$ that promote the second set of a breakpoint construction to the first set as follows. 
 			
@@ -445,39 +454,44 @@ autoreconf -i && ./configure && make.
 	Evaluation part builds on seminator-evaluation. We compare amount of states of output automata. We compare the data on 2 dataset. First dataset are 20 literature formulas, second dataset is 500 automata that were randomly generated.
 	
 	
-	\section{Seminator -{}-slim}
+	\section{Seminator -\/-slim}
 	In this section we compare automaton size generated by seminator -{}-slim.
 	We compare weak against slim and via-tba against via-tgba.
-	\subsection{Comparisons among Unoptimized options}
-	literature
-	\begin{center}
-		\begin{tabular}{ |c|c|c|c|c| } 
+	\subsection{Comparisons among Unoptimized Configurations}
+	In this subsection we compare base unoptimized seminator options.
+\begin{table}[ht]
+	\centering
+	\caption{literature: unoptimized seminator -\/-slim}
+		\begin{tabular}{ |c||c|c|c|c| } 
 			\hline
-			seminator&\multicolumn{2}{c}{weak}&\multicolumn{2}{c}{strong} \\
+			seminator&\multicolumn{2}{c|}{weak}&\multicolumn{2}{c|}{strong} \\
 			\hline
 			literature&size&time(s)&size&time(s)\\
-			\hline
+			\hhline{|=====|}
+			
 			via tba&5x51&21x9& 37x0 &1x85\\
 			\hline
 			via tgba&5x88&21x0& 40x8&1x74\\ 
 			\hline
 		\end{tabular}
-	\end{center}
+\end{table}
 	
-	500 randomly generated automata
-	\begin{center}
-		\begin{tabular}{ |c|c|c|c|c| } 
+	
+	\begin{table}[ht]
+		\centering
+		\caption{random: unoptimized seminator -\/-slim}
+		\begin{tabular}{ |c||c|c|c|c| } 
 			\hline
-			seminator&\multicolumn{2}{c}{weak}&\multicolumn{2}{c}{strong} \\
-			\hline
-			literature&size&time(s)&size&time(s)\\
+			seminator&\multicolumn{2}{c|}{weak}&\multicolumn{2}{c|}{strong} \\
+			\hhline{|=====|}
+			random&size&time(s)&size&time(s)\\
 			\hline
 			via tba&551&219& 370 &185\\
 			\hline
 			via tgba&588&210& 408&174\\ 
 			\hline
 		\end{tabular}
-	\end{center}
+\end{table}
 	
 	
 	Transforming automata to TBA first yields smaller automata. This might be caused by Spot having well optimized algorithm for degeneralization. Slim algorithm for TGBA proposed in this paper is naive, without any kind of optimizations, and it degeneralizes the automaton during the process.
@@ -489,12 +503,13 @@ autoreconf -i && ./configure && make.
 	
 	literature
 	\begin{center}
-		\begin{tabular}{ |c|c|c|c|c|c|c| } 
+		\begin{tabular}{ |c||c|c|c|c|c|c| } 
 			\hline
-			seminator&\multicolumn{2}{c}{weak}&\multicolumn{2}{c}{strong}&\multicolumn{2}{c}{best} \\
+			seminator&\multicolumn{2}{c|}{weak}&\multicolumn{2}{c|}{strong}&\multicolumn{2}{c|}{best} \\
 			\hline
 			literature&size&time(s)&size&time(s)&size&time(s)\\
-			\hline
+			\hhline{|=======|}
+			
 			via tba&551&219& 370 &185& 370&404\\
 			\hline
 			via tgba&588&210& 408&174& 402&384\\ 
@@ -508,7 +523,7 @@ autoreconf -i && ./configure && make.
 	\begin{center}
 		\begin{tabular}{ |c|c|c|c|c|c|c| } 
 			\hline
-			seminator&\multicolumn{2}{c}{weak}&\multicolumn{2}{c}{strong}&\multicolumn{2}{c}{best} \\
+			seminator&\multicolumn{2}{c|}{weak}&\multicolumn{2}{c|}{strong}&\multicolumn{2}{c|}{best} \\
 			\hline
 			random&size&time(s)&size&time(s)&size&time(s)\\
 			\hline
@@ -549,7 +564,7 @@ autoreconf -i && ./configure && make.
 			\hline
 		\end{tabular}
 	\end{center}
-		\subsubsection{Minimal hits for random automata via-tba x via-tgba}
+		\subsubsection{Minimal hits for random automata via-tba versus via-tgba}
 		Let us note that 13/20 formulas from literature and 391/500 formulas from random dataset create automata that are already TBA. 
 		\begin{center}
 			\begin{tabular}{ |c|c|c| } 
@@ -574,7 +589,7 @@ autoreconf -i && ./configure && make.
 			\end{tabular}
 		\end{center}
 	
-		\section{Slim Automata Produced Seminator x ePMC}
+		\section{Slim Automata Produced Seminator versus ePMC}
 		popsat co to je ePMC+zdroj
 		prvne jedna vybrana moznost
 		
@@ -668,9 +683,9 @@ autoreconf -i && ./configure && make.
 				\hline
 				random&size&time(s)\\
 				\hline
-				ltl2tgba&10197 & \\
+				ltl2tgba&3000cca & \\
 				\hline
-				seminator default &7133 & \\
+				seminator default &3700 & \\
 				\hlineny
 				seminator slim best &7060 & \\ 
 				\hlineny
