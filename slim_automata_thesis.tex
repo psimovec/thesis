@@ -258,11 +258,14 @@ nolof, nolot
 
 			
 			\chapter{Slim Automaton Construction Generalized to TGBA}
-			In this section, we discuss slim automata equivalent to a TGBA $\cT\eqdef(\Sigma, Q, q_i, \Delta, G)$.
+			In this chapter, we discuss slim automata equivalent to a TGBA $\cT\eqdef(\Sigma, Q, q_i, \Delta, G)$.
 			One possibility is to \emph{degeneralize} $\cT$ and to use previously mentioned algorithm in section 2.3.
 			In the rest of this chapter we describe a direct construction of slim TGBA equivalent to $\cT$.
 			\paragraph{Extended slim construction}
-			We need to make sure we go infinitely many times trough each accepting subset $g \in G=\{G_0, G_1, \ldots, G_k\}$. To achieve this, we will go through each subset one by one, using original algorithm. We will keep track of $levels\eqdef\{0,1,\ldots,|G|-1\}$ in the names of states. Let $|G|$ be number of $levels$ and $i \in N, i<|G|$ the current level. At each level $i$, we look at $i$th subset of $G$. We use same steps as in classic breakpoint construction, but on each accepting transition the new state will be leveled up to $(i+1)\bmod|G|$, otherwise the target state has the same level. Our new automaton simulates $\cT$, as it accepts a word iff it cycles through all levels. If $|G|=0$, we return a trivially accepting automaton
+			(We will simulate the original automaton by checking its accepting conditions on by one. In the original automaton have to go through an accepting transition of each accepting condition $g \in G=\{G_0, G_1, \ldots, G_k\}$ infinitely many times. In new automaton we have just one accepting condition and a layer for each original accepting condition. Going through original accepting transitions of layer that we are looking up promotes us to another layer. From the last layer we get back to first layer. Only the transitions that move us layer up are accepting. As we check all accepting conditions of the original automaton, the new automaton will be equivalent to the original one.)
+			
+			We need to make sure we go infinitely many times trough each accepting subset $g \in G$.
+			To achieve this, we will go through each subset one by one, using original algorithm. We will keep track of $levels\eqdef\{0,1,\ldots,|G|-1\}$ in the names of states. Let $|G|$ be number of $levels$ and $i \in N, i<|G|$ the current level. At each level $i$, we look at $i$th subset of $G$. We use same steps as in classic breakpoint construction, but on each accepting transition the new state will be leveled up to $(i+1)\bmod|G|$, otherwise the target state has the same level. Our new automaton simulates $\cT$, as it accepts a word iff it cycles through all levels. If $|G|=0$, we return a trivially accepting automaton
 			
 			We can use the core of previous construction and just to extend it with levels. Let
 			$up(x)\eqdef(x+1)\bmod|G|$ and let 
