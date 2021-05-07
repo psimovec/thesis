@@ -98,73 +98,97 @@ nolof, nolot
 	Slim automata are specially constructed from Büchi automata. This kind of automaton was defined by it's construction in [source] and is good for MDP [main source]. We implement the proposed algorithm and it's second variant that we call weak [source private conversation]. We extend the algorithm for generalised Büchi automata. Then we evaluate resulting size of automata and we compare it with different tool to create slim automata and with other kinds of automata.
 	
 	
+	...Finally we generalize slim automaton construction to work with generalized Büchi automata. ...
+	
 	... slim automata are specially constructed Büchi automata.
 	\chapter{Preliminaries}
-		In this chapter we define a Büchi automaton and its generalized version.
-		Then we continue with breakpoint algorithm. It allows us to introduce slim automata by its construction, which builds on the breakpoint one. Finally we generalize slim automaton construction to work with generalized Büchi automata.
+		This chapter defines a Büchi automaton and a generalized Büchi automaton. 
 		
-		We will need to know that on \emph{alphabet} is a set of letters, an \emph{$\omega$-word} $w \in \Sigma^\omega$ is an infinite sequence of letters, and a \emph{language} $L \subseteq \Sigma^\omega$ is a set of $\omega$-words.
+		
+		An \emph{alphabet} $\Sigma$  is a finite set of \emph{letters}, an \emph{$\omega$-word} $w \in \Sigma^\omega$ is an infinite sequence of letters, and an \emph{$\omega$-language} $L \subseteq \Sigma^\omega$ is a set of $\omega$-words.
 		\section{Büchi Automaton} \label{section:tba}
-			A Büchi automaton is a theoretical finite-state machine used to define $\omega$-languages. It decides which infinitely long words ($\omega$-words) belong to its language.
+			A Büchi automaton is a theoretical finite-state machine used to define $\omega$-languages. It decides which infinite words ($\omega$-words) belong to its language.
 			
 			A \emph{transition-based Büchi automaton (TBA)} is a tuple $\cA\eqdef(\Sigma, Q, q_i, \Delta, \Gamma)$, where 
 			\begin{itemize}
 				\item $\Sigma$ is a non-empty finite \emph{alphabet},
 				\item $Q$ is a non-empty finite set of \emph{states},
 				\item $q_i \in Q$ is the initial state of $\cA$.
-				\item We write the set of \emph{transitions} as $\Delta \subseteq Q \times \Sigma \times Q$. Intuitivelly, a transition $(s, a, t)$  directionally connects the states $s$ and $t$ with the letter $a$.
+				\item $\Delta \subseteq Q \times \Sigma \times Q$ is a set of \emph{transitions}. 
 				\item $\Gamma \subseteq \Delta$ is a set of \emph{accepting transitions}.
 			\end{itemize}
-			
-			A \emph{run} $r$ of $\cA$ is an infinite sequence of transitions
-			$r\eqdef t_0t_1\ldots\in\Delta^\omega$, where $t_i=(s_i, a_i,s_{i+1})$,
+			 Intuitivelly, a transition $(s, a, t)$  directionally connects the states $s$ and $t$ with the letter $a$.
+			 
+			A \emph{run} $r$ of $\cA$ over an $\omega$-word $w=w_0w_1w_2\ldots$ is an infinite sequence of transitions
+			$r\eqdef t_0t_1\ldots\in\Delta^\omega$, where $t_k=(q_k, w_k,q_{i+1})$,
 			 such that $q_0=q_i$.
-			A run of $\cA$ is \emph{accepting} iff it contains infinitely many accepting transitions.
+			A run of $\cA$ is \emph{accepting} if and only if it contains infinitely many accepting transitions from $\Gamma$.
 
-			Finally, we define the \emph{language} $\lA \subseteq \Sigma^\omega$ recognized by the automaton $\cA$. An $\omega$-word $w \in \Sigma^\omega$ belongs to $\lA$ iff there exists an accepting run of $\cA$ over the word $w$. 
+			Finally, we define the \emph{language} $\lA \subseteq \Sigma^\omega$ recognized by the automaton $\cA$. An $\omega$-word $w \in \Sigma^\omega$ belongs to $\lA$ if and only if there exists an accepting run of $\cA$ over the word $w$. 
 			
 			
 		\section{Generalized Büchi Automaton}
 		A \emph{transition-based Generalized Büchi automaton} (TGBA) is a tuple $\cA\eqdef(\Sigma, Q, q_i, \Delta, G)$, where $\emptyset \subseteq G \subseteq 2^\Delta$ contains sets of accepting conditions and the rest is defined as for TBA. A run of $\cA$ is \emph{accepting} iff it contains infinitely many accepting transitions \emph{for each} $\Gamma \in G$. TBA can be seen as a special case of TGBA with $|G|=1$
 		
-		\section{Breakpoint Automaton} \label{section:bp}
-		We want to define \emph{slim Büchi automaton} (slim automaton) through its construction which is based on breakpoint construction.
-		Breakpoint (BP) automata are a building block for slim automata. BP automata are constructed from BA and are deterministic, but their language is only a subset of the language from original BA. 
 		
-		\paragraph{Construction}
-		Let us fix a Büchi Automaton $\cA\eqdef(\Sigma, Q, q_i, \Delta, \Gamma)$. 
-		
-		%%We want to construct a deterministic automaton $\cD$ such that $\lD\subseteq \lA$ 
-		By $3^Q$ we denote the set $\{(S,S') \mid S'\subsetneq S \subseteq Q\}$ and
-		by $3^Q_+$ we denote $\{(S,S') \mid S'\subseteq S \subseteq Q\}$.
-		
-		%%We define the notation for the transitions and accepting transitions as $\delta,\gamma:2^Q \times \Sigma \rightarrow 2^Q$ with
-		
-		Given the set of transitions, we define the function $\delta \colon 2^Q \times \Sigma \rightarrow 2^Q$ as 	
-			$\delta\colon (S,a)\eqdef\{q'\in Q \mid \exists q \in S.(q,a,q') \in \Delta\}$. We define $\gamma:2^Q  \times \Sigma \rightarrow 2^Q$ analogously from $\Gamma$ as $\gamma: (S,a)\eqdef\{q'\in Q \mid \exists q \in S.(q,a,q') \in \Gamma\}$.
+			
+			
+			
+			\chapter{Slim Automata Construction}\label{section:slim}
+			
+			%%todle mozna trochu jinak v (ne dalsi ale) teto sekci
+			%%We are going to define a few more transitions on top of breakpoint construction which allow us to construct slim automata that decide exactly the class of <GFM languages> spatny pojem. jsou to omega regularni
+			
+			%Breakpoint automata constructed as presented in the previous section are not always equivalent to the input automaton, but are deterministic. Slim automata are equivalent to do not hold the deterministic property, however they are GFM\footnote{Good for Markov decision processes [+zdroj]}
+			
+			
+			
+			
+			
+			
+			
+			
+			This chapter defines \emph{slim Büchi automaton} (slim automaton) in 2 variants - \emph{strong} and \emph{weak}. Slim automaton is defined through its construction, which is based on breakpoint construction. 
+			
+			\section{Breakpoint Automaton} \label{section:bp}
+			
+			 BP automata are constructed from BA and are deterministic, but their language is only a subset of the language from original BA. 
+			
+			\paragraph{Construction}
+			Let us fix a Büchi Automaton $\cA\eqdef(\Sigma, Q, q_i, \Delta, \Gamma)$. 
+			
+			%%We want to construct a deterministic automaton $\cD$ such that $\lD\subseteq \lA$ 
+			We start with some notation. By $3^Q$ we denote the set $\{(S,S') \mid S'\subsetneq S \subseteq Q\}$ and
+			by $3^Q_+$ we denote $\{(S,S') \mid S'\subseteq S \subseteq Q\}$.
+			
+			%%We define the notation for the transitions and accepting transitions as $\delta,\gamma:2^Q \times \Sigma \rightarrow 2^Q$ with
+			
+			For convenience we introduce functions by sets of transitions, we define the function $\delta \colon 2^Q \times \Sigma \rightarrow 2^Q$ as 	
+			$\delta\colon (S,a)\eqdef\{q'\in Q \mid  (q,a,q') \in \Delta \land q \in S\}$.
+			%%\exists q \in S.(q,a,q') \in \Delta\}$.
+			We define $\gamma:2^Q  \times \Sigma \rightarrow 2^Q$ analogously from $\Gamma$ as $\gamma\colon (S,a)\eqdef\{q'\in Q \mid  (q,a,q') \in \Gamma \land q \in S\}$.
 			
 			%%$\gamma: (S,a)\eqdef\{q'\in Q \mid \exists q \in S.(q,a,q') \in \Gamma\}$
-			By definitions, $\delta$ and $\gamma$ are deterministic transition functions.
+			By definitions, $\delta$ and $\gamma$ can be seen as deterministic transition functions on $2^Q$.
 			
-			Using $\Delta$, we define the raw breakpoint transition
+			With $\delta$ and $\gamma$, we define the raw breakpoint transition
 			$\rho_\Gamma \colon 3^Q \times \Sigma \rightarrow 3^Q_+$ as
 			\[\rho_\Gamma((S, S'), a) \eqdef(\delta(S, a), \delta(S',a)\cup \gamma(S, a))\]
-			We follow the set of reachable states in the first set and the states that are reachable while passing at least one of the accepting transitions in the second set.
+			The first set follows the set of reachable states in the first set and the states that are reachable while passing at least one of the accepting transitions in the second set.
 			The transitions of the breakpoint automaton $\cD$ follow $\rho$ with an exception: they reset the second set to the empty set when it equals the first; the resetting transitions are accepting.
-			Formally, the breakpoint automaton $\cD$ is $ \eqdef (\Sigma, 3^Q, (q_i, \emptyset), \delta_D, \gamma_D)$  $\rho\colon ((S, S'), a) = (R, R')$, then there are three cases:
+			Formally, the breakpoint automaton $\cD$ is $ \eqdef (\Sigma, 3^Q, (q_i, \emptyset), \Delta_D, \Gamma_D)$ where $\Delta_D$ and $\Gamma_D$ are defined as follows. 
 			
 			\begin{enumerate}
-				\item if $R=\emptyset$, then $\delta_D((S,S'))$ is undefined (or, if a complete automation is preferred, maps to a rejecting sink),
-				\item else, if $R \neq R'$, then $\delta_D((S,S'),a)=(R, R')$ is a non-accepting transition,
-				and $\gamma_D((S,S'),a)$ is undefined.
-				\item otherwise $\delta_D((S,S')=\gamma_D((S,S'),a)=(R, \emptyset)$ is an accepting transition.
+				\item $((S, S'), a, (R, R')) \in \Delta_D$ if $\rho_\Gamma((S,S'),a)=(R,R')$ where $R' \subsetneq R$
+				\item $((S, S'), a, (R, \emptyset)) \in \Delta_D$ and $((S, S'), a, (R, \emptyset)) \in \Gamma_D$ if $\rho_\Gamma((S,S'),a)=(R,R)$ 
+				\item No other transitions are in $\Delta_D$ and $\Gamma_D$
 			\end{enumerate}
 			
 			%%Breakpoint automata recognize/describe/represent subset of original language 
-			Figure \ref{fig:bp:non-equivalent}) shows application of this construction. 
+			Figure \ref{fig:bp:non-equivalent} shows application of this construction. The example demonstrates that $\lD \subseteq \lA$ as the construction did not generate any accepting transition. Therefore original $\lA=\{a^\omega\}$, but $\lD$ is empty.
 			
 			
-		
+			
 			\begin{figure}[ht]
 				\begin{center}
 					\begin{tikzpicture}[automaton]
@@ -189,22 +213,13 @@ nolof, nolot
 						;
 					\end{tikzpicture}
 				\end{center}
-				\caption{Example of breakpoint automaton $\cD$ (right) non-equivalent with the original Buchi Automaton $\cA$ (left). The example demonstrates that $\lD \subseteq \lA$ as the construction did not generate any accepting transition. Therefore original $\lA=\{a^\omega\}$, but $\lD$ is empty.}
+				\caption{A Büchi Automaton $\cA$ (left) and a breakpoint automaton $\cD$ for $\cA$ (right). }
 				\label{fig:bp:non-equivalent}
 			\end{figure}
-			
-			
-			
-			\chapter{Slim Automata Construction}\label{section:slim}
-			
-			%%todle mozna trochu jinak v (ne dalsi ale) teto sekci
-			%%We are going to define a few more transitions on top of breakpoint construction which allow us to construct slim automata that decide exactly the class of <GFM languages> spatny pojem. jsou to omega regularni
-			
-			%Breakpoint automata constructed as presented in the previous section are not always equivalent to the input automaton, but are deterministic. Slim automata are equivalent to do not hold the deterministic property, however they are GFM\footnote{Good for Markov decision processes [+zdroj]}
-			
-			Slim automata are BP automata enriched with additional transitions. As a result they are non-deterministic, GFM\footnote{Good for Markov decision processes \cite{hlavni}} and equivalent to input automaton.
-			
-			In this chapter we define transitions for \emph{strong slim} ($\gamma_{p}$) and \emph{weak slim} ($\gamma_{p}$) automata,
+		
+			\section{Slim automata}
+			Slim automata are BP automata enriched with additional transitions. As a result they are non-deterministic, Good for Markov decision processes \cite{hlavni} and equivalent to the input automaton.	
+			In this section we define \emph{Breakpoint automaton} and transitions for \emph{strong slim} ($\gamma_{p}$) and \emph{weak slim} ($\gamma_{p}$) automata,
 			 $\gamma_w, \gamma_p:3^Q \times \Sigma \rightarrow 3^Q$, that promote the second set of a breakpoint construction to the first set as follows. 
 			
 			\begin{enumerate}
@@ -445,7 +460,7 @@ $./seminator --slim --strong --via-tgba --optimalizations=0 -f automaton.hoa
 	ltlcross and ltl2tgba tools are used. The tests use random LTL formulas that were already generated, the LTL formulas are transformed into automata in HOA format by ltl2tgba.
 	Then the tool ltlcross cross-compares the automaton with \emph{seminator -{}-slim} with all supported [not yet] additional parameters.
 	
-	Only \texttt{seminator -{}-slim -{}-strong -{}-via-tba} (and without optimalizations) is proved, as it follows construction from \cite{hlavni} which is proved.
+	Only \texttt{seminator -{}-slim -{}-strong -{}-via-tba -{}-optimizations=0} is proved, as it follows construction from \cite{hlavni} which is proved.
 	
 	
 	\section{How to Install Seminator}
@@ -710,6 +725,7 @@ autoreconf -i && ./configure && make.
 		\end{center}
 		\section{To Put Somewhere in This Chapter}
 		If the automata optimizations by spot's 
-		\texttt{autfilt} tool break the simulation property, the results in following Evaluation chapter are pointless, as they are built on such assumption.
+		\texttt{autfilt} tool break the simulation property, the results in following Evaluation chapter are pointless, as they are built on such assumption. [[But we are confident enough that spot's autfilt doesnt break the prop ]]
+	\chapter{Mungojerrie benchmarks}
 	\chapter{Conclusion}
 \end{document}
