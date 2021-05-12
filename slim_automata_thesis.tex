@@ -54,6 +54,7 @@ nolof, nolot
 \usepackage{listings}
 
 \usepackage{tikz}
+\usepackage{pgfplots}
 \usetikzlibrary{myautomata}
 \input{commands.tex}
 
@@ -191,27 +192,8 @@ nolof, nolot
 			
 			\begin{figure}[ht]
 				\begin{center}
-					\begin{tikzpicture}[automaton]
-						\node[state,initial] (a) {\flushed};
-						\node[state,right = 1 cm of a] (b) {\hell};
-						\node[state,above = 1 cm of a] (c) {\heaven};
-						
-						\node[right = 2cm of b,state,initial, sd green] (bp-0) {$\{\flushed\},\emptyset$};
-						\node[state,right = 1cm of bp-0, sd green] (bp-12) {$\{\hell,\heaven\}, \emptyset$};
-						\node[state,above = 1cm of bp-12, sd green] (bp-12-1) {$\{\hell,\heaven\}, \{\heaven\}$};
-						
-						\path[->,auto ]
-						(c) edge[loop above] pic[] {eacc=0} pic{l=$a$} (c)
-						(a) edge[] node {$a$} (c)
-						(a) edge[] node {$a$} (b)
-						(b) edge[loop above] node {$a$} (b)
-						;
-						\path[->,auto ]			
-						(bp-0) edge[] node {$a$} (bp-12)
-						(bp-12) edge[] node {$a$} (bp-12-1)
-						(bp-12-1) edge[loop above] node {$a$} (bp-12-1)
-						;
-					\end{tikzpicture}
+					\input{bp.tikz}
+					
 				\end{center}
 				\caption{A Büchi Automaton $\cA$ (left) and a breakpoint automaton $\cD$ for $\cA$ (right). }
 				\label{fig:bp:non-equivalent}
@@ -239,32 +221,7 @@ nolof, nolot
 			
 			\begin{figure}[ht]
 				\begin{center}
-					\begin{tikzpicture}[automaton]
-						\node[state,initial] (a) {\flushed};
-						\node[state,right of = a] (b) {\hell};
-						\node[state,above of = a] (c) {\heaven};
-						
-						\node[right = 2cm of b,state,initial, sd green] (bp-0) {$\{\flushed\},\emptyset$};
-						\node[state,right = 1cm of bp-0, sd green] (bp-12) {$\{\hell,\heaven\}, \emptyset$};
-						\node[state,above = 1cm of bp-12, sd green] (bp-12-1) {$\{\hell,\heaven\}, \{\heaven\}$};
-						\node[state,above = 1cm of bp-0, sd red] (bp-2) {$\{\heaven\}, \emptyset$};
-						\node[state,above = 1cm of bp-2, cstate, unreachable] (bp-2-2) {$\{\heaven\}, \{\heaven\}$};
-						
-						\path[->,auto ]
-						(c) edge[loop above] pic[] {eacc=0} pic{l=$a$} (c)
-						(a) edge[] node {$a$} (c)
-						(a) edge[] node {$a$} (b)
-						(b) edge[loop above] node {$a$} (b)
-						;
-						\path[->,auto ]			
-						(bp-0) edge[] node {$a$} (bp-12)
-						(bp-12) edge[] node {$a$} (bp-12-1)
-						(bp-12-1) edge[loop above] node {$a$} (bp-12-1)
-						(bp-12-1) edge[red] pic[] {eacc=0} pic{l=$a$} (bp-2)
-						(bp-2) edge[loop above] pic[] {eacc=0} pic{l=$a$} (bp-2)
-						(bp-2) edge[unreachable, bend left] node {$a$} (bp-2-2)
-						;
-					\end{tikzpicture}
+				\input{slim.tikz}
 				\end{center}
 				\caption{Slim automaton (right) and the original Buchi Automaton from Figure \ref{fig:bp:non-equivalent}(left)}
 				\label{fig:slim:equivalent}
@@ -319,58 +276,8 @@ nolof, nolot
 						
 			\begin{figure}[ht]
 				\begin{center}
-					\begin{tikzpicture}[automaton]
-						\node[state,initial] (a) {A};
-						\node[state,right of = a] (d) {D};
-						
-						\node[below = 9cm of a,state,initial, cd blue] (bp-a-0) {$\{A\},\emptyset,0$};
-						\node[state,right = 1cm of bp-a-0, cd blue] (bp-d-0) {$\{D\}, \emptyset,0$};
-						\node[state,right = 1cm of bp-d-0, cd blue] (bp-ad-0) {$\{A,D\}, \emptyset,0$};
-						\node[state,right = 1cm of bp-ad-0, cd blue] (bp-ad-a-0) {$\{A,D\}, \{A\},0$};
-						\node[above = 5cm of bp-a-0,state, cd orange] (bp-a-1) {$\{A\},\emptyset,1$};
-						\node[state,above = 5cm of bp-d-0, cd orange] (bp-d-1) {$\{D\}, \emptyset,1$};
-						\node[state,above = 5cm of bp-ad-0, cd orange] (bp-ad-1) {$\{A,D\}, \emptyset,1$};
-						\node[state,above = 5cm of bp-ad-a-0, cd orange] (bp-ad-d-1) {$\{A,D\}, \{D\},1$};
-						
-						\path[->,auto ]
-						(a) edge[loop below] pic[] {eacc=0} pic{l=$a$} (a)
-						(a) edge[bend left] node {$c$} (d)
-						(d) edge[loop right] node {$c$} (d)
-						(d) edge[bend left] node {$c$} (a)
-						(d) edge[loop above] pic[] {eacc=1} pic{l=$d$} (d)
-						;
-						\path[->,auto ]
-						(bp-a-0) edge[bend right] node {$c$} (bp-d-0)
-						(bp-d-0) edge[bend right] node {$c$} (bp-ad-0)
-						(bp-a-1) edge[bend left] node {$c$} (bp-d-1)
-						(bp-d-1) edge[bend left] node {$c$} (bp-ad-1)
-						
-						(bp-a-1) edge[loop above] node {$a$} (bp-a-1)
-						(bp-d-0) edge[loop below] node {$d$} (bp-d-0)
-						
-						(bp-ad-d-1) edge[loop above] node {$a$} (bp-ad-d-1)
-						(bp-ad-a-0) edge[loop below] node {$d$} (bp-ad-a-0)
-						
-						(bp-a-0) edge[blue]  pic[] {eacc=3} pic{l=$a$} (bp-a-1)
-						(bp-ad-0) edge[ blue, pos=0.7]  pic[] {eacc=3} pic{l=$a$} (bp-a-1)
-						(bp-ad-a-0) edge[ blue, pos=0.3]  pic[] {eacc=3} pic{l=$a$} (bp-a-1)
-						(bp-d-1) edge[orange, pos=0.38]  pic[] {eacc=3} pic{l=$d$} (bp-d-0)
-						(bp-ad-1) edge[orange, pos=0.36]  pic[] {eacc=3} pic{l=$d$} (bp-d-0)
-						(bp-ad-d-1) edge[orange, pos=0.72]  pic[] {eacc=3} pic{l=$d$} (bp-d-0)
-						
-						(bp-ad-0) edge[bend right] node {$a$} (bp-ad-a-0)
-						(bp-ad-1) edge[bend left] node {$d$} (bp-ad-d-1)
-						
-						(bp-ad-0) edge[loop below] node {$c$} (bp-ad-0)
-						(bp-ad-1) edge[loop above] node {$c$} (bp-ad-1)
-						
-						
-						(bp-ad-d-1) edge[orange] pic[] {eacc=3} pic{l=$c$} (bp-ad-0)
-						(bp-ad-a-0) edge[ blue, pos=0.8] pic[] {eacc=3} pic{l=$c$} (bp-d-1)
-						
-						
-						;
-					\end{tikzpicture}
+					\input{tgba.tikz}
+					
 				\end{center}
 				\caption{The original TGBA (top) and slim automaton with colored states emphasizing different levels (bottom)  }
 				\label{fig:slim:gg}
@@ -458,7 +365,7 @@ $./seminator --slim --strong --via-tgba --optimalizations=0 -f automaton.hoa
 	\section{Testing and Verification}
 	Implemented tests are basic, only language equivalence is checked.
 	ltlcross and ltl2tgba tools are used. The tests use random LTL formulas that were already generated, the LTL formulas are transformed into automata in HOA format by ltl2tgba.
-	Then the tool ltlcross cross-compares the automaton with \emph{seminator -{}-slim} with all supported [not yet] additional parameters.
+	Then the tool ltlcross cross-compares the automaton with \emph{seminator -{}-slim} with all supported additional parameters.
 	
 	Only \texttt{seminator -{}-slim -{}-strong -{}-via-tba -{}-optimizations=0} is proved, as it follows construction from \cite{hlavni} which is proved.
 	
@@ -531,10 +438,11 @@ autoreconf -i && ./configure && make.
 	Using weak slim algorithm creates smaller slim automata than the strong one. 
 
 	\subsection{Post-Optimized}
-	In this subsection we post-optimize results using autfilt.
+	In this subsection we post-optimize results using \texttt{autfilt} tool.
 	
-	literature
-	\begin{center}
+	\begin{table}[ht]
+		\centering
+		\caption{literature: seminator \texttt{--}slim}
 		\begin{tabular}{ |c||c|c|c|c|c|c| } 
 			\hline
 			seminator&\multicolumn{2}{c|}{weak}&\multicolumn{2}{c|}{strong}&\multicolumn{2}{c|}{best} \\
@@ -549,10 +457,11 @@ autoreconf -i && ./configure && make.
 			best&551&429& 370&359& 365&788 \\ 
 			\hline
 		\end{tabular}
-	\end{center}
+	\end{table}
 	
-	500 randomly generated automata
-	\begin{center}
+	\begin{table}[ht]
+		\centering
+		\caption{random: seminator \texttt{--}slim}
 		\begin{tabular}{ |c|c|c|c|c|c|c| } 
 			\hline
 			seminator&\multicolumn{2}{c|}{weak}&\multicolumn{2}{c|}{strong}&\multicolumn{2}{c|}{best} \\
@@ -566,15 +475,27 @@ autoreconf -i && ./configure && make.
 			best&8751&1097& 7285&1067& 7088&2164 \\ 
 			\hline
 		\end{tabular}
-	\end{center}
+	\end{table}
 	
 	From 4 base options; after applying post-optimizations strong slim algorithm surpasses weak one by resulting automaton size, even if it has worse results without the post-optimizations.
 	Degeneralizing the automata as a first step still has smaller results.
 	From 4 base options, strong slim algorithm via-tba creates smallest automata on average.
 	Transforming input automata to tba first creates results which are close to best ones. If execution time is not a concern
 	
-		\subsubsection{Minimal hits for random automata weak x strong}
-		\begin{center}
+	\clearpage
+	\subsubsection{Strong x Weak slim automata}
+		\begin{table}[ht]
+			\centering 
+			\caption{scatter plot slim x weak, equal values excluded}
+		
+		\begin{tikzpicture}
+			\input{scatter/strong-weak.tikz}
+		\end{tikzpicture}
+	\end{table}
+	
+		{Minimal hits for random automata weak x strong
+		\begin{table}[ht]
+			\centering
 			\begin{tabular}{ |c|c|c| } 
 				\hline
 				literature&unique minimal hits&minimal hits\\
@@ -584,8 +505,8 @@ autoreconf -i && ./configure && make.
 				strong&11 & 16\\ 
 				\hline
 			\end{tabular}
-		\end{center}
-	\begin{center}
+		\end{table}
+	\begin{table}[ht]
 		\begin{tabular}{ |c|c|c| } 
 			\hline
 			random&unique minimal hits&minimal hits\\
@@ -595,10 +516,20 @@ autoreconf -i && ./configure && make.
 			strong&296 & 430\\ 
 			\hline
 		\end{tabular}
-	\end{center}
-		\subsubsection{Minimal hits for random automata via-tba versus via-tgba}
-		Let us note that 13/20 formulas from literature and 391/500 formulas from random dataset create automata that are already TBA. 
-		\begin{center}
+	\end{table}
+		
+		\clearpage
+		\subsubsection{via-tba x via-tgba}
+		\begin{table}[ht]
+		\caption{scatter plot via-tba x via-tgba, equal values excluded}
+		\begin{tikzpicture}
+			\input{scatter/tba-tgba.tikz}
+		\end{tikzpicture}
+	\end{table}
+		
+		 
+		\begin{table}[ht]
+			Let us note that 13/20 formulas from literature and 391/500 formulas from random dataset create automata that are already TBA.
 			\begin{tabular}{ |c|c|c| } 
 				\hline
 				literature&unique minimal hits&minimal hits\\
@@ -608,8 +539,8 @@ autoreconf -i && ./configure && make.
 				via-tgba&0 & 13\\ 
 				\hline
 			\end{tabular}
-		\end{center}
-				\begin{center}
+		\end{table}
+		\begin{table}[ht]
 			\begin{tabular}{ |c|c|c| } 
 				\hline
 				random&unique minimal hits&minimal hits\\
@@ -619,14 +550,13 @@ autoreconf -i && ./configure && make.
 				via-tgba&9 & 407\\ 
 				\hline
 			\end{tabular}
-		\end{center}
-	
+		\end{table}
+		\clearpage
 		\section{Slim Automata Produced Seminator versus ePMC}
-		popsat co to je ePMC+zdroj
-		prvne jedna vybrana moznost
+		We can create slim automata using different tool called ePMC.
 		
 		At first we compare best working basic paramaters (parameters that try only 1 option) of each tool to create smallest automata
-
+	
 	\begin{center}
 		\begin{tabular}{ |c|c|c| } 
 			\hline
@@ -649,7 +579,7 @@ autoreconf -i && ./configure && make.
 			\hlineny
 		\end{tabular}
 	\end{center}
-		Now let us compare smallest automata of each tool and to see how smaller automata get by combining these 2 tools.
+		Now let us compare smallest automata of each tool and to see how smaller automata get by combining these tools.
 		\begin{center}
 			\begin{tabular}{ |c|c|c| } 
 				\hline
@@ -676,6 +606,9 @@ autoreconf -i && ./configure && make.
 			\hlineny
 		\end{tabular}
 	\end{center}
+
+This section continues with comparison of minimal hits.
+
 \begin{center}
 	\begin{tabular}{ |c|c|c| } 
 		\hline
@@ -708,24 +641,41 @@ autoreconf -i && ./configure && make.
 		\ref{section:slim}
 		(2.5)
 		%\section{Slim automata produced seminator ePMC}
-		prvne tba zkusit pro epmc
-		\section{Compare with semi-deterministic Automata}
-			\begin{center}
-			\begin{tabular}{ |c|c|c| } 
-				\hline
-				random&size&time(s)\\
-				\hline
-				ltl2tgba&3000cca & \\
-				\hline
-				seminator default &3700 & \\
-				\hlineny
-				seminator slim best &7060 & \\ 
-				\hlineny
-			\end{tabular}
-		\end{center}
-		\section{To Put Somewhere in This Chapter}
+	
+		\section{Compare with World}
+		Let us see size comparison with diffent kinds of automata.
+		
+		\input{tables/basic-tools.tex}
+		
+		
+		
+		Now we compare \texttt{seminator --slim} with other tools using scatter plots.
+		
+		
+		\begin{tikzpicture}
+			\input{scatter/slim-epmc.tikz}
+		\end{tikzpicture}
+	
+		\begin{tikzpicture}
+		\input{scatter/slim-ltl2ldba.tikz}
+		\end{tikzpicture}
+	
+	\begin{tikzpicture}
+		\input{scatter/slim-sem_def.tikz}
+	\end{tikzpicture}
+		\section{Note about optimized automata}
 		If the automata optimizations by spot's 
-		\texttt{autfilt} tool break the simulation property, the results in following Evaluation chapter are pointless, as they are built on such assumption. [[But we are confident enough that spot's autfilt doesnt break the prop ]]
+		\texttt{autfilt} tool break the simulation property, the results in Evaluation chapter are pointless, as they are built on such assumption. But we are confident that spot's \texttt{autfilt} does not break the property.
 	\chapter{Mungojerrie benchmarks}
+	This chapter compares seminator's slim automata on machine learning tool mungojerrie.
+	
+	We utilized provided benchmarks - examples/. These are built by various ways, some are even handcrafted. Using LTL that is provided we create different automata for comparison on benchmarks. We are searching for lowest necessary amount of episodes needed for reaching probability 1 to hit the goal. 
+	
+	
+	\input{mungostats.tex}
+	\input{mungobench.tex}
+
+	\input{mungocactus.tikz}
+	
 	\chapter{Conclusion}
 \end{document}
