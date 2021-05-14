@@ -129,7 +129,7 @@ nolof, nolot
 			
 			
 		\section{Generalized Büchi Automaton}
-		A \emph{transition-based Generalized Büchi automaton} (TGBA) is a tuple $\cA\eqdef(\Sigma, Q, q_i, \Delta, G)$, where $\emptyset \subseteq G \subseteq 2^\Delta$ contains sets of accepting conditions and the rest is defined as for TBA. A run of $\cA$ is \emph{accepting} iff it contains infinitely many accepting transitions \emph{for each} $\Gamma \in G$. TBA can be seen as a special case of TGBA with $|G|=1$
+		A \emph{transition-based Generalized Büchi automaton} (TGBA) is a tuple $\cA\eqdef(\Sigma, Q, q_i, \Delta, G)$, where $G \subseteq 2^\Delta$ contains sets of accepting conditions and the rest is defined as for TBA. A run of $\cA$ is \emph{accepting} iff it contains infinitely many accepting transitions \emph{for each} $\Gamma \in G$. TBA can be seen as a special case of TGBA with $|G|=1$.
 		
 		
 			
@@ -400,7 +400,7 @@ autoreconf -i && ./configure && make.
 	In this subsection we compare base unoptimized seminator options.
 \begin{table}[ht]
 	\centering
-	\caption{literature: unoptimized seminator -\/-slim}
+	\caption{Slim automata on both datasets without any post-processing. Strong slim automata have more states than weak ones, as expected, because strong slim automata add more accepting transitions, which can create new states. }
 		\begin{tabular}{ |c||c|c|c|c| } 
 			\hline
 			seminator&\multicolumn{2}{c|}{weak}&\multicolumn{2}{c|}{strong} \\
@@ -408,29 +408,25 @@ autoreconf -i && ./configure && make.
 			literature&size&time(s)&size&time(s)\\
 			\hhline{|=====|}
 			
-			via tba&5x51&21x9& 37x0 &1x85\\
+			via tba	&	1095	&4	& 1112 	&5\\
 			\hline
-			via tgba&5x88&21x0& 40x8&1x74\\ 
+			via tgba&	1122	&4		&1147	&4\\ 
 			\hline
-		\end{tabular}
-\end{table}
-	
-	
-	\begin{table}[ht]
-		\centering
-		\caption{random: unoptimized seminator -\/-slim}
-		\begin{tabular}{ |c||c|c|c|c| } 
+			\hline
 			\hline
 			seminator&\multicolumn{2}{c|}{weak}&\multicolumn{2}{c|}{strong} \\
 			\hhline{|=====|}
 			random&size&time(s)&size&time(s)\\
 			\hline
-			via tba&551&219& 370 &185\\
+			via tba&17567&	59& 18764 &57\\
 			\hline
-			via tgba&588&210& 408&174\\ 
+			via tgba&19320&	58& 20789&58\\ 
 			\hline
 		\end{tabular}
 \end{table}
+	
+	
+
 	
 	
 	Transforming automata to TBA first yields smaller automata. This might be caused by Spot having well optimized algorithm for degeneralization. Slim algorithm for TGBA proposed in this paper is naive, without any kind of optimizations, and it degeneralizes the automaton during the process.
@@ -442,7 +438,7 @@ autoreconf -i && ./configure && make.
 	
 	\begin{table}[ht]
 		\centering
-		\caption{literature: seminator \texttt{--}slim}
+		\caption{In this table we compare all possible post-optimized combinations of parameters. By default \texttt{seminator --slim} tries all combination, runs optimizations, and then chooses the smallest automaton (best/best). }
 		\begin{tabular}{ |c||c|c|c|c|c|c| } 
 			\hline
 			seminator&\multicolumn{2}{c|}{weak}&\multicolumn{2}{c|}{strong}&\multicolumn{2}{c|}{best} \\
@@ -456,18 +452,13 @@ autoreconf -i && ./configure && make.
 			\hline
 			best&551&429& 370&359& 365&788 \\ 
 			\hline
-		\end{tabular}
-	\end{table}
-	
-	\begin{table}[ht]
-		\centering
-		\caption{random: seminator \texttt{--}slim}
-		\begin{tabular}{ |c|c|c|c|c|c|c| } 
+			
+			
 			\hline
 			seminator&\multicolumn{2}{c|}{weak}&\multicolumn{2}{c|}{strong}&\multicolumn{2}{c|}{best} \\
 			\hline
 			random&size&time(s)&size&time(s)&size&time(s)\\
-			\hline
+			\hhline{|=======|}
 			via tba&8923&443& 7404 &476& 7219&919\\
 			\hline
 			via tgba&10130&654& 8500&591& 8247&1245\\ 
@@ -476,11 +467,12 @@ autoreconf -i && ./configure && make.
 			\hline
 		\end{tabular}
 	\end{table}
+
 	
 	From 4 base options; after applying post-optimizations strong slim algorithm surpasses weak one by resulting automaton size, even if it has worse results without the post-optimizations.
 	Degeneralizing the automata as a first step still has smaller results.
 	From 4 base options, strong slim algorithm via-tba creates smallest automata on average.
-	Transforming input automata to tba first creates results which are close to best ones. If execution time is not a concern
+	Transforming input automata to tba first creates results which are close to best ones. 
 	
 	\clearpage
 	\subsubsection{Strong x Weak slim automata}
@@ -638,8 +630,7 @@ This section continues with comparison of minimal hits.
 		%%\section{via tba/no change}
 		%%\subsection{Comparisons among Unoptimized options}
 		%%\subsection{Comparisons among Post-Optimized options}
-		\ref{section:slim}
-		(2.5)
+
 		%\section{Slim automata produced seminator ePMC}
 	
 		\section{Compare with World}
