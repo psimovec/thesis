@@ -475,41 +475,39 @@ autoreconf -i && ./configure && make.
 	Transforming input automata to tba first creates results which are close to best ones. 
 	
 	\clearpage
-	\subsubsection{Strong x Weak slim automata}
-		\begin{table}[ht]
+	\subsubsection{Strong against Weak slim automata}
+	Let us focus on automaton size differences between weak and strong slim automata.
+		\begin{figure}[ht]
 			\centering 
-			\caption{scatter plot slim x weak, equal values excluded}
+			\caption{Scatter plot of strong against weak slim automata, equal values excluded. We can see strong slim automaton is smaller in more cases, but there are also cases where weak slim automaton is smaller.}
 		
 		\begin{tikzpicture}
 			\input{scatter/strong-weak.tikz}
 		\end{tikzpicture}
-	\end{table}
+	\end{figure}
 	
-		{Minimal hits for random automata weak x strong
+		{Minimal hits for weak x strong automata}
 		\begin{table}[ht]
 			\centering
-			\begin{tabular}{ |c|c|c| } 
+			\caption{Strong slim automata lead in unique minimal hits, but weak slim automata have some unique minimal hits too, so it makes sense to try both options and choose better one. }
+			\begin{tabular}{ |c||c|c| } 
 				\hline
 				literature&unique minimal hits&minimal hits\\
-				\hline
+				\hhline{|===|}
 				weak&4 & 9\\
 				\hline
 				strong&11 & 16\\ 
 				\hline
+				\hline
+				random&unique minimal hits&minimal hits\\
+				\hhline{|===|}
+				weak&68 & 202\\
+				\hline
+				strong&296 & 430\\ 
+				\hline
 			\end{tabular}
 		\end{table}
-	\begin{table}[ht]
-		\begin{tabular}{ |c|c|c| } 
-			\hline
-			random&unique minimal hits&minimal hits\\
-			\hline
-			weak&68 & 202\\
-			\hline
-			strong&296 & 430\\ 
-			\hline
-		\end{tabular}
-	\end{table}
-		
+
 		\clearpage
 		\subsubsection{via-tba x via-tgba}
 		\begin{table}[ht]
