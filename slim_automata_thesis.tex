@@ -522,7 +522,7 @@ autoreconf -i && ./configure && make.
 		\begin{table}[ht]
 			
 			\centering
-			\caption{ahoj}
+			\caption{As was visible on scatter plot, via-tba has better results. Via-tgba has only 9 minimal hits compared to 91 from via-tba.}
 			\begin{tabular}{ |c||c|c| } 
 				\hline
 				literature&unique minimal hits&minimal hits\\
@@ -540,85 +540,76 @@ autoreconf -i && ./configure && make.
 				\hline
 			\end{tabular}
 		\end{table}
+	\clearpage
 		\section{Slim Automata Produced Seminator versus ePMC}
 		We can create slim automata using different tool called ePMC.
 		
-		At first we compare best working basic paramaters (parameters that try only 1 option) of each tool to create smallest automata
+		At first we compare best working basic paramaters (parameters that try only 1 option) of each tool to create smallest automata to obtain fair time comparison.
 	
-	\begin{center}
-		\begin{tabular}{ |c|c|c| } 
+	\begin{table}[ht]
+		\centering
+		\caption{EPMC acc stands for option, that uses accepting transitions whenever possible, it had slightly better results than other ePMC options. Seminator tba strong }
+		\begin{tabular}{ |c||c|c| } 
+			\hline
+			literature&size&time(s)\\
+			\hhline{|===|}
+			ePMC acc&650 &178 \\
+			\hline
+			seminator tba strong &436 &151 \\
+			\hlineny
 			\hline
 			random&size&time(s)\\
+			\hhline{|===|}
+			ePMC acc&9643 & 5146\\
 			\hline
-			epmc acc&9270 & \\
-			\hline
-			seminator tba strong &6840 & \\
+			seminator tba strong &7032 &405 \\
 			\hlineny
 		\end{tabular}
-	\end{center}
-	\begin{center}
-		\begin{tabular}{ |c|c|c| } 
-			\hline
-			random&size&time(s)\\
-			\hline
-			epmc acc&9270 & \\
-			\hline
-			seminator tba strong &6840 & \\
-			\hlineny
-		\end{tabular}
-	\end{center}
-		Now let us compare smallest automata of each tool and to see how smaller automata get by combining these tools.
-		\begin{center}
-			\begin{tabular}{ |c|c|c| } 
-				\hline
-				literature&size&time(s)\\
-				\hline
-				epmc best&536 & \\
-				\hline
-				seminator best &365 & \\
-				\hlineny
-				seminator+epmc best &349 & \\ 
-				\hlineny
-			\end{tabular}
-		\end{center}
-	\begin{center}
-		\begin{tabular}{ |c|c|c| } 
-			\hline
-			random&size&time(s)\\
-			\hline
-			epmc best&10197 & \\
-			\hline
-			seminator best &7133 & \\
-			\hlineny
-			seminator+epmc best &7060 & \\ 
-			\hlineny
-		\end{tabular}
-	\end{center}
+	\end{table}
+	\begin{figure}[ht]
+		\centering
+		\caption{On scatter plot comparing sizes we can see that epmc has some better hits.}
+		\begin{tikzpicture}
+			\input{scatter/slim-epmc-1-option.tikz}
+		\end{tikzpicture}
+	\end{figure}
+	
+	
+		The section compares smallest automata of each tool and to see how smaller automata get by combining these tools.
+	
+\begin{figure}[ht]
+	\centering
+	\caption{If we compare smallest automata of each tool, Seminator slim has most of the best results and the difference is even bigger than single option comparison. Combining Seminator and ePMC for best automata didn't bring much better results. On random dataset total size of automata from Seminator slim is 7133. If we combine Seminator slim and ePMC, we get total size 7060, which is not that significant difference.}
+	\begin{tikzpicture}
+		\input{scatter/slim-epmc.tikz}
+	\end{tikzpicture}
+\end{figure}
+Then this section continues with comparison of minimal hits.
 
-This section continues with comparison of minimal hits.
-
-\begin{center}
-	\begin{tabular}{ |c|c|c| } 
+\begin{table}[ht]
+	\centering
+	\caption{By unique minimal hits of these tool we can see that ePMC has 35 unique minimal hits compared to 344 of Seminator. But as we can see from previous scatter plot, the size difference isn't that high.}
+	\begin{tabular}{ |c||c|c| } 
 		\hline
 		literature&unique minimal hits&minimal hits\\
+		\hhline{|===|}
+		ePMC&1 & 5\\
 		\hline
-		epmc&1 & 5\\
+		Seminator &15 & 19\\ 
 		\hline
-		seminator &15 & 19\\ 
+		\hline
+		random&unique minimal hits&minimal hits\\
+		\hhline{|===|}
+		ePMC&35 & 155\\
+		\hline
+		Seminator &344 & 464\\ 
 		\hline
 	\end{tabular}
-\end{center}
-		\begin{center}
-			\begin{tabular}{ |c|c|c| } 
-				\hline
-				random&unique minimal hits&minimal hits\\
-				\hline
-				epmc&35 & 155\\
-				\hline
-				seminator &344 & 464\\ 
-				\hline
-			\end{tabular}
-		\end{center}
+\end{table}
+		
+	
+	
+	
 		%%\subsection{Comparisons among Unoptimized options}
 		%%\subsection{Comparisons among Post-Optimized options}
 		
@@ -628,7 +619,7 @@ This section continues with comparison of minimal hits.
 		%%\subsection{Comparisons among Post-Optimized options}
 
 		%\section{Slim automata produced seminator ePMC}
-	
+	\clearpage
 		\section{Compare with World}
 		Let us see size comparison with diffent kinds of automata.
 		
@@ -639,9 +630,7 @@ This section continues with comparison of minimal hits.
 		Now we compare \texttt{seminator --slim} with other tools using scatter plots.
 		
 		
-		\begin{tikzpicture}
-			\input{scatter/slim-epmc.tikz}
-		\end{tikzpicture}
+		
 	
 		\begin{tikzpicture}
 		\input{scatter/slim-ltl2ldba.tikz}
