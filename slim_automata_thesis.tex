@@ -621,24 +621,41 @@ Then this section continues with comparison of minimal hits.
 		%\section{Slim automata produced seminator ePMC}
 	\clearpage
 		\section{Compare with World}
-		Let us see size comparison with diffent kinds of automata.
+		Let us see size comparison with diffent kinds of automata. DESCRIBE LTL2LDBA a slim, co je ktery tool
 		
-		\input{tables/basic-tools.tex}
+		\begin{table}[ht]
+			\centering
+			\caption{Results show that semi-deterministic automata created by Seminator are the smallest on average among the compared tools. Ltl2ldba creates the smallest GFM automata, as semi-deterministic automata do not promise GFM property. }
+			\input{tables/basic-tools.tex}
+		\end{table}
 		
 		
 		
 		Now we compare \texttt{seminator --slim} with other tools using scatter plots.
+		\begin{figure}[ht]
+			\centering
+			\caption{Semi-deterministic automata are consistently smaller or just slightly bigger than slim automata.}
+			\begin{tikzpicture}
+				\input{scatter/slim-sem_def.tikz}
+			\end{tikzpicture}
+		\end{figure}
 		
 		
-		
-	
+		\begin{figure}[ht]
+			\centering
+			\caption{Ltl2ldba creates consistently small automata (smaller than 40 states), however its dominance over slim automata is not that consistent. The plot shows we can create reasonably smaller MDP automata on average using both tools and choosing the smallest automaton. }
 		\begin{tikzpicture}
 		\input{scatter/slim-ltl2ldba.tikz}
 		\end{tikzpicture}
+		\end{figure}
 	
-	\begin{tikzpicture}
-		\input{scatter/slim-sem_def.tikz}
-	\end{tikzpicture}
+	\begin{table}[ht]
+		\centering
+		\caption{This table confirms, that combining Seminator slim and ltl2ldba creates reasonably smaller automata. For literature dataset it even beats semi-deterministic automata from Seminator.}
+		\input{tables/basic-tools-mix.tex}
+	\end{table}
+
+		\clearpage
 		\section{Note about optimized automata}
 		If the automata optimizations by spot's 
 		\texttt{autfilt} tool break the simulation property, the results in Evaluation chapter are pointless, as they are built on such assumption. But we are confident that spot's \texttt{autfilt} does not break the property.
