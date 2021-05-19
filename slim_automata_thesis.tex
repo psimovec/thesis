@@ -95,13 +95,13 @@ nolof, nolot
 	\chapter{Introduction}
 	Büchi automaton is a finite machine over infinite words. It has been a topic of research for almost 60 years.
 	There were discovered various kinds of similar machines with different properties and use cases.
-	Non-deterministic Büchi in general are not well suitable for model checking or reinforcement, but we can construct non-deterministic Büchi automata with a special property - GFM, that makes the automata suitable. We will focus on slim automata~\cite{hlavni}.
-	Slim automata are specially constructed from Büchi automata. This kind of automaton was defined by it's construction in [source] and is good for MDP [main source]. We implement the proposed algorithm and it's second variant that we call weak [source private conversation]. We extend the algorithm for generalised Büchi automata. Then we evaluate resulting size of automata and we compare it with different tool to create slim automata and with other kinds of automata.
+	Non-deterministic Büchi automata in general are not well suitable for model checking or reinforcement learning, but we can construct non-deterministic Büchi automata with a special property - GFM, that makes the automata suitable. We will focus on slim automata \cite{hlavni}.
+	Slim automata are specially constructed Büchi automata. This kind of automaton was defined by it's construction and is good for MDP \cite{hlavni}. We implement the proposed algorithm and its second variant that we call weak [source private conversation]. We introduce the algorithm for generalized Büchi automata. Then we evaluate resulting size of automata and we compare it with different tool to create slim automata and with other kinds of automata.
+	
+	Prelimination chapter defines Büchi automaton and generalized Büchi automaton. Next chapter defines breakpoint automaton and slim automaton as described in our main source \cite{hlavni} and the weak variant. In fourth chapter we extend the algorithm to generalized Büchi automata. Fifth chapter describes implementation of mentioned slim automata inside Seminator\cite{seminator} tool. In sixth chapter we compare resulting automata size (number of states). First we compare the size internally among implemented options. Then we compare it with ePMC \cite{epmc} - another tool implementing slim automata. We finish the chapter by comparisons with different kinds of automata. In the last chapter we use our automata in benchmarks of reinforcement learning tool Mungojerrie\cite{mungojerrie} and we compare learning speed on it with original automata in provided benchmarks with original benchmark automata and 2 types of automata internally supported by Mungojerrie (slim automata by ePMC and Limit-deterministic Büchi automata by ltl2ldba \cite{ltl2ldba}).
 	
 	
-	...Finally we generalize slim automaton construction to work with generalized Büchi automata. ...
-	
-	... slim automata are specially constructed Büchi automata.
+
 	\chapter{Preliminaries}
 		This chapter defines a Büchi automaton and a generalized Büchi automaton. 
 		
