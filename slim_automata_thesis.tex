@@ -665,17 +665,21 @@ Then this section continues with comparison of minimal hits.
 	
 	Experiments are searching for lowest necessary amount of episodes needed for reaching probability 1 to hit the goal. Experiments run benchmarks 10 times with pseudo random seeds 0-9. If all runs ends with success, experiment computes median and average of results. A run can fail by timeout (600s) or by not reaching probability 1.
 	
+	Table~\ref{Table:mungostats}.1 shows that ltl2ldba has unique best results most often, but Seminator slim has some best hits too.
+	
+	Examples have unclear origins, therefore Table~\ref{Table:mungostatsnoex}.2 shows the results without the Examples. Ltl2ldba still has the best unique results most often, but Seminator gets closer. The table also shows ePMC having higher amount of second best averages and medians than other tools. 
+	
 	\begin{table}[ht]
 		\centering
 		\label{Table:mungostats}
-		\caption{Table shows that ltl2ldba has unique best results most often, but Seminator slim has some best hits too.}
+		\caption{Results with Examples included}
 		\input{mungostats.tex}
 	\end{table}
 	
 	\begin{table}[ht]
 		\centering
 		\label{Table:mungostatsnoex}
-		\caption{Table without Examples shows that ltl2ldba still has the best results most often, but Seminator slim has some best hits too. And ePMC has lots of second best... }
+		\caption{Results with Examples excluded shows that ltl2ldba still has the best results most often, but Seminator slim has some best hits too. And ePMC has lots of second best... }
 		\input{tables/stats-noexamples.tex}
 	\end{table}
 	
