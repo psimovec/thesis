@@ -1,0 +1,51 @@
+\begin{tikzpicture}[automaton]
+						\node[state,initial] (a) {A};
+						\node[state,right of = a] (d) {D};
+						
+						\node[below = 9cm of a,state,initial, cd blue] (bp-a-0) {$\{A\},\emptyset,0$};
+						\node[state,right = 1cm of bp-a-0, cd blue] (bp-d-0) {$\{D\}, \emptyset,0$};
+						\node[state,right = 1cm of bp-d-0, cd blue] (bp-ad-0) {$\{A,D\}, \emptyset,0$};
+						
+						\node[above = 5cm of bp-a-0,state, cd orange] (bp-a-1) {$\{A\},\emptyset,1$};
+						\node[state,above = 5cm of bp-d-0, cd orange] (bp-d-1) {$\{D\}, \emptyset,1$};
+						\node[state,above = 5cm of bp-ad-0, cd orange] (bp-ad-1) {$\{A,D\}, \emptyset,1$};
+						
+						
+						\path[->,auto ]
+						(a) edge[loop below] pic[] {eacc=0} pic{l=$a$} (a)
+						(a) edge[bend left] node {$c$} (d)
+						(d) edge[loop right] node {$c$} (d)
+						(d) edge[bend left] node {$c$} (a)
+						(d) edge[loop above] pic[] {eacc=1} pic{l=$d$} (d)
+						;
+						\path[->,auto ]
+						(bp-a-0) edge[bend right] node {$c$} (bp-d-0)
+						(bp-d-0) edge[bend right] node {$c$} (bp-ad-0)
+						(bp-a-1) edge[bend left] node {$c$} (bp-d-1)
+						(bp-d-1) edge[bend left] node {$c$} (bp-ad-1)
+						
+						(bp-a-1) edge[loop above] node {$a$} (bp-a-1)
+						(bp-d-0) edge[loop below] node {$d$} (bp-d-0)
+						
+						(bp-ad-0) edge[bend right] node {$d$} (bp-d-0)
+						(bp-ad-1) edge[bend left, pos=0.32] node {$a$} (bp-a-1)
+
+						
+						(bp-a-0) edge[blue]  pic[] {eacc=3} pic{l=$a$} (bp-a-1)
+						(bp-ad-0) edge[ blue, pos=0.7]  pic[] {eacc=3} pic{l=$a$} (bp-a-1)
+						(bp-d-1) edge[orange, pos=0.38]  pic[] {eacc=3} pic{l=$d$} (bp-d-0)
+						(bp-ad-1) edge[orange, pos=0.36]  pic[] {eacc=3} pic{l=$d$} (bp-d-0)
+
+						
+
+						
+						(bp-ad-0) edge[loop below] node {$c$} (bp-ad-0)
+						(bp-ad-1) edge[loop above] node {$c$} (bp-ad-1)
+						
+						
+
+
+						
+						
+						;
+					\end{tikzpicture}
