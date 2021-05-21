@@ -96,9 +96,9 @@ nolof, nolot
 	Büchi automaton is a finite machine over infinite words. It has been a topic of research for almost 60 years.
 	There were discovered various kinds of similar machines with different properties and use cases.
 	Non-deterministic Büchi automata in general are not well suitable for model checking or reinforcement learning, but we can construct non-deterministic Büchi automata with a special property -- good for Markov decision processes (GFM)  \cite{hlavni}, that makes the automata suitable. We will focus on slim automata \cite{hlavni}.
-	Slim automata are specially constructed Büchi automata. This kind of automaton was defined by its construction and is good for MDP \cite{hlavni}. We implement the proposed algorithm and its second variant that we call weak [source private conversation]. We introduce the algorithm for generalized Büchi automata. Then we evaluate resulting size of automata and we compare it with different tool to create slim automata and with other kinds of automata.
+	Slim automata are specially constructed Büchi automata. This kind of automaton was defined by its construction and is good for MDP \cite{hlavni}. We implement the proposed algorithm and its second variant that we call weak [source private conversation]. We introduce the algorithm for generalized Büchi automata. Then we evaluate resulting size of automata and we compare it with different tool to create slim automata and with other kinds of automata. In the end we investigate impact of slim automata from Seminator on reinforcement against GFM automata created by other tools.
 	
-	Preliminaries chapter defines Büchi automaton and generalized Büchi automaton. Next chapter defines breakpoint automaton and slim automaton as described in our main source \cite{hlavni} and the weak variant. In fourth chapter we extend the algorithm to generalized Büchi automata. Fifth chapter describes implementation of mentioned slim automata inside Seminator \cite{seminator}\cite{seminator2} tool. In sixth chapter we compare resulting automata size (number of states). First we compare the size internally among implemented options. Then we compare it with ePMC \cite{epmc} - another tool implementing slim automata. We finish the chapter by comparisons with different kinds of automata. In the last chapter we use our automata in benchmarks of reinforcement learning tool Mungojerrie\cite{mungojerrie} and we compare learning speed on it with original automata in provided benchmarks with original benchmark automata and 2 types of automata internally supported by Mungojerrie (slim automata by ePMC and Limit-deterministic Büchi automata by ltl2ldba \cite{ltl2ldba}).
+	Preliminaries chapter defines Büchi automaton and generalized Büchi automaton. Next chapter defines breakpoint automaton and slim automaton as described in our main source \cite{hlavni} and the weak variant. In fourth chapter we extend the algorithm to generalized Büchi automata. Fifth chapter describes implementation of mentioned slim automata inside Seminator \cite{Klokočka2017thesis}\cite{seminator}\cite{seminator2} tool. In sixth chapter we compare resulting automata size (number of states). First we compare the size internally among implemented options. Then we compare it with ePMC \cite{epmc} - another tool implementing slim automata. We finish the chapter by comparisons with different kinds of automata. In the last chapter we use our automata in benchmarks of reinforcement learning tool Mungojerrie\cite{mungojerrie} and we compare learning speed on it with original automata in provided benchmarks with original benchmark automata and 2 types of automata internally supported by Mungojerrie (slim automata by ePMC and Limit-deterministic Büchi automata by ltl2ldba \cite{ltl2ldba}).
 	
 	
 
@@ -119,6 +119,8 @@ nolof, nolot
 				\item $\Gamma \subseteq \Delta$ is a set of \emph{accepting transitions}.
 			\end{itemize}
 			 Intuitivelly, a transition $(s, a, t)$  directionally connects the states $s$ and $t$ with the letter $a$.
+			 
+			 By convention, we use capital greek letters to denote sets of transitions. For convenience, we also define for each set of transitions $\Delta$ a function $\delta$ (denoted by the corresponding small greek letter). 
 			 
 			A \emph{run} $r$ of $\cA$ over an $\omega$-word $w=w_0w_1w_2\ldots$ is an infinite sequence of transitions
 			$r\eqdef t_0t_1\ldots\in\Delta^\omega$, where $t_k=(q_k, w_k,q_{i+1})$,
@@ -185,7 +187,7 @@ nolof, nolot
 			\end{enumerate}
 			
 			%%Breakpoint automata recognize/describe/represent subset of original language 
-			Figure \ref{fig:bp:non-equivalent} shows application of this construction. The example demonstrates that $\lD \subseteq \lA$ as the construction did not generate any accepting transition. Therefore original $\lA=\{a^\omega\}$, but $\lD$ is empty.
+			Figure \ref{fig:bp:non-equivalent} shows application of this construction. The example demonstrates that $\lD \subseteq \lA$ as the construction did not generate any accepting transition. Therefore original $\lA=\{a^\omega\}$, but $\lD$ is empty. 
 			
 			
 			
@@ -194,7 +196,7 @@ nolof, nolot
 					\input{bp.tikz}
 					
 				\end{center}
-				\caption{A Büchi Automaton $\cA$ (left) and a breakpoint automaton $\cD$ for $\cA$ (right). }
+				\caption{A Büchi Automaton $\cA$ (left) and a breakpoint automaton $\cD$ for $\cA$ (right). Inspired by \cite[Figure~7.3]{Blahoudek2018thesis}}
 				\label{fig:bp:non-equivalent}
 			\end{figure}
 		
@@ -238,13 +240,10 @@ nolof, nolot
 			To achieve this, we will go through each subset one by one, using original algorithm. We will keep track of $levels\eqdef\{0,1,\ldots,|G|-1\}$ in the names of states. Let $|G|$ be number of $levels$ and $i \in \mathbb{N}, i<|G|$ the current level.
 			At each level $i$, we look at $i$th subset of $G$. We use same steps as in classic breakpoint construction, but on each accepting transition the new state will be leveled up to $(i+1)\bmod|G|$, otherwise the target state has the same level. Our new automaton simulates $\cT$, as it accepts a word if it cycles through all levels. If $|G|=0$, we return a trivially accepting automaton
 			
-			We can use the core of previous construction and just to extend it with levels. Let
-			$up(x)\eqdef(x+1)\bmod|G|$ and let 
+			We can use the core of previous construction and just to extend it with levels.
 			%$3^Q_i :=\{(S,S',i)|S'\subset S \subseteq Q, i \in N, i<|G|\}$ and
-			
 			%$3^Q_{i+}:=\{(S,S',i)|S'\subseteq S \subseteq Q, i \in N, i<|G|\}$.
-			
-			$P := 3^Q \times levels$.
+	
 			
 			Let $(S,S')\in 3^Q$ and let $i \in levels$, by $P$ we denote a state $P=(S,S',i)$.
 			%$\delta: (S,a)\rightarrow\{q'\in Q | \exists q \in S.(q,a,q') \in \Delta\}$ and
@@ -253,7 +252,7 @@ nolof, nolot
 			We define $\gamma_i$ from $\Gamma_i$ for all $i \in levels$ in the same way we did for $\gamma$ from $\Gamma$ and it allows us to easily define the raw generalized breakpoint transitions
 			$\rho_{\Gamma_{i}}\colon$ similarly as $\rho_\Gamma$ using $\gamma_i$ instead of $\gamma$.
 			
-			
+			Let $up(x)=(x+1)\bmod|G|$.
 			
 			The generalized breakpoint automaton $\cD=(\Sigma, 3^Q\times\cN, ({q_i},\emptyset, 0),\delta_B,\gamma_B)$ is defined such that, when $\delta_R\colon(P, a) \rightarrow (R, R', j)$, then there are three cases:
 			
@@ -291,7 +290,7 @@ nolof, nolot
 		\section{Technologies/Tools}
 		The implementation is inside seminator which is implemented in C++17 builds on Spot library. %\cite{DBLP:conf/mascots/Duret-LutzP04}.
 		\subsection{Seminator} 
-		Seminator is a Linux command-line tool which can be run with the \texttt{seminator} command. The tool transforms transition-based generalized B̈uchi automata (TGBAs) into equivalent semi-deterministic automata. \cite{seminator2}
+		Seminator is a Linux command-line tool which can be run with the \texttt{seminator} command. The tool transforms transition-based generalized Büchi automata (TGBAs) into equivalent semi-deterministic automata. \cite{Klokočka2017thesis}\cite{seminator}\cite{seminator2}
 		
 		
 		
@@ -323,7 +322,7 @@ $./seminator --slim -f automaton.hoa
 		\paragraph{Example 2}
 		Transform automaton.hoa to unoptimized strong slim automaton
 		\begin{lstlisting}[language=bash]
-$./seminator --slim --strong --via-tgba --optimalizations=0 -f automaton.hoa
+$./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 		\end{lstlisting}
 		
 		 
@@ -340,7 +339,7 @@ $./seminator --slim --strong --via-tgba --optimalizations=0 -f automaton.hoa
 		
 		\texttt{-{}-via-tgba} does not modify input automaton to tba.
 		
-		Neither \texttt{-{}-via-tba} nor \texttt{-{}-via-tgba}: try both options, choose the smallest automaton
+		Neither \texttt{-{}-via-tba} nor \texttt{-{}-via-tgba}: try both options, choose the smallest automaton.
 		
 		Postprocess optimalizations are enabled by default.
 		
@@ -370,7 +369,7 @@ $./seminator --slim --strong --via-tgba --optimalizations=0 -f automaton.hoa
 	Only \texttt{seminator -{}-slim -{}-strong -{}-via-tba -{}-optimizations=0} is proved, as it follows construction from \cite{hlavni} which is proved.
 	
 	
-	\section{How to Install Seminator}
+	\section{fuj - How to Install Seminator}
 	(jeste nevim kde tuto sekci dat, jestli ma mit tento nazev, co vsechno tady bude treba dat... no a jeste ro pak upravim podle toho jak to bude odevzdane v zipu)
 	
 	To install the tool we need install spot and to run 
@@ -390,7 +389,7 @@ autoreconf -i && ./configure && make.
 	Subject of following research, that is out of scope of this thesis, could be to verify if spot optimizations do not break the simulation property. 
 	
 	\chapter{Evaluation of automaton size}
-	Evaluation part builds on seminator-evaluation. We compare amount of states of output automata on 2 datasets. First dataset are 20 literature formulas, second dataset is 500 automata that were randomly generated. First section start by internal comparison of slim automata created by Seminator. Second section compares these automata against ePMC, which is another tool producing slim automata. Third section compares slim automata against ldba and semi-deterministic automata. Ldba automata are produced by ltl2ldba \cite{ltl2ldba}, and semi-deterministic automata\cite{seminator}\cite{seminator2} are produced by Seminator. Let us note, that from mentioned types of automata, only semi-deterministic automata do not promise good for Markov decision processes property.
+	Evaluation part builds on seminator-evaluation. We compare amount of states of output automata on 2 datasets. First dataset are 20 literature formulas, second dataset is 500 automata that were randomly generated. We use 120s timeout for each tool. First section starts by internal comparison of slim automata created by Seminator. Second section compares these automata against ePMC, which is another tool producing slim automata. Third section compares slim automata against ldba and semi-deterministic automata. Ldba automata are produced by ltl2ldba \cite{ltl2ldba}, and semi-deterministic automata are produced by Seminator. Let us note, that from mentioned types of automata, only semi-deterministic automata do not promise good for Markov decision processes property.
 	
 	\section{Slim automata produced by Seminator}
 	In this section we compare automaton size generated by seminator -{}-slim.
@@ -434,6 +433,8 @@ autoreconf -i && ./configure && make.
 
 	\subsection{Post-Optimized}
 	In this subsection we post-optimize results using \texttt{autfilt} tool.
+	
+	GFM automata are closed under simulations \cite[Section~3.1]{hlavni}. We are confident that spot's \texttt{autfilt} does not break the property.
 	
 	\begin{table}[ht]
 		\centering
@@ -655,32 +656,47 @@ Then this section continues with comparison of minimal hits.
 		\input{tables/basic-tools-mix.tex}
 	\end{table}
 
-		\clearpage
-		\section{----pryc Note about optimized automata}
-		If the automata optimizations by spot's 
-		\texttt{autfilt} tool break the simulation property, the results in Evaluation chapter are pointless, as they are built on such assumption. But we are confident that spot's \texttt{autfilt} does not break the property.
 	\chapter{Mungojerrie Benchmarks}
-	This chapter compares seminator's slim automata on reinforcement learning tool mungojerrie \cite{mungojerrie}.
+	This chapter compares seminator's slim automata on reinforcement learning tool Mungojerrie \cite{mungojerrie}.
 	
-	Experiment uses benchmarks provided with the tool - Examples. The examples are built by various ways, some are even handcrafted. Using LTL that is provided we create slim automata for comparison on benchmarks, as Mungojerrie can accept LTL and transform it using internally supported tools ltl2ldba and ePMC, or we can provide automaton that is GFM (the property is not checked by Mungojerrie).
+	Experiment uses benchmarks provided with the tool - Examples. The examples are built by various ways, some can be even handcrafted. Using LTL that is provided we create slim automata for comparison on benchmarks, as Mungojerrie can accept LTL and transform it using internally supported tools ltl2ldba and ePMC, or we can provide automaton that is GFM (the property is not checked by Mungojerrie).
+	
+	TADY ZAKLADNI POPIS JAK FARA MUNGOS
 	
 	Experiments are searching for lowest necessary amount of episodes needed for reaching probability 1 to hit the goal. Experiments run benchmarks 10 times with pseudo random seeds 0-9. If all runs ends with success, experiment computes median and average of results. A run can fail by timeout (600s) or by not reaching probability 1.
 	
-	\begin{table}
+	\begin{table}[ht]
 		\centering
-		\caption{Table shows that ltl2ldba has the best results most often, but Seminator slim has some best hits too.}
+		\label{Table:mungostats}
+		\caption{Table shows that ltl2ldba has unique best results most often, but Seminator slim has some best hits too.}
 		\input{mungostats.tex}
 	\end{table}
 	
-	\begin{table}
+	\begin{table}[ht]
 		\centering
-		\caption{Table of average episodes needed to reach probability 1.}
-	\input{mungobench.tex}
+		\label{Table:mungostatsnoex}
+		\caption{Table without Examples shows that ltl2ldba still has the best results most often, but Seminator slim has some best hits too. And ePMC has lots of second best... }
+		\input{tables/stats-noexamples.tex}
 	\end{table}
-
-	\begin{figure}
+	
+	\begin{table}[ht]
 		\centering
-		\caption{Sorted values for each benchmark run for each tool.}
+		\label{Table:mungobenchmarks}
+		\caption{Table of average episodes needed to reach probability 1.}
+		\input{mungobench.tex}
+	\end{table}
+	
+	\begin{figure}[ht]
+		\centering
+		\label{Cactus:mungoaverage}
+		\caption{Sorted values for benchmark's average run for each tool, automaton size on x-axis, benchmarks sorted by automaton size on y-axis.}
+		\input{cactuses/average.tikz}
+	\end{figure}
+	
+	\begin{figure}[ht]
+		\centering
+		\label{Cactus:mungoruns}
+		\caption{Sorted values for all of benchmark runs for each tool, automaton size on x-axis, benchmarks runs sorted by automaton size on y-axis.}
 	\input{mungocactus.tikz}
 	\end{figure}
 	
