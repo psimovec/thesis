@@ -417,16 +417,17 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 			\hline
 		\end{tabular}
 \end{table}
-
+	\clearpage
 	\subsection{Post-Optimized}
 	In this subsection we post-optimize results using \texttt{autfilt} tool.
 	
 	GFM automata are closed under simulations \cite[Section~3.1]{hlavni}. We are confident that spot's \texttt{autfilt} does not break the property.
 	
 	\begin{table}[ht]
-		\label{table:seminator:optimized}
+		
 		\centering
 		\caption{In this table we compare all possible post-optimized combinations of parameters. By default \texttt{seminator --slim} tries all combination, runs optimizations, and then chooses the smallest automaton (best/best). }
+		\label{table:seminator:optimized}
 		\begin{tabular}{ |c||c|c|c|c|c|c| } 
 			\hline
 			seminator&\multicolumn{2}{c|}{weak}&\multicolumn{2}{c|}{strong}&\multicolumn{2}{c|}{best} \\
@@ -457,29 +458,32 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	\end{table}
 
 	
-	From 4 base options; after applying post-optimizations strong slim algorithm surpasses weak one by resulting automaton size, even if it has worse results without the post-optimizations.
+	As Table \ref{table:seminator:optimized} shows, rom 4 base options; after applying post-optimizations strong slim algorithm surpasses weak one by resulting automaton size, even if it has worse results without the post-optimizations.
 	Degeneralizing the automata as a first step still has smaller results.
 	From 4 base options, strong slim algorithm via-tba creates smallest automata on average.
 	Transforming input automata to tba first creates results which are close to best ones. 
 	
-	\clearpage
-	\subsubsection{Strong against Weak slim automata}
+	
+	\paragraph{Strong against weak slim automata}
 	Let us focus on automaton size differences between weak and strong slim automata.
+	
+	Scatter plot~\ref{scatter:weakstrong} reveals that strong slim automaton is smaller in majority of cases, but there are also cases where weak slim automaton is smaller.
 		\begin{figure}[ht]
-			\label{scatter:weakstrong}
+			
 			\centering 
-			\caption{Scatter plot of strong against weak slim automata, equal values excluded. We can see strong slim automaton is smaller in more cases, but there are also cases where weak slim automaton is smaller.}
-		
+			\caption{Scatter plot of strong against weak slim automata, equal values excluded. }
+			\label{scatter:weakstrong}
 		\begin{tikzpicture}
 			\input{scatter/strong-weak.tikz}
 		\end{tikzpicture}
 	\end{figure}
 	
-		{Minimal hits for weak x strong automata}
+		Comparing minimal hits for weak and strong automata in Table~\ref{table:weakstrongminhits} confirms that strong slim automata lead in unique minimal hits, but weak slim automata have some unique minimal hits too, so it makes sense to try both options and choose better one. 
 		\begin{table}[ht]
 			\centering
+			
+			\caption{Minimal hits of strong and weak slim automata}
 			\label{table:weakstrongminhits}
-			\caption{Strong slim automata lead in unique minimal hits, but weak slim automata have some unique minimal hits too, so it makes sense to try both options and choose better one. }
 			\begin{tabular}{ |c||c|c| } 
 				\hline
 				literature&unique minimal hits&minimal hits\\
@@ -498,24 +502,27 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 			\end{tabular}
 		\end{table}
 
-		\clearpage
-		\subsubsection{Via-tba against via-tgba}
+		\paragraph{Via-tba against via-tgba}
 		Let us note that 13/20 formulas from literature and 391/500 formulas from random dataset create automata that are already TBA.
+		
+		Plot~\ref{scatter:tba-tgba} density is low, as many of results are the same (majority of the automata were already tba). Via-tba has mostly better results, but there are examples where via-tgba outputs automaton twice smaller automaton. Table~\ref{table:tba-tgba-min-hits} confirms that via-tba has better results. Via-tgba has only 9 minimal hits compared to 91 from via-tba.
 		
 		\begin{figure}[ht]
 			\centering
-			\label{scatter:tba-tgba}
-		\caption{Scatter plot via-tba against via-tgba, equal values excluded. Plot density is low, as many of results are the same (majority of the automata were already tba). Via-tba has mostly better results, but there are also examples where via-tgba outputs automaton twice smaller automaton.}
+			
+		\caption{Scatter plot via-tba against via-tgba, equal values excluded. }
+		\label{scatter:tba-tgba}
 		\begin{tikzpicture}
 			\input{scatter/tba-tgba.tikz}
 		\end{tikzpicture}
-	\end{figure}
+		\end{figure}
 		
 		 
 		\begin{table}[ht]
-			\label{table:tba-tgba-min-hits}
+			
 			\centering
-			\caption{As was visible on scatter plot, via-tba has better results. Via-tgba has only 9 minimal hits compared to 91 from via-tba.}
+			\caption{Minimal hits of via-tba against via-tgba.}
+			\label{table:tba-tgba-min-hits}
 			\begin{tabular}{ |c||c|c| } 
 				\hline
 				literature&unique minimal hits&minimal hits\\
@@ -541,8 +548,9 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	
 	\begin{table}[ht]
 		\centering
+		
+		\caption{EPMC acc stands for option, that uses accepting transitions whenever possible. It had slightly better results than other ePMC options. }
 		\label{table:epmc-seminator-1}
-		\caption{EPMC acc stands for option, that uses accepting transitions whenever possible, it had slightly better results than other ePMC options. }
 		\begin{tabular}{ |c||c|c| } 
 			\hline
 			literature&size&time[s]\\
@@ -562,8 +570,9 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	\end{table}
 	\begin{figure}[ht]
 		\centering
-		\label{scatter:slim-epmc-1}
+		
 		\caption{On scatter plot comparing sizes we can see that epmc has some better hits.}
+		\label{scatter:slim-epmc-1}
 		\begin{tikzpicture}
 			\input{scatter/slim-epmc-1-option.tikz}
 		\end{tikzpicture}
@@ -574,8 +583,9 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	
 \begin{figure}[ht]
 	\centering
-	\label{scatter:slim-epmc}
+	
 	\caption{If we compare smallest automata of each tool, Seminator slim has most of the best results and the difference is even bigger than single option comparison. Combining Seminator and ePMC for best automata didn't bring much better results. On random dataset total size of automata from Seminator slim is 7133. If we combine Seminator slim and ePMC, we get total size 7060, which is not that significant difference.}
+	\label{scatter:slim-epmc}
 	\begin{tikzpicture}
 		\input{scatter/slim-epmc.tikz}
 	\end{tikzpicture}
@@ -584,8 +594,9 @@ Then this section continues with comparison of minimal hits.
 
 \begin{table}[ht]
 	\centering
-	\label{table:epmc-seminator-min-hits}
+	
 	\caption{By unique minimal hits of these tool we can see that ePMC has 35 unique minimal hits compared to 344 of Seminator. But as we can see from previous scatter plot, the size difference isn't that high.}
+	\label{table:epmc-seminator-min-hits}
 	\begin{tabular}{ |c||c|c| } 
 		\hline
 		literature&unique minimal hits&minimal hits\\
@@ -622,8 +633,9 @@ Then this section continues with comparison of minimal hits.
 		
 		\begin{table}[ht]
 			\centering
-			\label{table:basic-tools}
+			
 			\caption{Results show that semi-deterministic automata created by Seminator are the smallest on average among the compared tools. Ltl2ldba creates the smallest GFM automata, as semi-deterministic automata do not promise GFM property. }
+			\label{table:basic-tools}
 			\input{tables/basic-tools.tex}
 		\end{table}
 		
@@ -632,8 +644,9 @@ Then this section continues with comparison of minimal hits.
 		Now we compare \texttt{seminator --slim} with other tools using scatter plots.
 		\begin{figure}[ht]
 			\centering
-			\label{scatter:seminator-slim-default}
+			
 			\caption{Semi-deterministic automata are consistently smaller or just slightly bigger than slim automata.}
+			\label{scatter:seminator-slim-default}
 			\begin{tikzpicture}
 				\input{scatter/slim-sem_def.tikz}
 			\end{tikzpicture}
@@ -642,8 +655,9 @@ Then this section continues with comparison of minimal hits.
 		
 		\begin{figure}[ht]
 			\centering
-			\label{scatter:seminator-ltl2ldba}
+			
 			\caption{Ltl2ldba creates consistently small automata (smaller than 40 states), however its dominance over slim automata is not that consistent. The plot shows we can create reasonably smaller MDP automata on average using both tools and choosing the smallest automaton. }
+			\label{scatter:seminator-ltl2ldba}
 		\begin{tikzpicture}
 		\input{scatter/slim-ltl2ldba.tikz}
 		\end{tikzpicture}
