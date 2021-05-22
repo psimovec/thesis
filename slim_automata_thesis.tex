@@ -389,6 +389,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	\subsection{Comparisons among Unoptimized Configurations}
 	In this subsection we compare base unoptimized seminator options.
 \begin{table}[ht]
+	\label{table:seminator:unoptimized}
 	\centering
 	\caption{Slim automata on both datasets without any post-processing. Strong slim automata have more states than weak ones, as expected, because strong slim automata add more accepting transitions, which can create new states. }
 		\begin{tabular}{ |c||c|c|c|c| } 
@@ -429,6 +430,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	GFM automata are closed under simulations \cite[Section~3.1]{hlavni}. We are confident that spot's \texttt{autfilt} does not break the property.
 	
 	\begin{table}[ht]
+		\label{table:seminator:optimized}
 		\centering
 		\caption{In this table we compare all possible post-optimized combinations of parameters. By default \texttt{seminator --slim} tries all combination, runs optimizations, and then chooses the smallest automaton (best/best). }
 		\begin{tabular}{ |c||c|c|c|c|c|c| } 
@@ -470,6 +472,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	\subsubsection{Strong against Weak slim automata}
 	Let us focus on automaton size differences between weak and strong slim automata.
 		\begin{figure}[ht]
+			\label{scatter:weakstrong}
 			\centering 
 			\caption{Scatter plot of strong against weak slim automata, equal values excluded. We can see strong slim automaton is smaller in more cases, but there are also cases where weak slim automaton is smaller.}
 		
@@ -481,6 +484,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 		{Minimal hits for weak x strong automata}
 		\begin{table}[ht]
 			\centering
+			\label{table:weakstrongminhits}
 			\caption{Strong slim automata lead in unique minimal hits, but weak slim automata have some unique minimal hits too, so it makes sense to try both options and choose better one. }
 			\begin{tabular}{ |c||c|c| } 
 				\hline
@@ -505,6 +509,8 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 		Let us note that 13/20 formulas from literature and 391/500 formulas from random dataset create automata that are already TBA.
 		
 		\begin{figure}[ht]
+			\centering
+			\label{scatter:tba-tgba}
 		\caption{Scatter plot via-tba against via-tgba, equal values excluded. Plot density is low, as many of results are the same (majority of the automata were already tba). Via-tba has mostly better results, but there are also examples where via-tgba outputs automaton twice smaller automaton.}
 		\begin{tikzpicture}
 			\input{scatter/tba-tgba.tikz}
@@ -513,7 +519,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 		
 		 
 		\begin{table}[ht]
-			
+			\label{table:tba-tgba-min-hits}
 			\centering
 			\caption{As was visible on scatter plot, via-tba has better results. Via-tgba has only 9 minimal hits compared to 91 from via-tba.}
 			\begin{tabular}{ |c||c|c| } 
@@ -541,6 +547,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	
 	\begin{table}[ht]
 		\centering
+		\label{table:epmc-seminator-1}
 		\caption{EPMC acc stands for option, that uses accepting transitions whenever possible, it had slightly better results than other ePMC options. }
 		\begin{tabular}{ |c||c|c| } 
 			\hline
@@ -561,6 +568,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	\end{table}
 	\begin{figure}[ht]
 		\centering
+		\label{scatter:slim-epmc-1}
 		\caption{On scatter plot comparing sizes we can see that epmc has some better hits.}
 		\begin{tikzpicture}
 			\input{scatter/slim-epmc-1-option.tikz}
@@ -572,6 +580,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	
 \begin{figure}[ht]
 	\centering
+	\label{scatter:slim-epmc}
 	\caption{If we compare smallest automata of each tool, Seminator slim has most of the best results and the difference is even bigger than single option comparison. Combining Seminator and ePMC for best automata didn't bring much better results. On random dataset total size of automata from Seminator slim is 7133. If we combine Seminator slim and ePMC, we get total size 7060, which is not that significant difference.}
 	\begin{tikzpicture}
 		\input{scatter/slim-epmc.tikz}
@@ -581,6 +590,7 @@ Then this section continues with comparison of minimal hits.
 
 \begin{table}[ht]
 	\centering
+	\label{table:epmc-seminator-min-hits}
 	\caption{By unique minimal hits of these tool we can see that ePMC has 35 unique minimal hits compared to 344 of Seminator. But as we can see from previous scatter plot, the size difference isn't that high.}
 	\begin{tabular}{ |c||c|c| } 
 		\hline
@@ -618,6 +628,7 @@ Then this section continues with comparison of minimal hits.
 		
 		\begin{table}[ht]
 			\centering
+			\label{table:basic-tools}
 			\caption{Results show that semi-deterministic automata created by Seminator are the smallest on average among the compared tools. Ltl2ldba creates the smallest GFM automata, as semi-deterministic automata do not promise GFM property. }
 			\input{tables/basic-tools.tex}
 		\end{table}
@@ -627,6 +638,7 @@ Then this section continues with comparison of minimal hits.
 		Now we compare \texttt{seminator --slim} with other tools using scatter plots.
 		\begin{figure}[ht]
 			\centering
+			\label{scatter:seminator-slim-default}
 			\caption{Semi-deterministic automata are consistently smaller or just slightly bigger than slim automata.}
 			\begin{tikzpicture}
 				\input{scatter/slim-sem_def.tikz}
@@ -636,6 +648,7 @@ Then this section continues with comparison of minimal hits.
 		
 		\begin{figure}[ht]
 			\centering
+			\label{scatter:seminator-ltl2ldba}
 			\caption{Ltl2ldba creates consistently small automata (smaller than 40 states), however its dominance over slim automata is not that consistent. The plot shows we can create reasonably smaller MDP automata on average using both tools and choosing the smallest automaton. }
 		\begin{tikzpicture}
 		\input{scatter/slim-ltl2ldba.tikz}
@@ -644,12 +657,13 @@ Then this section continues with comparison of minimal hits.
 	
 	\begin{table}[ht]
 		\centering
+		\label{table:basic-tools-mix}
 		\caption{This table confirms, that combining Seminator slim and ltl2ldba creates reasonably smaller automata. For literature dataset it even beats semi-deterministic automata from Seminator.}
 		\input{tables/basic-tools-mix.tex}
 	\end{table}
 
 	\chapter{Mungojerrie Benchmarks}
-	This chapter compares seminator's slim automata on reinforcement learning tool Mungojerrie \cite{mungojerrie}. Reinforcement learning inside Mungojerrie has 2 phases. It has a learning phase with given number of episodes and a model checking phase. The objective is defined by provided GFM automaton.\cite{mungojerrie}
+	This chapter compares Seminator's slim automata on reinforcement learning tool Mungojerrie \cite{mungojerrie}. Reinforcement learning inside Mungojerrie has 2 phases. It has a learning phase with given number of episodes and a model checking phase. The objective is defined by provided GFM automaton.\cite{mungojerrie}
 	
 	
 	The experiment uses benchmarks provided with the tool - Examples. Automata for examples are built by various ways, some can be even handcrafted. Using LTL, that is provided as a name of automaton in each original benchmark, we create slim automata for comparison on benchmarks, as Mungojerrie can accept LTL and transform it using internally supported tools ltl2ldba and ePMC, or we can provide automaton that is GFM (the property is not checked by Mungojerrie).
