@@ -137,7 +137,7 @@ nolof, nolot
 			
 			
 			
-			\chapter{Slim Automata Construction}\label{section:slim}
+			\chapter{Slim Automata Construction}
 			
 			%%todle mozna trochu jinak v (ne dalsi ale) teto sekci
 			%%We are going to define a few more transitions on top of breakpoint construction which allow us to construct slim automata that decide exactly the class of <GFM languages> spatny pojem. jsou to omega regularni
@@ -200,7 +200,7 @@ nolof, nolot
 				\label{fig:bp:non-equivalent}
 			\end{figure}
 		
-			\section{Slim automata}
+			\section{Slim automata}\label{section:slim}
 			Slim automata are BP automata enriched with additional transitions. As a result they are non-deterministic, Good for Markov decision processes \cite{hlavni} and equivalent to the input automaton.	
 			In this section we define \emph{Breakpoint automaton} and transitions for \emph{strong slim} ($\gamma_{p}$) and \emph{weak slim} ($\gamma_{p}$) automata,
 			 $\gamma_w, \gamma_p:3^Q \times \Sigma \rightarrow 3^Q$, that promote the second set of a breakpoint construction to the first set as follows. 
@@ -286,24 +286,24 @@ nolof, nolot
 
 			
 	\chapter{Implementation}
-		I have implemented the generalized construction of slim automata in both weak and strong version  (\ref{section:slim}) (\ref{section:gslim}). I have also added option to create breakpoint automata (\ref{section:bp})(2.3).
+		I have implemented the generalized construction of slim automata in both weak and strong version  (\ref{section:slim}) (\ref{section:gslim}). I have also added option to create breakpoint automata (\ref{section:bp}).
 		
 		\section{Technologies/Tools}
-		The implementation is inside seminator which is implemented in C++17 builds on Spot library. %\cite{DBLP:conf/mascots/Duret-LutzP04}.
+		The implementation is inside Seminator which is implemented in C++17 builds on Spot library. %\cite{DBLP:conf/mascots/Duret-LutzP04}.
 		\subsection{Seminator} 
 		Seminator is a Linux command-line tool which can be run with the \texttt{seminator} command. The tool transforms transition-based generalized Büchi automata (TGBAs) into equivalent semi-deterministic automata. \cite{Klokočka2017thesis}\cite{seminator}\cite{seminator2}
 		
 		
 		
-		The tool expects the input automaton in the Hanoi Omega-Automata(HOA) format \cite{DBLP:conf/cav/BabiakBDKKM0S15} on the standard input stream, but it can also read the input automaton from a file.
+		The tool expects the input automaton in the Hanoi Omega-Automata (HOA) format \cite{DBLP:conf/cav/BabiakBDKKM0S15} on the standard input stream, but it can also read the input automaton from a file.
 		
 	\subsection{Spot}
-	Spot is a C++ library with Python bindings and an assortment of command-line tools designed to manipulate LTL and $\omega$-automata in batch. \cite{spot2}
+	"Spot is a C++ library with Python bindings and an assortment of command-line tools designed to manipulate LTL and $\omega$-automata in batch." \cite[Abstract]{spot2}
 	
 	Relevant spot tools:
-	\paragraph{ltl2tgba} The ltl2tgba tool translates LTL or PSL formulas into different types of automata. \cite{ltl2tgba}
-	\paragraph{autfilt} The autfilt tool can filter, transform, and convert a stream of automata. \cite{autfilt}
-	\paragraph{ltlcross} ltlcross is a tool for cross-comparing the output of LTL-to-automata translators. \cite{ltlcross}
+	\paragraph{ltl2tgba} "translates LTL/PSL formulas into generalized Büchi automata,or deterministic parity automata" \cite{spot}
+	\paragraph{autfilt} "filters, converts, and transforms $\omega$-automata"  \cite{spot}
+	\paragraph{ltlcross} "cross-compares LTL/PSL-to-automata translators to find bugs" \cite{spot}
 		\section{Create Slim Automata Using Seminator}
 		By default, seminator creates sDBA. To create a slim automaton we need to add -{}-slim option. 
 		\paragraph{Options} By default, -{}-slim tries all reasonable combinations of options, optimizes the output and chooses an automaton with the smallest number of states.
@@ -317,7 +317,7 @@ $./seminator --slim -f automaton.hoa
 		
 		There are several options to specify how we construct the automata.
 		
-		For example \texttt{seminator -{}-slim -{}-strong -{}-optimizations=0 -{}-via-tgba} generates output according to algorithm in 2.5. (Using \texttt{-{}-via-tba} converts input to tba first) With automaton
+		For example \texttt{seminator -{}-slim -{}-strong -{}-optimizations=0 -{}-via-tgba} generates output according to algorithm in \ref{section:slim}. (Using \texttt{-{}-via-tba} converts input to tba first) With automaton
 		
 		
 		\paragraph{Example 2}
@@ -336,7 +336,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 		
 		Neither weak or strong option specified - try both options  and choose the one with smaller automaton.
 		
-		\texttt{-{}-via-tba} transform input automaton to tba (\ref{section:tba}) first
+		\texttt{-{}-via-tba} transform input automaton to tba \ref{section:tba} first
 		
 		\texttt{-{}-via-tgba} does not modify input automaton to tba.
 		
@@ -346,7 +346,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 		
 		
 	\section{Implementation of Slim Automata inside Seminator}
-	I have implemented the generalized slim construction and its options mentioned in previous section 3.2. Furthermore, I have added an option to create breakpoint automata.
+	I have implemented the generalized slim construction and its options mentioned in previous section. Furthermore, I have added an option to create breakpoint automata.
 	
 	There already was basis for breakpoint construction in seminator, inside class \texttt{bp\_twa}.
 	As we can see in sections \ref{section:bp} and \ref{section:slim}, slim automata construction builds on breakpoint automata construction.
@@ -354,7 +354,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	That allows us to simply extend the \texttt{bp\_twa} class.
 	We create class \texttt{slim} that inherits from \texttt{bp\_twa}.
 	In the \texttt{slim} class we build breakpoint automaton using \texttt{compute\_successors} method.
-	Then we extend the method by adding accepting transitions $\gamma_p$, respectively $\gamma_w$ according to section 2.4, whenever we receive \texttt{-{}-slim} option.
+	Then we extend the method by adding accepting transitions $\gamma_p$, respectively $\gamma_w$ according to section \ref{section:gslim}, whenever we receive \texttt{-{}-slim} option.
 	
 	Then we extend main function to recognize our desired CLI options.
 	
@@ -369,25 +369,16 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	
 	Only \texttt{seminator -{}-slim -{}-strong -{}-via-tba -{}-optimizations=0} is proved, as it follows construction from \cite{hlavni} which is proved.
 	
-	
-	\section{fuj - How to Install Seminator}
-	(jeste nevim kde tuto sekci dat, jestli ma mit tento nazev, co vsechno tady bude treba dat... no a jeste ro pak upravim podle toho jak to bude odevzdane v zipu)
-	
-	To install the tool we need install spot and to run 
-	
-	\begin{lstlisting}[language=bash]
-autoreconf -i && ./configure && make.
-	\end{lstlisting}
 	\section{Future of Implementation}
 	Implementation:
-	python bindings, optimizations of slim construction (especially from TGBA)
+	Optimizations of slim construction (especially from TGBA).
 	
 	
 	
-	tests/verification:
-	There should be another kind of tests - to check if our slim automata simulate the input automata (so the GFM property is not broken)
+	Tests/verification:
+	There should be another kind of tests - to check if our slim automata simulate the input automata, so the GFM property is not broken.
 	
-	Subject of following research, that is out of scope of this thesis, could be to verify if spot optimizations do not break the simulation property. 
+	Subject of following research, that is out of scope of this thesis, could be to verify if Spot's optimizations do not break the simulation property. 
 	
 	\chapter{Evaluation of automaton size}
 	Evaluation part builds on seminator-evaluation. We compare amount of states of output automata on 2 datasets. First dataset are 20 literature formulas, second dataset is 500 automata that were randomly generated. We use 120s timeout for each tool. First section starts by internal comparison of slim automata created by Seminator. Second section compares these automata against ePMC, which is another tool producing slim automata. Third section compares slim automata against ldba and semi-deterministic automata. Ldba automata are produced by ltl2ldba \cite{ltl2ldba}, and semi-deterministic automata are produced by Seminator. Let us note, that from mentioned types of automata, only semi-deterministic automata do not promise good for Markov decision processes property.
