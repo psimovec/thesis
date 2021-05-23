@@ -224,7 +224,7 @@ nolof, nolot
 				\begin{center}
 				\input{slim.tikz}
 				\end{center}
-				\caption{Slim automaton (right) and the original Buchi Automaton from Figure \ref{fig:bp:non-equivalent}(left)}
+				\caption{Slim automaton (right) and the original Büchi automaton from Figure \ref{fig:bp:non-equivalent}(left)}
 				\label{fig:slim:equivalent}
 			\end{figure}
 
@@ -631,12 +631,14 @@ Then this section continues with comparison of minimal hits. Table~\ref{table:ep
 		%\section{Slim automata produced seminator ePMC}
 	\clearpage
 		\section{Compare with Different Kinds of Automata}
-		This section brings size comparison with diffent kinds of automata. It compares slim automata with ltl2ldba \cite{ltl2ldba}, default automata created by Seminator - semi-deterministic, and ePMC \cite{epmc}.
+		This section brings size comparison with diffent kinds of automata. It compares slim automata with ltl2ldba \cite{ltl2ldba}, default automata created by Seminator (semi-deterministic), and ePMC \cite{epmc}.
+		
+		Results of table~\ref{table:basic-tools} show that semi-deterministic automata created by Seminator are the smallest on average among the compared tools. Ltl2ldba creates the smallest GFM automata, as semi-deterministic automata do not promise GFM property.
 		
 		\begin{table}[ht]
 			\centering
 			
-			\caption{Results show that semi-deterministic automata created by Seminator are the smallest on average among the compared tools. Ltl2ldba creates the smallest GFM automata, as semi-deterministic automata do not promise GFM property. }
+			\caption{Automata sizes after applying Spot's optimizations.}
 			\label{table:basic-tools}
 			\input{tables/basic-tools.tex}
 		\end{table}
@@ -644,21 +646,24 @@ Then this section continues with comparison of minimal hits. Table~\ref{table:ep
 		
 		
 		Now we compare \texttt{seminator --slim} with other tools using scatter plots.
+		
+		Figure~\ref{scatter:seminator-slim-default} shows that semi-deterministic automata are consistently smaller or just slightly bigger than slim automata. 
+		As Figure~\ref{scatter:seminator-ltl2ldba} shows, ltl2ldba creates consistently small automata (smaller than 40 states), however its dominance over slim automata is not that consistent. The plot shows we can create reasonably smaller MDP automata on average using both tools and choosing the smallest automaton. Table~\ref{table:basic-tools-mix} confirms that. For literature dataset the mixed tool even beats semi-deterministic automata from Seminator.
 		\begin{figure}[ht]
 			\centering
 			
-			\caption{Semi-deterministic automata are consistently smaller or just slightly bigger than slim automata.}
+			\caption{Comparison of semi-deterministic and slim automata created by Seminator.}
 			\label{scatter:seminator-slim-default}
 			\begin{tikzpicture}
 				\input{scatter/slim-sem_def.tikz}
 			\end{tikzpicture}
 		\end{figure}
 		
-		
+		\clearpage
 		\begin{figure}[ht]
 			\centering
 			
-			\caption{Ltl2ldba creates consistently small automata (smaller than 40 states), however its dominance over slim automata is not that consistent. The plot shows we can create reasonably smaller MDP automata on average using both tools and choosing the smallest automaton. }
+			\caption{Slim automata from Seminator against automata from ltl2ldba.}
 			\label{scatter:seminator-ltl2ldba}
 		\begin{tikzpicture}
 		\input{scatter/slim-ltl2ldba.tikz}
@@ -667,8 +672,9 @@ Then this section continues with comparison of minimal hits. Table~\ref{table:ep
 	
 	\begin{table}[ht]
 		\centering
+		
+		\caption{Automaton size comparison of Seminator slim + ltl2ldba combined tool against other tools.}
 		\label{table:basic-tools-mix}
-		\caption{This table confirms, that combining Seminator slim and ltl2ldba creates reasonably smaller automata. For literature dataset it even beats semi-deterministic automata from Seminator.}
 		\input{tables/basic-tools-mix.tex}
 	\end{table}
 
