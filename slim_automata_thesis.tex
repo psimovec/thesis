@@ -442,7 +442,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	\begin{table}[ht]
 		
 		\centering
-		\caption{In this table we compare all possible post-optimized combinations of parameters. By default \texttt{seminator --slim} tries all combination, runs optimizations, and then chooses the smallest automaton (best/best). For this experiment only 4 base options were computed directly through Seminator. Other ones were computed from obtained data.}
+		\caption{In this table we compare all possible post-optimized combinations of parameters. By default \texttt{seminator --slim} tries all combination, runs optimizations, and then chooses the smallest automaton (best/best).}
 		\label{table:seminator:optimized}
 		\begin{tabular}{ |c||c|c|c|c|c|c| } 
 			\hline
@@ -477,7 +477,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	As Table \ref{table:seminator:optimized} shows, from 4 base options, after applying post-optimizations, strong slim algorithm surpasses a weak one by automaton size, even if it has worse results without the post-optimizations.
 	Degeneralizing the automata as a first step still has smaller results.
 	From 4 base options, the strong slim algorithm via-tba creates the smallest automata on average.
-	Transforming input automata to tba first creates results that are close to the best ones. There were no timeouts in the literature dataset. In the random dateset, for the base options there were two timeouts for \texttt{--via-tba} and four timeouts for \texttt{--via-tgba}.
+	Transforming input automata to tba first creates results that are close to the best ones. There were no timeouts in the literature dataset. In the random dateset, there were 2-4 timeouts for each tool.
 	
 	
 	\paragraph{Strong against weak slim automata}
