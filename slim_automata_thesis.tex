@@ -202,7 +202,7 @@ toc,page
 					\input{bp.tikz}
 					
 				\end{center}
-				\caption{A Büchi Automaton $\cA$ (left) and a breakpoint automaton $\cD$ for $\cA$ (right). Inspired by \cite[Figure~7.3]{Blahoudek2018thesis}}
+				\caption{A Büchi Automaton $\cA$ (left) and a breakpoint automaton $\cD$ for $\cA$ (right).}
 				\label{fig:bp:non-equivalent}
 			\end{figure}
 		
@@ -299,7 +299,7 @@ toc,page
 		I have implemented the generalized construction of slim automata in both weak and strong version  (\ref{section:slim}) (\ref{section:gslim}). I have also added option to create breakpoint automata (\ref{section:bp}).
 		
 		\section{Technologies/Tools}
-		The implementation is inside Seminator, which is implemented in C++17 builds on Spot library. %\cite{DBLP:conf/mascots/Duret-LutzP04}.
+		The implementation is inside Seminator, which is implemented in C++17 builds on Spot library. 
 		\subsection{Seminator} 
 		Seminator is a Linux command-line tool which can be run with the \texttt{seminator} command. The tool transforms transition-based generalized Büchi automata (TGBAs) into equivalent semi-deterministic automata. \cite{Klokočka2017thesis}\cite{seminator}\cite{seminator2}
 		
@@ -308,7 +308,7 @@ toc,page
 		The tool expects the input automaton in the Hanoi Omega-Automata (HOA) format \cite{DBLP:conf/cav/BabiakBDKKM0S15} on the standard input stream, but it can also read the input automaton from a file.
 		
 	\subsection{Spot}
-	"Spot is a C++ library with Python bindings and an assortment of command-line tools designed to manipulate LTL and $\omega$-automata in batch." \cite[Abstract]{spot2}
+	"Spot is a C++ library with Python bindings and an assortment of command-line tools designed to manipulate LTL and $\omega$-automata in batch." \cite[Abstract]{spot}
 	
 	Relevant spot tools:
 	\paragraph{ltl2tgba} "translates LTL/PSL formulas into generalized Büchi automata,or deterministic parity automata" \cite{spot}
@@ -471,7 +471,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	As Table \ref{table:seminator:optimized} shows, from 4 base options, after applying post-optimizations, strong slim algorithm surpasses a weak one by automaton size, even if it has worse results without the post-optimizations.
 	Degeneralizing the automata as a first step still has smaller results.
 	From 4 base options, the strong slim algorithm via-tba creates the smallest automata on average.
-	Transforming input automata to tba first creates results that are close to the best ones. 
+	Transforming input automata to tba first creates results that are close to the best ones. There were no timeouts in the literature dataset. In the random dateset, for the base options there were two timeouts for \texttt{--via-tba} and four timeouts for \texttt{--via-tgba}.
 	
 	
 	\paragraph{Strong against weak slim automata}
