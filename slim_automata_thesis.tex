@@ -99,11 +99,11 @@ toc,page
 	\chapter{Introduction}
 	Büchi automaton is a finite machine over infinite words. It has been a topic of research for almost 60 years.
 	There were discovered various kinds of similar machines with different properties and use cases.
-	Non-deterministic Büchi automata, in general are not well suitable for model checking or reinforcement learning, but we can construct non-deterministic Büchi automata with a special property -- good for Markov decision processes (GFM)  \cite{hlavni}, that makes the automata suitable. We will focus on slim automata \cite{hlavni}.
-	Slim automata are specially constructed Büchi automata. This kind of automaton was defined by its construction and is good for MDP \cite{hlavni}. We implement the proposed algorithm and its second variant that we call weak [source private conversation]. We introduce the algorithm for generalized Büchi automata. Then we evaluate resulting size of automata, and we compare it with a different tool to create slim automata and with other kinds of automata. In the end, we investigate the impact of slim automata from Seminator on reinforcement against GFM automata created by other tools.
+	Non-deterministic Büchi automata, in general, are not well suitable for model checking or reinforcement learning. However, we can construct non-deterministic Büchi automata with a special property -- good for Markov decision processes (GFM)  \cite{hlavni}, that makes the automata suitable. We will focus on slim automata \cite{hlavni}.
+	Slim automata are specially constructed Büchi automata. This kind of automaton was defined by its construction and is good for MDP \cite{hlavni}. We implement the proposed algorithm and its second variant that we call weak [source private conversation]. We introduce the algorithm for generalized Büchi automata. Then we evaluate the resulting size of automata, and we compare it with a different tool that can create slim automata and other kinds of automata. In the end, we investigate the impact of slim automata from Seminator on reinforcement against GFM automata created by other tools.
 	
 	The Preliminaries chapter defines Büchi automaton and generalized Büchi automaton.
-	The next chapter defines breakpoint automaton and slim automaton as described in our main source \cite{hlavni} and the weak variant.
+	The next chapter defines breakpoint automaton and slim automaton as described in our primary source \cite{hlavni} and the weak variant.
 	In the fourth chapter, we extend the algorithm to generalized Büchi automata.
 	Fifth chapter describes implementation of mentioned slim automata inside Seminator \cite{Klokočka2017thesis}\cite{seminator}\cite{seminator2} tool.
 	In the sixth chapter, we compare the resulting automata size (number of states). First, we compare the size internally among implemented options. Then we compare it with ePMC \cite{epmc} - another tool implementing slim automata. We finish the chapter by comparing different kinds of automata.
@@ -240,7 +240,7 @@ toc,page
 			One possibility is to \emph{degeneralize} $\cT$ and to use the previously mentioned algorithm in section 2.3.
 			In the rest of this chapter, we introduce a direct construction of slim TGBA equivalent to $\cT$.
 			\paragraph{Extended slim construction}
-			Intuitively, we will simulate the original automaton, by checking its accepting conditions one by one. In the original automaton have to go through an accepting transition of each accepting condition $g \in G=\{G_0, G_1, \ldots, G_k\}$ infinitely many times.
+			Intuitively, we will simulate the original automaton by checking its accepting conditions one by one. In the original automaton, have to go through an accepting transition of each accepting condition $g \in G=\{G_0, G_1, \ldots, G_k\}$ infinitely many times.
 			In the new automaton, we have just one accepting condition and a layer for each original accepting condition. Going through original accepting transitions of the layer that we are looking up promotes us to another layer. From the last layer, we get back to the first layer. Only the transitions that move us to layer up are accepting. As we check all accepting conditions of the original automaton, the new automaton will be equivalent to the original one. We will use the word "levels" instead of layers in the following definitions.
 			
 			
@@ -358,17 +358,17 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	\section{Implementation of Slim Automata inside Seminator}
 	I have implemented the generalized slim construction and its options mentioned in the previous section. Furthermore, I have added an option to create breakpoint automata.
 	
-	There already was a basis for breakpoint construction in seminator, inside class \texttt{bp\_twa}.
+	There already was a basis for breakpoint construction in Seminator, inside class \texttt{bp\_twa}.
 	As we can see in sections \ref{section:bp} and \ref{section:slim}, slim automata construction builds on breakpoint automata construction.
 	
-	That allows us to simply extend the \texttt{bp\_twa} class.
+	That allows us to extend the \texttt{bp\_twa} class.
 	We create class \texttt{slim} that inherits from \texttt{bp\_twa}.
 	In the \texttt{slim} class we build breakpoint automaton using \texttt{compute\_successors} method.
 	Then we extend the method by adding accepting transitions $\gamma_p$, respectively $\gamma_w$ according to section \ref{section:gslim}, whenever we receive \texttt{-{}-slim} option.
 	
 	Then we extend the main function to recognize our desired CLI options.
 	
-	As Seminator didn't offer a command-line option to create a breakpoint automaton, I have added the option \texttt{-{}-bp} for comparison.
+	As Seminator did not offer a command-line option to create a breakpoint automaton, I have added the option \texttt{-{}-bp} for comparison.
 	
 	
 	
@@ -399,7 +399,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	\subsection{Comparisons among Unoptimized Configurations}
 	In this subsection we compare base unoptimized seminator options.
 	
-	In Table~\ref{table:seminator:unoptimized} strong slim automata have more states than weak ones, as expected because strong slim automata add more accepting transitions, which can create new states. Transformation of the automata to TBA first yields smaller automata. This might be caused by Spot having a well-optimized algorithm for degeneralization. The slim algorithm for TGBA proposed in this paper is naive, without any kind of optimizations, and it degeneralizes the automaton during the process.
+	In Table~\ref{table:seminator:unoptimized} strong slim automata have more states than weak ones, as expected because strong slim automata add more accepting transitions, which can create new states. Transformation of the automata to TBA first yields smaller automata. This might be caused by Spot having a well-optimized algorithm for degeneralization. The slim algorithm for TGBA proposed in this paper is naive, without any optimizations, and it degeneralizes the automaton during the process.
 \begin{table}[ht]
 	\label{table:seminator:unoptimized}
 	\centering
@@ -468,7 +468,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	\end{table}
 
 	
-	As Table \ref{table:seminator:optimized} shows, from 4 base options, after applying post-optimizations strong slim algorithm surpasses a weak one by automaton size, even if it has worse results without the post-optimizations.
+	As Table \ref{table:seminator:optimized} shows, from 4 base options, after applying post-optimizations, strong slim algorithm surpasses a weak one by automaton size, even if it has worse results without the post-optimizations.
 	Degeneralizing the automata as a first step still has smaller results.
 	From 4 base options, the strong slim algorithm via-tba creates the smallest automata on average.
 	Transforming input automata to tba first creates results that are close to the best ones. 
@@ -488,7 +488,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 		\end{tikzpicture}
 	\end{figure}
 	
-		Comparing minimal hits for weak and strong automata in Table~\ref{table:weakstrongminhits} confirms that strong slim automata lead in unique minimal hits, but weak slim automata have some unique minimal hits too, so it makes sense to try both options and choose a better one. 
+		Comparing minimal hits for weak and strong automata in Table~\ref{table:weakstrongminhits} confirms that strong slim automata lead in unique minimal hits. However, weak slim automata have some unique minimal hits too, so it makes sense to try both options and choose a better one. 
 		\begin{table}[ht]
 			\centering
 			
@@ -592,7 +592,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	
 		The section compares the smallest automata of each tool to see how smaller automata get by combining these tools.
 		
-		As Figure~\ref{scatter:slim-epmc} shows, Seminator slim has most of the best results, and the difference is even bigger than the single option comparison in Figure~\ref{scatter:slim-epmc-1}. Combining Seminator and ePMC for best automata didn't bring much better results. On the random dataset total size of automata from Seminator slim is 7133. If we combine Seminator slim and ePMC, we get a total size of 7060, which is not a significant difference.
+		As Figure~\ref{scatter:slim-epmc} shows, Seminator slim has most of the best results, and the difference is even more significant than the single option comparison in Figure~\ref{scatter:slim-epmc-1}. Combining Seminator and ePMC for best automata did not bring much better results. On the random dataset total size of automata from Seminator slim is 7133. If we combine Seminator slim and ePMC, we get a total size of 7060, which is not a significant difference.
 	
 \begin{figure}[ht]
 	\centering
@@ -701,9 +701,9 @@ Then this section continues with comparison of minimal hits. Table~\ref{table:ep
 	
 	Examples have unclear origins, therefore Table~\ref{Table:mungostatsnoex} shows the results without the Examples. Ltl2ldba still has the best unique results most often, but Seminator gets closer to ltl2ldba. Compared to the previous table, Seminator now has more best averages and medians than ltl2ldba. The table also shows ePMC having a higher amount of second-best averages and medians than other tools. 
 	
-	Table~\ref{Table:mungobenchmarks} contains average episodes needed for a benchmark for each tool. It is visualized by the cactus plot in Figure~\ref{Cactus:mungoaverage}. There we can see that ends of lines match a number of failures in tables~\ref{Table:mungostats}, \ref{Table:mungostatsnoex}.
+	Table~\ref{Table:mungobenchmarks} contains average episodes needed for a benchmark for each tool. It is visualized by the cactus plot in Figure~\ref{Cactus:mungoaverage}. There we can see that ends of lines match to the number of failures in tables~\ref{Table:mungostats}, \ref{Table:mungostatsnoex}.
 	
-	Figure~\ref{Cactus:mungoruns} shows the cactus plot of all benchmark runs. There we can observe that Seminator has the highest number of successful runs, therefore the lowest number of failures. It doesn't match the plot Figure~\ref{Cactus:mungoaverage}. The reasoning follows: Looking at the number of failures on Table~\ref{Table:mungostatsnoex}, both ePMC and ltl2ldba have one benchmark, which fails on all of its runs. Seminator has two benchmarks, which fail only on one run (by not achieving probability 1). Therefore Seminator succeeds at more runs than other tools in Figure~\ref{Cactus:mungoruns}.
+	Figure~\ref{Cactus:mungoruns} shows the cactus plot of all benchmark runs. There we can observe that Seminator has the highest number of successful runs, therefore the lowest number of failures. It does not match the plot Figure~\ref{Cactus:mungoaverage}. The reasoning follows: Looking at the number of failures on Table~\ref{Table:mungostatsnoex}, both ePMC and ltl2ldba have one benchmark, which fails on all of its runs. Seminator has two benchmarks, which fail only on one run (by not achieving probability 1). Therefore Seminator succeeds at more runs than other tools in Figure~\ref{Cactus:mungoruns}.
 	
 	
 	
@@ -750,7 +750,7 @@ Then this section continues with comparison of minimal hits. Table~\ref{table:ep
 	
 	I have described slim automata with their prerequisites (based on \cite{hlavni}) and its weak version.
 	I have extended the construction to input TGBA automata.
-	I have also implemented the construction of slim automata inside Seminator, which was the main goal.
+	I have also implemented the construction of slim automata inside Seminator, which was the primary goal.
 	Then I have compared the automaton size of slim automata and different tools.
 	I have ended up evaluating the performance of Seminator's slim automata on the recently released Mungojerrie tool.
 	
