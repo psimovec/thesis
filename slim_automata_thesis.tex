@@ -212,7 +212,7 @@ toc,page
 		
 			\section{Slim automata}\label{section:slim}
 			Slim automata are BP automata enriched with additional transitions. As a result, they are non-deterministic, Good for Markov decision processes \cite{hlavni} and equivalent to the input automata.	
-			In this section we define transition function for \emph{strong slim} ($\gamma_{p}$)\cite{hlavni} and \emph{weak slim} ($\gamma_{w}$) automata,
+			In this section we define transition function for \emph{strong slim} ($\gamma_{p}$)\cite{hlavni} and \emph{weak slim} ($\gamma_{w}$)\cite{priv} automata,
 			 $\gamma_w, \gamma_p:3^Q \times \Sigma \rightarrow 3^Q$, that promote the second set of a breakpoint construction to the first set as follows. 
 			
 			\begin{enumerate}
@@ -379,7 +379,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	\section{Testing and Verification}
 	Implemented tests are basic; only language equivalence is checked.
 	Ltlcross and ltl2tgba tools are used. The tests use random LTL formulas that were already generated. Ltl2tgba transforms the LTL formulas into automata in HOA format.
-	Then the tool ltlcross cross-compares the automaton with \emph{seminator -{}-slim} with all supported additional parameters.
+	Then the tool ltlcross cross-compares the automaton with \texttt{seminator -{}-slim} with all supported additional parameters.
 	
 	Only \texttt{seminator -{}-slim -{}-strong -{}-via-tba -{}-optimizations=0} is proved, as it follows construction from \cite{hlavni} which is proved.
 	
@@ -417,9 +417,9 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 			literature&size&time(s)&size&time(s)\\
 			\hhline{|=====|}
 			
-			via tba	&	1095	&4	& 1112 	&5\\
+			via tba	&	1095	&2	& 1112 	&2\\
 			\hline
-			via tgba&	1122	&4		&1147	&4\\ 
+			via tgba&	1122	&2		&1147	&2\\ 
 			\hline
 			\hline
 			\hline
@@ -427,9 +427,9 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 			\hhline{|=====|}
 			random&size&time(s)&size&time(s)\\
 			\hline
-			via tba&17567&	59& 18764 &57\\
+			via tba&17567&	33& 18764 &33\\
 			\hline
-			via tgba&19320&	58& 20789&58\\ 
+			via tgba&19320&	32& 20789&33\\ 
 			\hline
 		\end{tabular}
 \end{table}
@@ -451,11 +451,11 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 			literature&size&time[s]&size&time[s]&size&time[s]\\
 			\hhline{|=======|}
 			
-			via tba&551&219& 370 &185& 370&404\\
+			via tba&617&29& 431 &58& 431&44\\
 			\hline
-			via tgba&588&210& 408&174& 402&384\\ 
+			via tgba&654&27& 476&52& 468&45\\ 
 			\hline
-			best&551&429& 370&359& 365&788 \\ 
+			best&617&34& 436&78& 431&100 \\ 
 			\hline
 			
 			
@@ -769,7 +769,7 @@ Then this section continues with comparison of minimal hits. Table~\ref{table:ep
 	I have extended the construction to accept TGBA automata.
 	I have also implemented the construction of slim automata inside Seminator, which was the primary goal.
 	I have compared the automaton size of Seminator's slim automata internally among offered options and against other tools - ePMC, ltl2ldba, ltl3tela and Seminator's semi-deterministic automata. Seminator's slim automata are smaller than the slim automata from ePMC, and are created faster.
-	I have ended up evaluating the performance of Seminator's slim automata on the recently released Mungojerrie tool and comparing it against its supported tools ltl2ldba and ePMC. 
+	I have ended up evaluating the performance of Seminator's slim automata on the recently released Mungojerrie tool and comparing it against its supported tools ltl2ldba and ePMC. Results of Mungojerrie's benchmarks look promising for Seminator's slim automata. However, I can't draw any definitive conclusions here, as the number of Mungojerrie's benchmarks is not that high.
 	
 	Future research could follow up by finding out which attributes of slim automata work the best for reinforcement learning and optimize the automata according to the results.
 	
