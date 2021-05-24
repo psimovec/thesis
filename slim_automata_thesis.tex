@@ -22,7 +22,11 @@ nolof, nolot
 		The thesis describes \emph{slim Büchi good for Markov decision processes automata} construction and extends it for \emph{generalized Büchi Automata}. The construction is implemented in a tool called \emph{Seminator}. Slim automata constructed by Seminator are compared to other automata produced by different tools. The automata are compared by the number of states, construction time, and learning speed when used for reinforcement learning in \emph{Mungojerrie} tool.
 	},
 	thanks      = {%
-		I would like to thank František Blahoudek for bringing up the topic. I would also like to thank František Blahoudek and Jan Strejček for their help with writing the thesis.
+		I am extremely grateful to my supervisors František Blahoudek and Jan Strejček, for their consultations, invaluable advice, and support. Thank you for the opportunity to work on an exciting topic.
+		
+		My gratitude extends to thank Ernst Moritz Hahn for his advice, providing us ePMC tool, and adding a requested feature that allowed me to compare the tools. I would also like to thank Mateo Perez for providing us Mungojerrie tool before its release and willingness to answer any questions about it.
+		
+		I want to thank my aunt for her encouragement and support during my studies. Lastly, I would like to express my gratitude to the rest of my family and friends for their support.
 	},
 	bib         = {exampl.bib},
 	%% Uncomment the following line (by removing the %% at the
@@ -315,7 +319,7 @@ toc,page
 	\paragraph{autfilt} "filters, converts, and transforms $\omega$-automata"  \cite{spot}
 	\paragraph{ltlcross} "cross-compares LTL/PSL-to-automata translators to find bugs" \cite{spot}
 		\section{Create Slim Automata Using Seminator}
-		By default, seminator creates sDBA. To create a slim automaton we need to add -{}-slim option. 
+		By default, seminator creates sDBA. To create a slim automaton we need to add \texttt{-{}-slim option}. 
 		\paragraph{Options} By default, -{}-slim tries all reasonable combinations of options, optimizes the output and chooses an automaton with the smallest number of states.
 		
 		\paragraph{Example 1}
@@ -327,7 +331,7 @@ $./seminator --slim -f automaton.hoa
 		
 		There are several options to specify how we construct the automata.
 		
-		For example \texttt{seminator -{}-slim -{}-strong -{}-optimizations=0 -{}-via-tgba} generates output according to algorithm in \ref{section:slim}. (Using \texttt{-{}-via-tba} converts input to tba first) With automaton
+		For example \texttt{seminator -{}-slim -{}-strong -{}-optimizations=0 -{}-via-tba} generates output according to algorithm in \ref{section:slim}. (Using \texttt{-{}-via-tba} converts input to tba first).
 		
 		
 		\paragraph{Example 2}
@@ -366,7 +370,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	In the \texttt{slim} class we build breakpoint automaton using \texttt{compute\_successors} method.
 	Then we extend the method by adding accepting transitions $\gamma_p$, respectively $\gamma_w$ according to section \ref{section:gslim}, whenever we receive \texttt{-{}-slim} option.
 	
-	Then we extend the main function to recognize our desired CLI options.
+	Then the main function is extended to recognize our desired CLI options.
 	
 	As Seminator did not offer a command-line option to create a breakpoint automaton, I have added the option \texttt{-{}-bp} for comparison.
 	
@@ -374,7 +378,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	
 	\section{Testing and Verification}
 	Implemented tests are basic; only language equivalence is checked.
-	ltlcross and ltl2tgba tools are used. The tests use random LTL formulas that were already generated. The LTL formulas are transformed into automata in HOA format by ltl2tgba.
+	Ltlcross and ltl2tgba tools are used. The tests use random LTL formulas that were already generated. Ltl2tgba transforms the LTL formulas into automata in HOA format.
 	Then the tool ltlcross cross-compares the automaton with \emph{seminator -{}-slim} with all supported additional parameters.
 	
 	Only \texttt{seminator -{}-slim -{}-strong -{}-via-tba -{}-optimizations=0} is proved, as it follows construction from \cite{hlavni} which is proved.
@@ -391,7 +395,9 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	The subject of the following research, which is out of the scope of this thesis, could be to verify if Spot's optimizations do not break the simulation property. 
 	
 	\chapter{Evaluation of automaton size}
-	The evaluation part builds on seminator-evaluation. We compare the number of states of output automata on two datasets. The first dataset is 20 literature formulas; the second dataset is 500 automata that were randomly generated. We use a 120s timeout for each tool. The first section starts with an internal comparison of slim automata created by Seminator. The second section compares these automata against ePMC, which is another tool producing slim automata. The third section compares slim automata against ldba and semi-deterministic automata. Ldba automata are produced by ltl2ldba \cite{ltl2ldba}, and semi-deterministic automata are produced by Seminator. Let us note that from mentioned types of automata, only semi-deterministic automata do not promise good for Markov decision processes property.
+	The evaluation part builds on seminator-evaluation. We compare the number of states of output automata on two datasets. The first dataset is 20 literature formulas; the second dataset is 500 LTLs that were randomly generated. We use a 120s timeout for each tool.
+	
+	The first section starts with an internal comparison of slim automata created by Seminator. The second section compares these automata against ePMC\cite{epmc}, which is another tool producing slim automata. The third section compares slim automata against ldba and semi-deterministic automata. Ldba automata are produced by ltl2ldba \cite{ltl2ldba}, and semi-deterministic automata are produced by Seminator. Let us note that from mentioned types of automata, only semi-deterministic automata do not promise GFM property.
 	
 	\section{Slim automata produced by Seminator}
 	In this section we compare automaton size generated by \texttt{seminator --slim}.
@@ -431,12 +437,12 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 	\subsection{Post-Optimized}
 	In this subsection we post-optimize results using \texttt{autfilt} tool.
 	
-	GFM automata are closed under simulations \cite[Section~3.1]{hlavni}. We are confident that spot's \texttt{autfilt} does not break the property.
+	GFM automata are closed under simulations \cite[Section~3.1]{hlavni}. We are confident that spot's \texttt{autfilt} does not break the GFM property.
 	
 	\begin{table}[ht]
 		
 		\centering
-		\caption{In this table we compare all possible post-optimized combinations of parameters. By default \texttt{seminator --slim} tries all combination, runs optimizations, and then chooses the smallest automaton (best/best). }
+		\caption{In this table we compare all possible post-optimized combinations of parameters. By default \texttt{seminator --slim} tries all combination, runs optimizations, and then chooses the smallest automaton (best/best). For this experiment only 4 base options were computed directly through Seminator. Other ones were computed from obtained data.}
 		\label{table:seminator:optimized}
 		\begin{tabular}{ |c||c|c|c|c|c|c| } 
 			\hline
@@ -488,7 +494,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 		\end{tikzpicture}
 	\end{figure}
 	
-		Comparing minimal hits for weak and strong automata in Table~\ref{table:weakstrongminhits} confirms that strong slim automata lead in unique minimal hits. However, weak slim automata have some unique minimal hits too, so it makes sense to try both options and choose a better one. 
+		Comparing minimal hits for weak and strong automata in Table~\ref{table:weakstrongminhits} confirms that strong slim automata lead in unique minimal hits. However, weak slim automata have some unique minimal hits too, so it makes sense to try both options and choose the better one. 
 		\begin{table}[ht]
 			\centering
 			
@@ -555,7 +561,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 		We can create slim automata using different tool called ePMC.
 		
 		At first, we compare the best working basic parameters (parameters that try only one option) of each tool to create the smallest automata to obtain a fair time comparison.
-		As Table~\ref{table:epmc-seminator-1} shows, Seminator creates smaller automata and faster. In Figure~\ref{scatter:slim-epmc-1} we can see, that ePMC has some better hits.
+		As Table~\ref{table:epmc-seminator-1} shows, Seminator creates smaller automata and creates them way faster. If we don't count timeouts and include Spot optimizations, Seminator runs approximately 25x faster than ePMC on the random dataset (without post-optimizations, Seminator is 90x faster on the dataset). In Figure~\ref{scatter:slim-epmc-1} we can see, that ePMC has some better hits.
 	
 	\begin{table}[ht]
 		\centering
@@ -603,7 +609,7 @@ $./seminator --slim --strong --via-tgba --postprocess=0 -f automaton.hoa
 		\input{scatter/slim-epmc.tikz}
 	\end{tikzpicture}
 \end{figure}
-Then this section continues with comparison of minimal hits. Table~\ref{table:epmc-seminator-min-hits} shows that by unique minimal hits of these tool ePMC has 35 unique minimal hits compared to 344 of Seminator. But as we can see from previous scatter plot \ref{scatter:slim-epmc}, the size difference isn't that high.
+Then this section continues with comparison of minimal hits. Table~\ref{table:epmc-seminator-min-hits} shows that by unique minimal hits of these tool ePMC has 35 unique minimal hits compared to 344 of Seminator. But as we can see from scatter plot \ref{scatter:slim-epmc}, the size difference isn't that high.
 \begin{table}[ht]
 	\centering
 	
@@ -692,7 +698,7 @@ Then this section continues with comparison of minimal hits. Table~\ref{table:ep
 	This chapter compares Seminator's slim automata on reinforcement learning tool Mungojerrie \cite{mungojerrie}. Reinforcement learning inside Mungojerrie has 2 phases. It has a learning phase with a given number of episodes and a model checking phase. The objective is defined by provided GFM automaton.\cite{mungojerrie}
 	
 	
-	The experiment uses benchmarks provided with the tool - Examples. Automata for the examples are built in various ways. Some can even be handcrafted. Using LTL, which is provided as a name of automaton in each original benchmark, we create slim automata for comparison on benchmarks, as Mungojerrie can accept LTL and transform it using internally supported tools ltl2ldba and ePMC, or we can provide automaton that is GFM (the property is not checked by Mungojerrie).
+	The experiment uses benchmarks provided with the tool - \emph{Examples}. Automata for the Examples are built in various ways. Some can even be handcrafted. Using LTL, which is provided as a name of automaton in each original benchmark, we create slim automata for comparison on benchmarks, as Mungojerrie can accept LTL and transform it using internally supported tools ltl2ldba and ePMC, or we can provide automaton that is GFM (the property is not checked by Mungojerrie).
 	
 	
 	Experiments are searching for the lowest necessary amount of episodes needed for reaching probability 1 to hit the objective in the model checking phase. Experiments run benchmarks ten times with pseudo-random seeds 0-9. If all runs end with success, the experiment computes the median and the average of results. A run can fail by timeout (600s) or by not reaching probability 1. We exclude uninteresting benchmarks, where all tools achieve the same result. 
@@ -748,11 +754,11 @@ Then this section continues with comparison of minimal hits. Table~\ref{table:ep
 	
 	\chapter{Conclusions}
 	
-	I have described slim automata with their prerequisites (based on \cite{hlavni}) and its weak version.
-	I have extended the construction to input TGBA automata.
+	I have described slim automata with their prerequisites (based on \cite{hlavni}) and their weak version.
+	I have extended the construction to accept TGBA automata.
 	I have also implemented the construction of slim automata inside Seminator, which was the primary goal.
-	Then I have compared the automaton size of slim automata and different tools.
-	I have ended up evaluating the performance of Seminator's slim automata on the recently released Mungojerrie tool.
+	I have compared the automaton size of Seminator's slim automata internally among offered options and against other tools - ePMC, ltl2ldba and Seminator's semi-deterministic automata. Seminator's slim automata are smaller than the slim automata from ePMC, and are created faster.
+	I have ended up evaluating the performance of Seminator's slim automata on the recently released Mungojerrie tool and comparing it against its supported tools ltl2ldba and ePMC.
 	
 	\begin{appendices}
 	
