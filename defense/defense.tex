@@ -1,0 +1,290 @@
+\documentclass[
+]{beamer}
+
+\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage{csquotes}
+\usepackage{biblatex}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\newcommand{\hlineny}{\hline}
+\addbibresource{example.bib}
+\usepackage{booktabs}
+\usetheme[
+workplace=fi,
+]{}
+
+\title[Slim Automata]{Slim Automaty}
+\subtitle[Cons]{Konstrukce nedeterministických slim Buchi automatů dobrých pro Markovovy rozhodovací procesy}
+\author[P. Šimovec]{Pavel Šimovec\texorpdfstring{\\}{, }}
+\institute[FI MU]{Fakulta Informatiky, Masarykova Univerzita}
+\date{\today}
+\subject{Presentation Subject}
+\keywords{the, presentation, keywords}
+\begin{document}
+	
+	\begin{frame}[plain]
+		\maketitle
+	\end{frame}
+	
+	
+	\begin{frame}{Motivace}
+		\begin{itemize}
+			\item Nedeterministické Büchi automaty obecně nejsou good for MDP
+			\item Deterministické Büchi automaty jsou obecně good for MDP, ale mohou mít větší velikost
+			\item Motivace je vyhnout se determinizaci a zároveň mít GFM automaty
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Přínos v teorii}
+		rozšíření algoritmu z článku na \alert{generalizované} Büchi automaty (TGBA)
+		
+		bez rozšíření je třeba prvně provést degeneralizaci
+	
+	
+	\end{frame}
+	
+	\begin{frame}{Implementace}
+		\begin{itemize}
+			\item implementace algoritmu z článku + rozšíření na TGBA do nástroje Seminator
+			\pause
+			\item v době implementace nebyly k dispozici jiné implementace
+			\pause
+			\item přidána možnost post-optimalizace pomocí nástroje autfilt
+			\pause
+			\item weak/strong a via-tba/via-tgba 
+			\pause
+			\item přidány testy
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Evaluace}
+		\begin{itemize}
+			\item porovnání velikosti automatů
+			\begin{itemize}
+				\item mezi implementovanýmí možnostmi
+				\item s jinými nástroji
+			\end{itemize}
+			\item vliv na zpětnovazebné učení
+		\end{itemize}
+	\end{frame}
+
+\begin{frame}{Porovnání velikosti automatů}{Porovnání počtu stavů automatů}
+	
+	\begin{itemize}
+		\item porovnání mezi implementovanýmí možnostmi
+		\begin{itemize}
+			
+			\pause
+			\item nejčastěji měl nejmenší automaty strong via-tba
+			\pause
+			\item ostatní možnosti měly někdy lepší výsledky
+		\end{itemize}
+	 	\pause
+		\item porovnání s jinými nástroji
+		\begin{itemize}
+			\item ePMC také tvoří slim automaty, málokdy má menší automat
+			
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+	
+	\begin{frame}{Porovnání velikosti automatů}{Porovnání počtu stavů automatů}
+		\begin{figure}[ht]
+			\centering
+			
+			\caption{Scatter plot porovnávajíci velikosti slim automatů. }
+			\label{scatter:slim-epmc}
+			\begin{tikzpicture}
+				\input{../scatter/slim-epmc.tikz}
+			\end{tikzpicture}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}{Mungojerrie}
+		Neúspěch nastane v případě, že alespoň jednou pro příklad není dosaženo pravděpodobnosti 1
+		\begin{table}[ht]
+			\centering
+			
+			\caption{Počty nejlepších výsledků z Mungojerrie }
+			\label{Table:mungostatsnoex}
+			\input{stats-noexamples.tex}
+		\end{table}
+	\end{frame}
+\begin{frame}{Mungojerrie}
+	\begin{itemize}
+		\item zpětnovazebné učení v Mungojerrie má 2 fáze
+		\begin{itemize}
+			\item fázi učení s daným počtem epizod
+			\item fázi model checkingu
+		\end{itemize}
+		\item cíl je definován GFM automatem, který nástroji dodáme
+		\item měříme po kolika epizodách máme pravděpodobnost dosažení cíle rovnou jedné
+		\item meříme desetkrát pro seedy 0-9
+		\item v případě neúspěchu dosažení pravděpodobnosti 1 u jednoho seedu považujeme celý experiment pro automat za neúspěšný.
+	\end{itemize}
+		
+\end{frame}
+\begin{frame}{Mungojerrie}
+\begin{figure}
+	\centering
+	
+	\caption{Seřazené počty epizod všech běhů (na ose y, 10 hodnot pro každý experiment). Počet běhů benchmarku je na ose x. }
+	\label{Cactus:mungoruns}
+	\input{mungocactus.tikz}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}
+
+	
+\end{frame}
+
+
+
+
+
+	\begin{frame}{Reakce na posudek vedoucího}
+		Figure 4.1 -> Barvy přechodů také zvýrazňují úrovně, barvy jako akceptační podmínky ze zdrojového automatu.
+		\pause
+		
+		Otázky:
+		\begin{enumerate}
+			\item To je chyba, nastala při přepisu přepočítaných hodnot, má to být v obou případech 436.
+			\pause
+			\item Srovnáváme pouze automaty kde všechny nástroje dokončí výpočet
+			\pause
+			\item V sedmé kapitole mám zmíněno "We exclude uninteresting benchmarks, where all tools achieve the same result."
+		\end{enumerate}
+		
+		
+	\end{frame}
+	
+	\begin{frame}{Reakce na posudek oponenta}[Změny v kódu]
+		Změny v kódu:
+		\begin{itemize}
+			\item Makefile.am +1
+			\item tests/slim.test +16 (nový soubor)
+			\item src/breakpoint\_twa.cpp +18
+			
+			\item src/breakpoint\_twa.hpp +16
+			
+			\item src/main.cpp +95
+			
+			\item src/slim.hpp +39 (nový soubor)
+		\end{itemize}
+		V pull requestu: https://github.com/mklokocka/seminator/pull/31/files
+		
+					
+		Navíc bylo třeba napsat skripty na evaluaci.
+	\end{frame}
+
+	\begin{frame}{Reakce na posudek oponenta}{Literature/random datasety}
+		Tyto datasety byly již v seminator-evaluation, jedná se o nesemideterministické automaty
+		
+		
+		{https://github.com/xblahoud/seminator-evaluation}
+		
+		{https://github.com/xblahoud/seminator-evaluation/blob/master/Formulae.ipynb}
+		
+	\end{frame}
+	\section[Short Section 1 Name]{Full Section 1 Name}
+	\subsection[Short Subsection 1 Name]{Full Subsection 1 Name}
+	
+	\begin{frame}{Frame Title}{Frame Subtitle}
+		plain text, \structure{page structure}, \alert{emphasis}
+		\begin{itemize}
+			\item a single-line bullet list item
+			\item a bullet list item that is quite long (in order to force a line break),
+			which also contains \alert{emphasized text}
+			\begin{itemize}
+				\item a second-level list item
+				\begin{itemize}
+					\item a third-level list item
+				\end{itemize}
+				\item \alert{an emphasized second-level list item}
+			\end{itemize}
+		\end{itemize}
+		\begin{enumerate}
+			\item a numbered list item
+			\begin{enumerate}
+				\item a second-level list item containing a math expression
+				\[ E = mc^2 \]
+				and a citation \cite{einstein1905tragheit}
+			\end{enumerate}
+		\end{enumerate}
+	\end{frame}
+	
+	\subsection[Short Subsection 2 Name]{Full Subsection 2 Name}
+	
+	\begin{frame}{Text Blocks}
+		text above a block\footnote{a footnote with an \url{https://address.edu}}
+		\begin{block}{Block}
+			text in a block
+		\end{block}
+		\begin{exampleblock}{Example Block}
+			text in a block
+		\end{exampleblock}
+		\begin{alertblock}{Emphasized Block}
+			text in a block
+		\end{alertblock}
+	\end{frame}
+	
+	\begin{frame}{Figures}
+		\begin{figure}
+			\includegraphics[width=.5\textwidth,height=.5\textheight,keepaspectratio]{cow-black.mps}
+			\caption{A standing Holstein Friesian cow%
+				\footnote{%
+					Will the cow ever lie down again?
+					We may never know.
+					\cite{tolkamp10cows}
+				}%
+			}
+		\end{figure}
+	\end{frame}
+	
+	\subsection[Short Subsection 3 Name]{Full Subsection 3 Name}
+	
+	\def\age(#1-#2-#3){%
+		\the\numexpr(
+		\year - #1
+		\ifnum\month<#2
+		- 1
+		\else
+		\ifnum\month=#2
+		\ifnum\day<#3
+		- 1
+		\fi
+		\fi
+		\fi
+		)%
+	}
+	
+	\begin{frame}{Tables}
+		\begin{table}
+			\begin{tabular}{llc}
+				First Name & Surname & Age \\ \midrule
+				Albert & Einstein & \age(1879-03-14) \\
+				Marie & Curie & \age(1867-11-07) \\
+				Thomas & Edison & \age(1847-02-11) \\
+			\end{tabular}
+			\caption{The great minds of the 19th century}
+		\end{table}
+	\end{frame}
+	
+	\section{\bibname}
+	\begin{frame}[t, allowframebreaks]{\bibname}
+		\printbibliography[heading=none]
+	\end{frame}
+	
+	\begin{frame}[plain]
+		\vfill
+		\centerline{Thank You for Your Attention!}
+		\vfill\vfill
+	\end{frame}
+	
+\end{document}
