@@ -9,20 +9,50 @@
 \usepackage{biblatex}
 \usepackage{tikz}
 \usepackage{pgfplots}
+\usepackage[nodayofweek,level]{datetime}
 \newcommand{\hlineny}{\hline}
-\addbibresource{example.bib}
+\addbibresource{exampl.bib}
 \usepackage{booktabs}
 \usetheme[
 workplace=fi,
 ]{}
 
-\title[Slim Automata]{Slim Automaty}
-\subtitle[Cons]{Konstrukce nedeterministických slim Buchi automatů dobrých pro Markovovy rozhodovací procesy}
+\title[Slim Automata]{Transformace Nedeterministických Büchiho Automatů na Slim Automaty}
 \author[P. Šimovec]{Pavel Šimovec\texorpdfstring{\\}{, }}
 \institute[FI MU]{Fakulta Informatiky, Masarykova Univerzita}
-\date{\today}
+\date{\formatdate{30}{6}{2021}}
 \subject{Presentation Subject}
 \keywords{the, presentation, keywords}
+
+
+
+\DeclareCiteCommand{\citetitleyear}
+{\boolfalse{citetracker}%
+	\boolfalse{pagetracker}}
+{\ifciteindex
+	{\indexfield{indextitle}}
+	{}%
+	\printfield[citetitle]{labeltitle}%
+	\setunit{\addspace}%
+	\printtext[parens]{%
+		\usebibmacro{prenote}%
+		\printfield{year}\printfield{extrayear}%
+		\usebibmacro{postnote}}}
+{\multicitedelim}
+{}
+
+
+
+
+\setbeamertemplate{navigation symbols}{%
+	\usebeamerfont{footline}%
+	\usebeamercolor[fg]{footline}%
+	\hspace{1em}%
+	\insertframenumber/\inserttotalframenumber
+}
+\setbeamercolor{footline}{fg=black}
+\setbeamerfont{footline}{series=\bfseries}
+
 \begin{document}
 	
 	\begin{frame}[plain]
@@ -32,66 +62,112 @@ workplace=fi,
 	
 	\begin{frame}{Motivace}
 		\begin{itemize}
-			\item Nedeterministické Büchi automaty obecně nejsou good for MDP
-			\item Deterministické Büchi automaty jsou obecně good for MDP, ale mohou mít větší velikost
+			\pause
+			\item Nedeterministické Büchiho automaty obecně nejsou \alert{dobré pro Markovovy rozhodovací procesy} (dále \alert{GFM}, good for Markov decision processes) $\rightarrow$ nejsou vhodné pro analýzu pravděpodobnostních systémů
+			\pause
+			\item Deterministické Büchiho automaty jsou obecně GFM, ale mohou mít větší velikost či složitější akceptační podmínku
+			\pause
 			\item Motivace je vyhnout se determinizaci a zároveň mít GFM automaty
+			\pause
+			\item Využití ve zpětnovazebném učení - nástroj \alert{Mungojerrie} vyžaduje GFM automaty
+			\pause
+			\item Motivace zrychlit zpětnovazebné učení
+			\pause
+			\item Slim automaty jsou nedeterministické a zároveň mají GFM vlastnost
 		\end{itemize}
 	\end{frame}
 
 	\begin{frame}{Přínos v teorii}
-		rozšíření algoritmu z článku na \alert{generalizované} Büchi automaty (TGBA)
-		
-		bez rozšíření je třeba prvně provést degeneralizaci
+		\begin{itemize}
+			\pause
+			\item Slim automaty byly popsány ve článku \citetitleyear{hlavni}
+			\pause
+			\item Rozšíření algoritmu z článku na \alert{generalizované} Büchiho automaty (GBA)
+			\pause
+			\begin{itemize}
+			\item Bez tohoto rozšíření je třeba prvně provést degeneralizaci
+			\end{itemize}
+			\pause
+			\item První formální popis \alert{weak slim automatů} (slim automaty z původního článku pojmenovány jako \alert{strong})
+		\end{itemize}
 	
 	
 	\end{frame}
 	
 	\begin{frame}{Implementace}
 		\begin{itemize}
-			\item implementace algoritmu z článku + rozšíření na TGBA do nástroje Seminator
 			\pause
-			\item v době implementace nebyly k dispozici jiné implementace
+			\item Implementace algoritmu z původního článku a rozšíření na GBA v nástroji Seminator
 			\pause
-			\item přidána možnost post-optimalizace pomocí nástroje autfilt
+			\item Weak/strong a via-tba/via-tgba 
 			\pause
-			\item weak/strong a via-tba/via-tgba 
+			\item Přidána možnost post-optimalizace pomocí knihovny SPOT	
 			\pause
-			\item přidány testy
+			\item Testována jazyková ekvivalence se zdrojovým automatem
+			\pause
+			\item V době implementace nebyly k dispozici jiné implementace (později nástroj ePMC)
+			
 		\end{itemize}
 	\end{frame}
 
 	\begin{frame}{Evaluace}
+		Automaty porovnáváme 2 způsoby:
+		\pause
 		\begin{itemize}
-			\item porovnání velikosti automatů
+			\item porovnání počtu stavů automatů
 			\begin{itemize}
-				\item mezi implementovanýmí možnostmi
+				\item mezi implementovanými možnostmi
 				\item s jinými nástroji
 			\end{itemize}
-			\item vliv na zpětnovazebné učení
+			\pause
+			\item vliv na zpětnovazebné učení v nástroji Mungojerrie
 		\end{itemize}
 	\end{frame}
 
-\begin{frame}{Porovnání velikosti automatů}{Porovnání počtu stavů automatů}
-	
-	\begin{itemize}
-		\item porovnání mezi implementovanýmí možnostmi
-		\begin{itemize}
-			
-			\pause
-			\item nejčastěji měl nejmenší automaty strong via-tba
-			\pause
-			\item ostatní možnosti měly někdy lepší výsledky
-		\end{itemize}
-	 	\pause
-		\item porovnání s jinými nástroji
-		\begin{itemize}
-			\item ePMC také tvoří slim automaty, málokdy má menší automat
-			
-		\end{itemize}
-	\end{itemize}
+
+
+	\begin{frame}{Porovnání počtu stavů automatů}
+		\begin{table}[ht]
+			\centering
+			\caption{Porovnání kumulativního počtu stavů slim automatů tvořených Seminatorem}
+	\begin{tabular}{ |c||c|c|c| } 		
+		\hline
+		
+		slim&weak&\alert{strong}&nejlepší \\
+		\hline
+		\alert{via tba}&9160& \alert{7725} & 7456\\
+		\hline
+		via tgba&10317& 8793& 8434\\ 
+		\hline
+		nejlepší&8958& 7578& \alert{7275} \\ 
+		\hline
+	\end{tabular}
+\end{table}
 \end{frame}
-	
-	\begin{frame}{Porovnání velikosti automatů}{Porovnání počtu stavů automatů}
+
+	\begin{frame}{Porovnání počtu stavů automatů}
+		\begin{table}[ht]
+			\centering
+			
+		
+		
+		\begin{tabular}{|c||c|}
+			\hline
+			nástroj  &   kumulativní počet stavů \\
+			\hlineny
+			Seminator slim          &        7133 \\
+			
+			\hline
+			ePMC     &     10132 \\
+			\hline
+			ltl2ldba      &        4632 \\
+			\hlineny
+			ltl3tela (deterministické)&  	3975\\\hlineny
+			
+		\end{tabular}
+\end{table}
+	\end{frame}
+	\begin{frame}{Porovnání počtu stavů automatů}
 		\begin{figure}[ht]
 			\centering
 			
@@ -103,45 +179,43 @@ workplace=fi,
 		\end{figure}
 	\end{frame}
 	
-	\begin{frame}{Mungojerrie}
-		Neúspěch nastane v případě, že alespoň jednou pro příklad není dosaženo pravděpodobnosti 1
-		\begin{table}[ht]
-			\centering
-			
-			\caption{Počty nejlepších výsledků z Mungojerrie }
-			\label{Table:mungostatsnoex}
-			\input{stats-noexamples.tex}
-		\end{table}
-	\end{frame}
-\begin{frame}{Mungojerrie}
+	
+\begin{frame}{Porovnání vlivu na zpětnovazebné učení}
 	\begin{itemize}
-		\item zpětnovazebné učení v Mungojerrie má 2 fáze
+		\pause
+		\item \alert{Mungojerrie} je nástroj pro zpětnovazebné učení vydaný letos (rok 2021)\pause
+		\item zpětnovazebné učení v Mungojerrie má 2 fáze\pause
 		\begin{itemize}
 			\item fázi učení s daným počtem epizod
 			\item fázi model checkingu
-		\end{itemize}
-		\item cíl je definován GFM automatem, který nástroji dodáme
-		\item měříme po kolika epizodách máme pravděpodobnost dosažení cíle rovnou jedné
-		\item meříme desetkrát pro seedy 0-9
+		\end{itemize}\pause
+		\item \alert{cíl je definován GFM automatem}, který nástroji dodáme\pause
+		\item měříme po kolika epizodách máme pravděpodobnost dosažení cíle rovnou jedné\pause
+		\item meříme desetkrát pro seedy 0-9\pause
 		\item v případě neúspěchu dosažení pravděpodobnosti 1 u jednoho seedu považujeme celý experiment pro automat za neúspěšný.
 	\end{itemize}
 		
 \end{frame}
-\begin{frame}{Mungojerrie}
-\begin{figure}
-	\centering
-	
-	\caption{Seřazené počty epizod všech běhů (na ose y, 10 hodnot pro každý experiment). Počet běhů benchmarku je na ose x. }
-	\label{Cactus:mungoruns}
+\begin{frame}{Porovnání vlivu na zpětnovazebné učení}
 	\input{mungocactus.tikz}
-\end{figure}
+
 
 \end{frame}
+\begin{frame}{Porovnání vlivu na zpětnovazebné učení}
+	Neúspěch nastane v případě, že alespoň jednou pro příklad není dosaženo pravděpodobnosti 1
+	\begin{table}[ht]
+		\centering
+		
+		\caption{Počty nejlepších výsledků z Mungojerrie }
+		\label{Table:mungostatsnoex}
+		\input{stats-noexamples.tex}
+	\end{table}
+\end{frame}
 
-
-\begin{frame}
-
-	
+\begin{frame}[plain]
+	\vfill
+	\centerline{Děkuji za Vaši pozornost}
+	\vfill\vfill
 \end{frame}
 
 
@@ -149,41 +223,79 @@ workplace=fi,
 
 
 	\begin{frame}{Reakce na posudek vedoucího}
-		Figure 4.1 -> Barvy přechodů také zvýrazňují úrovně, barvy jako akceptační podmínky ze zdrojového automatu.
-		\pause
+		\begin{itemize}
+		\item $\ldots$Navíc se domnívám, že zmíněný příklad \emph{Figure 4.1} je špatně, nebot’ barevně naznačuje existenci slabých slim hran, které však v tomto automatu nemohou být, protože ve všech stavech platí $S'= \emptyset$
+		\begin{itemize}
+		\item Figure 4.1 -> Barvy přechodů také zvýrazňují úrovně, barvy jako akceptační podmínky ze zdrojového automatu. Není zde spojitost s obarvením hran z přechozího příkladu. Automat není špatně, nemá žádné slim hrany, tudíž je stejný pro weak i strong slim automaty.
+		\end{itemize}
+	\end{itemize}
+
 		
+		
+	\end{frame}
+	
+	\begin{frame}{Reakce na posudek vedoucího}		
 		Otázky:
 		\begin{enumerate}
-			\item To je chyba, nastala při přepisu přepočítaných hodnot, má to být v obou případech 436.
+			\item Tabulka 6.2 uvádí, že Seminator při volbě via tba na formulích z literatury produkuje silné slim automaty s 431 stavy, zatímco při volbě best produkuje automaty s 436 stavy. Jak je to možné, když volba best má vždy produkovat automat s nejvýše tolika stavy jako volba via tba?
+			\begin{itemize}
+				\item To je překlep, nastal při přepisu přepočítaných hodnot, má to být v obou případech 436.
+			\end{itemize}
 			\pause
-			\item Srovnáváme pouze automaty kde všechny nástroje dokončí výpočet
+			\item Proč je v tabulce 6.7 u nástroje Seminator slim best uveden nižší počet stav u než v tabulce 6.2 pro volby best/best? Čekal bych identické hodnoty.
+			\begin{itemize}
+				\item Srovnáváme pouze automaty kde všechny nástroje dokončí výpočet.
+			\end{itemize}
+			
 			\pause
-			\item V sedmé kapitole mám zmíněno "We exclude uninteresting benchmarks, where all tools achieve the same result."
+			\item Proč se liší hodnoty na řádcích failures v tabulkách 7.1 a 7.2?
+			\begin{itemize}
+				\item V sedmé kapitole mám zmíněno "We exclude uninteresting benchmarks, where all tools achieve the same result." 
+				Odebráním jednoho nástroje vznikly výsledky, kde mají všechny zbývající nástroje stejný výsledek.
+			\end{itemize}
+			
 		\end{enumerate}
 		
 		
 	\end{frame}
 	
-	\begin{frame}{Reakce na posudek oponenta}[Změny v kódu]
+	\begin{frame}{Reakce na posudek oponenta}{Změny v kódu}
+		'V přiloženém ZIP archivu jsem mezi všemi soubory našel seminator-ba2slim/src/slim.hpp o 39 řádcích (včetně prázdných),  který má v záhlaví uvedeno  „Created by psimovec on 9/16/20“.  Ostatní soubory vypadají, že jsou v nástroji Seminátor původní.'
+		
 		Změny v kódu:
-		\begin{itemize}
-			\item Makefile.am +1
-			\item tests/slim.test +16 (nový soubor)
-			\item src/breakpoint\_twa.cpp +18
+		
+	\begin{table}[ht]
+		\centering
+		
+		
+		
+		\begin{tabular}{|c|c|}
+			\hline
+			soubor  &   změny \\
+			\hline
+			Makefile.am & +1\\
+			\hlineny
+			tests/slim.test          &       +16 \\
 			
-			\item src/breakpoint\_twa.hpp +16
+			\hline
+			src/breakpoint\_twa.cpp    &     +18 \\
+			\hline
+			src/breakpoint\_twa.hpp      &        +16 \\
+			\hlineny
+			src/main.cpp&  	+95\\\hlineny
+			src/slim.hpp&+39\\\hline
 			
-			\item src/main.cpp +95
-			
-			\item src/slim.hpp +39 (nový soubor)
-		\end{itemize}
-		V pull requestu: https://github.com/mklokocka/seminator/pull/31/files
+		\end{tabular}
+	\end{table}
+		Z pull requestu: https://github.com/mklokocka/seminator/pull/31/files
 		
 					
-		Navíc bylo třeba napsat skripty na evaluaci.
+		Dále jsem vytvořil skripty na evaluaci.
 	\end{frame}
 
 	\begin{frame}{Reakce na posudek oponenta}{Literature/random datasety}
+		'V tabulce 6.1 netuším, co je „literature“ a co je „random“.'
+		
 		Tyto datasety byly již v seminator-evaluation, jedná se o nesemideterministické automaty
 		
 		
@@ -192,99 +304,11 @@ workplace=fi,
 		{https://github.com/xblahoud/seminator-evaluation/blob/master/Formulae.ipynb}
 		
 	\end{frame}
-	\section[Short Section 1 Name]{Full Section 1 Name}
-	\subsection[Short Subsection 1 Name]{Full Subsection 1 Name}
-	
-	\begin{frame}{Frame Title}{Frame Subtitle}
-		plain text, \structure{page structure}, \alert{emphasis}
-		\begin{itemize}
-			\item a single-line bullet list item
-			\item a bullet list item that is quite long (in order to force a line break),
-			which also contains \alert{emphasized text}
-			\begin{itemize}
-				\item a second-level list item
-				\begin{itemize}
-					\item a third-level list item
-				\end{itemize}
-				\item \alert{an emphasized second-level list item}
-			\end{itemize}
-		\end{itemize}
-		\begin{enumerate}
-			\item a numbered list item
-			\begin{enumerate}
-				\item a second-level list item containing a math expression
-				\[ E = mc^2 \]
-				and a citation \cite{einstein1905tragheit}
-			\end{enumerate}
-		\end{enumerate}
-	\end{frame}
-	
-	\subsection[Short Subsection 2 Name]{Full Subsection 2 Name}
-	
-	\begin{frame}{Text Blocks}
-		text above a block\footnote{a footnote with an \url{https://address.edu}}
-		\begin{block}{Block}
-			text in a block
-		\end{block}
-		\begin{exampleblock}{Example Block}
-			text in a block
-		\end{exampleblock}
-		\begin{alertblock}{Emphasized Block}
-			text in a block
-		\end{alertblock}
-	\end{frame}
-	
-	\begin{frame}{Figures}
-		\begin{figure}
-			\includegraphics[width=.5\textwidth,height=.5\textheight,keepaspectratio]{cow-black.mps}
-			\caption{A standing Holstein Friesian cow%
-				\footnote{%
-					Will the cow ever lie down again?
-					We may never know.
-					\cite{tolkamp10cows}
-				}%
-			}
-		\end{figure}
-	\end{frame}
-	
-	\subsection[Short Subsection 3 Name]{Full Subsection 3 Name}
-	
-	\def\age(#1-#2-#3){%
-		\the\numexpr(
-		\year - #1
-		\ifnum\month<#2
-		- 1
-		\else
-		\ifnum\month=#2
-		\ifnum\day<#3
-		- 1
-		\fi
-		\fi
-		\fi
-		)%
-	}
-	
-	\begin{frame}{Tables}
-		\begin{table}
-			\begin{tabular}{llc}
-				First Name & Surname & Age \\ \midrule
-				Albert & Einstein & \age(1879-03-14) \\
-				Marie & Curie & \age(1867-11-07) \\
-				Thomas & Edison & \age(1847-02-11) \\
-			\end{tabular}
-			\caption{The great minds of the 19th century}
-		\end{table}
-	\end{frame}
 	
 	\section{\bibname}
 	\begin{frame}[t, allowframebreaks]{\bibname}
 		\printbibliography[heading=none]
 	\end{frame}
 	
-	\begin{frame}[plain]
-		\vfill
-		\centerline{Thank You for Your Attention!}
-		\vfill\vfill
-	\end{frame}
 	
 \end{document}
