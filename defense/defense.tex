@@ -13,6 +13,24 @@
 \newcommand{\hlineny}{\hline}
 \addbibresource{exampl.bib}
 \usepackage{booktabs}
+\usepackage{emoji}
+
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+% Highlight
+\usepackage{color}
+
+\usetikzlibrary{myautomata}
+
+\input{../commands.tex}
+
+\newcommand{\flushed}{\text{\emoji{flushed}}}
+\newcommand{\hell}{\text{\emoji{fire}}}
+\newcommand{\heaven}{\text{\emoji{innocent}}}
+
 \usetheme[
 workplace=fi,
 ]{}
@@ -71,10 +89,12 @@ workplace=fi,
 
 \begin{document}
 	
-	\begin{frame}[plain, noframenumbering]
+	\begin{frame}[ noframenumbering,plain]
 		\maketitle
 	\end{frame}
 	
+
+
 
 	\begin{frame}{Motivace}
 		\begin{itemize}
@@ -101,7 +121,7 @@ workplace=fi,
 			\pause
 			\item První formální popis \alert{weak slim automatů} (také od autorů článku, ale nebyly formálně popsány, slim automaty z původního článku pojmenovány jako \alert{strong})
 			\pause
-			\item Rozšíření algoritmu z článku na \alert{generalizované} Büchiho automaty (TGBA)
+			\item Algoritmus z článku byl definován pouze na Büchiho automaty (TBA), rozšíření algoritmu na \alert{generalizované} Büchiho automaty (TGBA)
 			\pause
 			\begin{itemize}
 			\item Bez tohoto rozšíření je třeba nejprve provést degeneralizaci
@@ -110,6 +130,61 @@ workplace=fi,
 		\end{itemize}
 	
 	
+	\end{frame}
+	
+	\begin{frame}{Ukázka konstrukce slim automatů}
+		\begin{tikzpicture}[automaton]
+			\node[state,initial] (a) {\flushed};
+			\node[state,right of = a] (b) {\hell};
+			\node[state,above of = a] (c) {\heaven};
+			
+			
+			
+			\path[->,auto ]
+			(c) edge[loop above] pic[] {eacc=1} pic{l=$a$} (c)
+			(a) edge[] node {$a$} (c)
+			(a) edge[] node {$a$} (b)
+			(b) edge[loop above] node {$a$} (b)
+			;
+			\pause
+			
+			\node[right = 2cm of b,state,initial, sd green] (bp-0) {$\{\flushed\},\emptyset$};
+			\node[state,right = 1cm of bp-0, sd green] (bp-12) {$\{\hell,\heaven\}, \emptyset$};
+			\node[state,above = 1cm of bp-12, sd green] (bp-12-1) {$\{\hell,\heaven\}, \{\heaven\}$};
+			\path[->,auto ]			
+			(bp-0) edge[green] node {$a$} (bp-12)
+			(bp-12) edge[green] node {$a$} (bp-12-1)
+			(bp-12-1) edge[loop above, green] node {$a$} (bp-12-1);
+			
+			\pause
+			\node[state,above = 1cm of bp-0, sd red] (bp-2) {$\{\heaven\}, \emptyset$};
+			
+			\path[->,auto ]
+			(bp-12-1) edge[red] pic[] {eacc=1} pic{l=$a$} (bp-2);
+			\pause
+			\node[state,above = 1cm of bp-2, cstate, unreachable] (bp-2-2) {$\{\heaven\}, \{\heaven\}$};
+			\path[->,auto ]
+			(bp-2) edge[unreachable, bend left] node {$a$} (bp-2-2);
+			\pause
+			\path[->,auto ]
+			(bp-2) edge[loop above, green] pic[] {eacc=1} pic{l=$a$} (bp-2);
+			\pause
+			\path[->,auto ]
+			(bp-12) edge[blue] pic[] {eacc=1} pic{l=$a$} (bp-2);
+			\pause
+			\node[state,above = 1cm of bp-2, cstate, unreachable] (bp-2-2) {$\{\heaven\}, \{\heaven\}$};
+			
+			
+			\path[->,auto ]			
+			(bp-0) edge[green] node {$a$} (bp-12)
+			(bp-12) edge[blue] pic[] {eacc=1} pic{l=$a$} (bp-2)
+			(bp-12) edge[green] node {$a$} (bp-12-1)
+			(bp-12-1) edge[loop above, green] node {$a$} (bp-12-1)
+			(bp-12-1) edge[red] pic[] {eacc=1} pic{l=$a$} (bp-2)
+			(bp-2) edge[loop above, green] pic[] {eacc=1} pic{l=$a$} (bp-2)
+			(bp-2) edge[unreachable, bend left] node {$a$} (bp-2-2)
+			;
+		\end{tikzpicture}
 	\end{frame}
 	
 	\begin{frame}{Implementace}
@@ -153,14 +228,14 @@ workplace=fi,
 				\item s jinými nástroji
 			\end{itemize}
 			\pause
-			\item vliv na zpětnovazebné učení v nástroji Mungojerrie
+			\item vliv na analýzu pravděpodobnostních systémů v nástroji Mungojerrie
 		\end{itemize}
 	\end{frame}
 
 	
 
 	\begin{frame}{Porovnání počtu stavů automatů}
-		Porovnání kumulativního počtu stavů slim automatů tvořených Seminatorem"
+		Porovnání kumulativního počtu stavů slim automatů tvořených Seminatorem z 500 náhodných LTL formulí:
 		\begin{table}[ht]
 			\centering
 			
@@ -183,6 +258,9 @@ workplace=fi,
 \end{frame}
 
 	\begin{frame}{Porovnání počtu stavů automatů}
+		Porovnání kumulativního počtu stavů s jinými nástroji:
+		
+		(použito 500 stejných náhodných LTL formulí)
 		\begin{table}[ht]
 			\centering
 			
@@ -205,10 +283,9 @@ workplace=fi,
 \end{table}
 	\end{frame}
 	\begin{frame}{Porovnání počtu stavů automatů}
+		Scatter plot porovnávajíci velikosti slim automatů mezi nástroji ePMC a Seminator:
 		\begin{figure}[ht]
 			\centering
-			
-			\caption{Scatter plot porovnávajíci velikosti slim automatů. }
 			\label{scatter:slim-epmc}
 			\begin{tikzpicture}
 				\input{../scatter/slim-epmc.tikz}
@@ -217,11 +294,12 @@ workplace=fi,
 	\end{frame}
 	
 	
-\begin{frame}{Porovnání vlivu na zpětnovazebné učení}
+\begin{frame}{Porovnání vlivu na analýzu pravděpodobnostních systémů}
 	\begin{itemize}
 		\pause
-		\item \alert{Mungojerrie} je nástroj pro zpětnovazebné učení vydaný letos (rok 2021)\pause
-		\item zpětnovazebné učení v Mungojerrie má 2 fáze\pause
+		\item \alert{Mungojerrie} je nástroj pro analýzu pravděpodobnostních systémů, vydaný letos (rok 2021)\pause
+		\item využívá zpětnovazebné učení\pause
+		\item zpětnovazebné učení v Mungojerrie má 2 fáze:\pause
 		\begin{itemize}
 			\item fázi učení s daným počtem epizod
 			\item fázi model checkingu
@@ -229,11 +307,10 @@ workplace=fi,
 		\item \alert{cíl je definován GFM automatem}, který nástroji dodáme\pause
 		\item měříme po kolika epizodách máme pravděpodobnost dosažení cíle rovnou jedné\pause
 		\item meříme desetkrát pro seedy 0-9\pause
-		\item v případě neúspěchu dosažení pravděpodobnosti 1 u jednoho seedu považujeme celý experiment pro automat za neúspěšný.
 	\end{itemize}
 		
 \end{frame}
-\begin{frame}{Porovnání vlivu na zpětnovazebné učení}
+\begin{frame}{Porovnání vlivu na analýzu pravděpodobnostních systémů}
 	\input{mungocactus.tikz}
 	\pause
 	\begin{flushright}\emph{Děkuji za Vaši pozornost!}\end{flushright}
@@ -251,7 +328,8 @@ workplace=fi,
 		\begin{itemize}
 		\item $\ldots$Navíc se domnívám, že zmíněný příklad \emph{Figure 4.1} je špatně, nebot’ barevně naznačuje existenci slabých slim hran, které však v tomto automatu nemohou být, protože ve všech stavech platí $S'= \emptyset$
 		\begin{itemize}
-		\item Figure 4.1 -> Barvy přechodů také zvýrazňují úrovně, barvy jako akceptační podmínky ze zdrojového automatu. Není zde spojitost s obarvením hran z přechozího příkladu. Automat není špatně, nemá žádné slim hrany, tudíž je stejný pro weak i strong slim automaty.
+		\item Figure 4.1 $\rightarrow$
+		Barvy přechodů také zvýrazňují úrovně, barvy odpovídají akceptačním podmínkám ze zdrojového automatu. Není zde spojitost s obarvením hran z přechozího příkladu. Automat není špatně, nemá žádné slim hrany, tudíž je zároveň weak i strong slim automaty.
 		\end{itemize}
 	\end{itemize}
 
@@ -275,7 +353,7 @@ workplace=fi,
 			\pause
 			\item Proč se liší hodnoty na řádcích failures v tabulkách 7.1 a 7.2?
 			\begin{itemize}
-				\item V sedmé kapitole mám zmíněno "We exclude uninteresting benchmarks, where all tools achieve the same result." 
+				\item V sedmé kapitole mám zmíněno "We exclude uninteresting benchmarks, where all tools achieve the same result."~
 				Odebráním jednoho nástroje vznikly výsledky, kde mají všechny zbývající nástroje stejný výsledek.
 			\end{itemize}
 			
@@ -287,6 +365,7 @@ workplace=fi,
 	\begin{frame}{Reakce na posudek oponenta}{Změny v kódu}
 		'V přiloženém ZIP archivu jsem mezi všemi soubory našel seminator-ba2slim/src/slim.hpp o 39 řádcích (včetně prázdných),  který má v záhlaví uvedeno  „Created by psimovec on 9/16/20“.  Ostatní soubory vypadají, že jsou v nástroji Seminátor původní.'
 		
+		
 		Změny v kódu:
 		
 	\begin{table}[ht]
@@ -294,13 +373,14 @@ workplace=fi,
 		
 		
 		
-		\begin{tabular}{|c|c|}
+		\begin{tabular}{|l|l|}
 			\hline
 			soubor  &   změny \\
 			\hline
+			\hline
 			Makefile.am & +1\\
 			\hlineny
-			tests/slim.test          &       +16 \\
+			tests/slim.test          &       +16 (Nový soubor)\\
 			
 			\hline
 			src/breakpoint\_twa.cpp    &     +18 \\
@@ -308,7 +388,7 @@ workplace=fi,
 			src/breakpoint\_twa.hpp      &        +16 \\
 			\hlineny
 			src/main.cpp&  	+95\\\hlineny
-			src/slim.hpp&+39\\\hline
+			src/slim.hpp&+39 (Nový soubor)\\\hline
 			
 		\end{tabular}
 	\end{table}
@@ -328,11 +408,6 @@ workplace=fi,
 		
 		{https://github.com/xblahoud/seminator-evaluation/blob/master/Formulae.ipynb}
 		
-	\end{frame}
-	
-	\section{\bibname}
-	\begin{frame}[t, allowframebreaks]{\bibname}
-		\printbibliography[heading=none]
 	\end{frame}
 	
 	
