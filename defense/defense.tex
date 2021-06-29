@@ -99,7 +99,7 @@ workplace=fi,
 	\begin{frame}{Motivace}
 		\begin{itemize}
 			\pause
-			\item Nedeterministické Büchiho automaty obecně nemají vlastnost \alert{dobrý pro Markovovy rozhodovací procesy} (dále \alert{GFM}, good for Markov decision processes) $\rightarrow$ nejsou vhodné pro analýzu pravděpodobnostních systémů
+			\item Nedeterministické Büchiho automaty obecně nemají vlastnost \alert{"dobrý pro Markovovy rozhodovací procesy"} (dále \alert{GFM}, good for Markov decision processes) $\rightarrow$ nejsou vhodné pro analýzu pravděpodobnostních systémů
 			\pause
 			\item Deterministické $\omega$-automaty jsou obecně GFM, ale mohou mít větší velikost či složitější akceptační podmínku (např. Rabinovu, Streettovu)
 			\pause
@@ -133,6 +133,7 @@ workplace=fi,
 	\end{frame}
 	
 	\begin{frame}{Ukázka konstrukce slim automatů}
+		\pause
 		\begin{tikzpicture}[automaton]
 			\node[state,initial] (a) {\flushed};
 			\node[state,right of = a] (b) {\hell};
@@ -219,6 +220,7 @@ workplace=fi,
 	\end{frame}
 
 	\begin{frame}{Evaluace}
+		\pause
 		Automaty porovnáváme 2 způsoby:
 		\pause
 		\begin{itemize}
@@ -306,7 +308,7 @@ workplace=fi,
 		\end{itemize}\pause
 		\item \alert{cíl je definován GFM automatem}, který nástroji dodáme\pause
 		\item měříme po kolika epizodách máme pravděpodobnost dosažení cíle rovnou jedné\pause
-		\item meříme desetkrát pro seedy 0-9\pause
+		\item meříme desetkrát pro seedy 0-9
 	\end{itemize}
 		
 \end{frame}
@@ -392,17 +394,30 @@ workplace=fi,
 			
 		\end{tabular}
 	\end{table}
-		Z pull requestu: https://github.com/mklokocka/seminator/pull/31/files
 		
 					
-		Dále jsem vytvořil skripty na evaluaci.
+		Dále jsem vytvořil skripty na evaluaci. (Dohromady přes 200 řádků pouze na tvorbu a zpracování dat, nepočítaje interpretaci a zobrazení výsledků)
 	\end{frame}
 
 	\begin{frame}{Reakce na posudek oponenta}{Literature/random datasety}
 		'V tabulce 6.1 netuším, co je „literature“ a co je „random“.'
 		
-		Tyto datasety byly již v seminator-evaluation, jedná se o nesemideterministické automaty
+		Tyto datasety byly již v seminator-evaluation, jedná se o nesemideterministické automaty vybrané pro evaluaci Seminatoru.
 		
+		random $\rightarrow$ 500 náhodných LTL formulí generovaných SPOTem tak, aby byly nesemideterministické.
+		
+		literature $\rightarrow$ 20 formulí vybraných pro evaluaci Seminatoru z literatury: 
+		\begin{itemize}
+			
+			
+			\item beem.ltl: R. Pelánek: BEEM: Benchmarks for explicit model checkers. Proceedings of Spin'07. LNCS 4595.
+			\item liberouter.ltl: Holeček, T. Kratochvila, V. Řehák, D. Šafránek, and P. Šimeček: Verification Results in Liberouter Project. Tech. Report 03, CESNET, 2004.
+			\item dac: M. B. Dwyer and G. S. Avrunin and J. C. Corbett: Property Specification Patterns for Finite-state Verification. Proceedings of FMSP'98.
+			\item eh: K. Etessami and G. J. Holzmann: Optimizing Büchi Automata. Proceedings of Concur'00. LNCS 1877.
+			\item sb: F. Somenzi and R. Bloem: Efficient Büchi Automata for LTL Formulae. Proceedings of CAV'00. LNCS 1855.
+			
+			
+		\end{itemize}
 		
 		{https://github.com/xblahoud/seminator-evaluation}
 		
