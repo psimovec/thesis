@@ -42,36 +42,52 @@ workplace=fi,
 {}
 
 
+\usepackage{appendixnumberbeamer}
 
-
-\setbeamertemplate{navigation symbols}{%
+\beamertemplatenavigationsymbolsempty
+\addtobeamertemplate{navigation symbols}{}{
+	\ifnum\insertframenumber>\inserttotalframenumber%
+	\relax
+	\else%
 	\usebeamerfont{footline}%
 	\usebeamercolor[fg]{footline}%
 	\hspace{1em}%
 	\insertframenumber/\inserttotalframenumber
+	\fi%
 }
+
+
 \setbeamercolor{footline}{fg=black}
 \setbeamerfont{footline}{series=\bfseries}
 
+\tikzset{
+	treenode/.style = {shape=rectangle, rounded corners,
+		draw, align=center,
+		top color=white, bottom color=blue!20},
+	root/.style     = {treenode, font=\Large, bottom color=red!30},
+	env/.style      = {treenode, font=\ttfamily\normalsize},
+	dummy/.style    = {circle,draw}
+}
+
 \begin{document}
 	
-	\begin{frame}[plain]
+	\begin{frame}[plain, noframenumbering]
 		\maketitle
 	\end{frame}
 	
-	
+
 	\begin{frame}{Motivace}
 		\begin{itemize}
 			\pause
-			\item Nedeterministické Büchiho automaty obecně nejsou \alert{dobré pro Markovovy rozhodovací procesy} (dále \alert{GFM}, good for Markov decision processes) $\rightarrow$ nejsou vhodné pro analýzu pravděpodobnostních systémů
+			\item Nedeterministické Büchiho automaty obecně nemají vlastnost \alert{dobrý pro Markovovy rozhodovací procesy} (dále \alert{GFM}, good for Markov decision processes) $\rightarrow$ nejsou vhodné pro analýzu pravděpodobnostních systémů
 			\pause
-			\item Deterministické Büchiho automaty jsou obecně GFM, ale mohou mít větší velikost či složitější akceptační podmínku
+			\item Deterministické $\omega$-automaty jsou obecně GFM, ale mohou mít větší velikost či složitější akceptační podmínku (např. Rabinovu, Streettovu)
 			\pause
 			\item Motivace je vyhnout se determinizaci a zároveň mít GFM automaty
 			\pause
-			\item Využití ve zpětnovazebném učení - nástroj \alert{Mungojerrie} vyžaduje GFM automaty
+			\item Využití v analýze pravděpodobnostních systému - nástroj \alert{Mungojerrie}, který vyžaduje GFM automaty
 			\pause
-			\item Motivace zrychlit zpětnovazebné učení
+			\item Motivace zrychlit nástroj Mungojerrie
 			\pause
 			\item Slim automaty jsou nedeterministické a zároveň mají GFM vlastnost
 		\end{itemize}
@@ -80,15 +96,17 @@ workplace=fi,
 	\begin{frame}{Přínos v teorii}
 		\begin{itemize}
 			\pause
-			\item Slim automaty byly popsány ve článku \citetitleyear{hlavni}
+			\item Slim automaty byly popsány ve článku "Good-for-MDPs Automata for Probabilistic Analysis and Reinforcement
+			Learning", Ernst Moritz Hahn et al., TACAS 2020
 			\pause
-			\item Rozšíření algoritmu z článku na \alert{generalizované} Büchiho automaty (GBA)
+			\item První formální popis \alert{weak slim automatů} (také od autorů článku, ale nebyly formálně popsány, slim automaty z původního článku pojmenovány jako \alert{strong})
+			\pause
+			\item Rozšíření algoritmu z článku na \alert{generalizované} Büchiho automaty (TGBA)
 			\pause
 			\begin{itemize}
-			\item Bez tohoto rozšíření je třeba prvně provést degeneralizaci
+			\item Bez tohoto rozšíření je třeba nejprve provést degeneralizaci
 			\end{itemize}
-			\pause
-			\item První formální popis \alert{weak slim automatů} (slim automaty z původního článku pojmenovány jako \alert{strong})
+			
 		\end{itemize}
 	
 	
@@ -97,13 +115,28 @@ workplace=fi,
 	\begin{frame}{Implementace}
 		\begin{itemize}
 			\pause
-			\item Implementace algoritmu z původního článku a rozšíření na GBA v nástroji Seminator
+			\item Implementace algoritmu z původního článku a rozšíření na TGBA v nástroji Seminator
 			\pause
-			\item Weak/strong a via-tba/via-tgba 
+			\item Přidána možnost post-optimalizace pomocí knihovny SPOT
 			\pause
-			\item Přidána možnost post-optimalizace pomocí knihovny SPOT	
+			 \begin{tikzpicture}
+				[scale=.9,auto=left]
+				\node (n6) at (0,5) {$\rightarrow$TGBA};
+				\node (n4) at (3,4.5)  {via-tgba};
+				\node (n7) at (6,4.5)  {weak};
+				\node (n5) at (6,4)  {strong};
+				\node (n1) at (6,5.5) {strong};
+				\node (n2) at (6,6)  {weak};
+				\node (n3) at (3,5.5)  {via-tba};
+				\node (n8) at (9,5)  {best};
+				
+				\foreach \from/\to in {n6/n4,n6/n3,n4/n5,n2/n3, n3/n1, n4/n7, n2/n8, n1/n8, n7/n8, n5/n8}
+				\draw (\from) -- (\to);
+				
+			\end{tikzpicture} 
+				
 			\pause
-			\item Testována jazyková ekvivalence se zdrojovým automatem
+			\item Přidány testy na jazykovou ekvivalenci slim automatů se zdrojovým automatem
 			\pause
 			\item V době implementace nebyly k dispozici jiné implementace (později nástroj ePMC)
 			
@@ -124,16 +157,20 @@ workplace=fi,
 		\end{itemize}
 	\end{frame}
 
-
+	
 
 	\begin{frame}{Porovnání počtu stavů automatů}
+		Porovnání kumulativního počtu stavů slim automatů tvořených Seminatorem"
 		\begin{table}[ht]
 			\centering
-			\caption{Porovnání kumulativního počtu stavů slim automatů tvořených Seminatorem}
+			
+			
+			
 	\begin{tabular}{ |c||c|c|c| } 		
 		\hline
 		
 		slim&weak&\alert{strong}&nejlepší \\
+		\hline
 		\hline
 		\alert{via tba}&9160& \alert{7725} & 7456\\
 		\hline
@@ -154,15 +191,15 @@ workplace=fi,
 		\begin{tabular}{|c||c|}
 			\hline
 			nástroj  &   kumulativní počet stavů \\
-			\hlineny
-			Seminator slim          &        7133 \\
+			\hline
+			\hline
 			
-			\hline
-			ePMC     &     10132 \\
-			\hline
-			ltl2ldba      &        4632 \\
-			\hlineny
 			ltl3tela (deterministické)&  	3975\\\hlineny
+			ltl2ldba      &        4632 \\\hlineny
+			\alert{Seminator slim}         &        \alert{7133} \\\hline
+			ePMC     &     10132 \\\hline
+			
+			
 			
 		\end{tabular}
 \end{table}
@@ -198,26 +235,14 @@ workplace=fi,
 \end{frame}
 \begin{frame}{Porovnání vlivu na zpětnovazebné učení}
 	\input{mungocactus.tikz}
-
+	\pause
+	\begin{flushright}\emph{Děkuji za Vaši pozornost!}\end{flushright}
 
 \end{frame}
-\begin{frame}{Porovnání vlivu na zpětnovazebné učení}
-	Neúspěch nastane v případě, že alespoň jednou pro příklad není dosaženo pravděpodobnosti 1
-	\begin{table}[ht]
-		\centering
-		
-		\caption{Počty nejlepších výsledků z Mungojerrie }
-		\label{Table:mungostatsnoex}
-		\input{stats-noexamples.tex}
-	\end{table}
-\end{frame}
 
-\begin{frame}[plain]
-	\vfill
-	\centerline{Děkuji za Vaši pozornost}
-	\vfill\vfill
-\end{frame}
 
+
+\appendix
 
 
 
